@@ -1,20 +1,59 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# TODO
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+UBC Hosting
+- provide blueprint project
+  - copy from previous term
+  - upgrade to .net core 3.1 when it's released
+  - upgrade react and other front end dependencies if need be
+- In Azure  
+  - create all the UBC resources in one resource group
+  - split resources within that group into one or more teams
+  - create one Azure sql server
+  - for each team
+    - create an app service
+    - configure deployment via local git with separate deployment credentials
+    - create one Azure sql DB on the existing server
+    - configure team access to the db via Azure AD groups
+    - configure app service access via a managed system identity
+      *** see https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-connect-msi
+  - db migrations?
+    - Entity Framework code first migrations
+  - troubleshooting?
+    - provide access to the app logs?  
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+## Notes
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+  Create contained azure ad user
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+  ```
+  create user [appuser@domain.com]
+  from external provider;
+
+  ALTER ROLE db_owner ADD MEMBER [appuser@domain.com];
+
+  OR
+
+  create user [appgroup]
+  from external provider;
+
+  ALTER ROLE db_owner ADD MEMBER [appgroup];
+  ```
+
+*** see https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-connect-msi
+
+in azure
+- add an azure ad admin for sql ad
+- create azure ad group
+- enable system identity on app service
+- add app identity to group
+- create contained db user for ad group
+- assign user to db roles
+- configure the db firewall to allow outbout ips from app
+  13.71.170.129,52.138.17.9,52.138.25.189,52.138.8.116,52.138.25.144
+
+in c# app:
+
+Install-Package Microsoft.Azure.Services.AppAuthentication -Version 1.3.0
+connection string: "Server=tcp:<server-name>.database.windows.net,1433;Database=<database-name>;"
+var conn = (System.Data.SqlClient.SqlConnection)Database.GetDbConnection();
+conn.AccessToken = (new Microsoft.Azure.Services.AppAuthentication.AzureServiceTokenProvider()).GetAccessTokenAsync("https://database.windows.net/").Result;
