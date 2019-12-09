@@ -8,11 +8,15 @@ import {
 import Home from "./Home";
 import Users from './Users'
 import Expenses from './Expenses'
+import { authContext } from "../config/adalConfig";
 
 class App extends Component {
   render() {
     return (
       <Router>
+      <div>
+        <button onClick={() => authContext.logOut()}>Log Out</button>
+      </div>
       <div>
       <ul>
         <li>
