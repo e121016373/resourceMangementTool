@@ -1,5 +1,6 @@
 import * as types from "../constants/expensesConstants";
 import axios from 'axios';
+import { REACT_APP_SVC_ROOT } from '../config/config'
 
 const getExpensesData = (data) => {
   return {
@@ -10,7 +11,7 @@ const getExpensesData = (data) => {
 
 export const getExpenses = () => {
   return(dispatch) => {
-    axios.get(process.env.REACT_APP_SVC_ROOT + `expenses/all`)
+    axios.get(REACT_APP_SVC_ROOT + `expenses/all`)
     .then(response => {
       dispatch(getExpensesData(response.data));
     })

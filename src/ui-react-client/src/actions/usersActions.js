@@ -1,6 +1,7 @@
 import * as types from "../constants/usersConstants";
 import axios from 'axios';
 import { getToken } from "../config/adalConfig";
+import { REACT_APP_SVC_ROOT } from "../config";
 
 const getUsersData = (data) => {
   return {
@@ -20,7 +21,7 @@ const headers = { Authorization: `Bearer ${getToken()}`}
 
 export const getUsers = () => {
   return(dispatch) => {
-    axios.get(process.env.REACT_APP_SVC_ROOT + `users/all`, { headers })
+    axios.get(REACT_APP_SVC_ROOT + `users/all`, { headers })
     .then(response => {
       dispatch(getUsersData(response.data));
     })
@@ -32,7 +33,7 @@ export const getUsers = () => {
 
 export const getAdUser = () => {
   return(dispatch) => {
-    axios.get(process.env.REACT_APP_SVC_ROOT + `users/ad`, { headers })
+    axios.get(REACT_APP_SVC_ROOT + `users/ad`, { headers })
     .then(response => {
       dispatch(getAdUserData(response.data));
     })
