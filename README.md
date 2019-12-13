@@ -1,21 +1,25 @@
 # TODO
 
 UBC Hosting
-- provide blueprint project
-  - copy from previous term
-  - upgrade to .net core 3.1 when it's released
-  - upgrade react and other front end dependencies if need be
-- In Azure  
-  - create all the UBC resources in one resource group
-  - split resources within that group into one or more teams
-  - create one Azure sql server
-  - for each team
-    - create an app service
-    - configure deployment via local git with separate deployment credentials
-    - create one Azure sql DB on the existing server
-    - configure team access to the db via Azure AD groups
-    - configure app service access via a managed system identity
+
+- [X] provide blueprint project
+
+  - [X] copy from previous term
+  - [X] upgrade to .net core 3.1 when it's released (released need to download)
+  - [X] upgrade react and other front end dependencies if need be (use ADAL)
+
+- [ ] In Azure  
+  - [X] create all the UBC resources in one resource group
+  - [X] split resources within that group into one or more teams (two app registrations, create two active directory groups)
+  - [X] create one Azure sql server
+  - [ ] for each team
+    - [X] create an app service
+    - [X] configure deployment via local git with separate deployment credentials (within app service, provision, confirm different deployment credentials, similar to pushing code to git)
+    - [X] create one Azure sql DB on the existing server
+    - [X] configure team access to the db via Azure AD groups - deleted
+    - [ ] configure app service access via a managed system identity (look at the link)
       *** see https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-connect-msi
+
   - db migrations?
     - Entity Framework code first migrations
   - troubleshooting?
