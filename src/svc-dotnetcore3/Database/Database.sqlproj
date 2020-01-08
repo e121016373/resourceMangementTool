@@ -61,10 +61,12 @@
     <Folder Include="scripts" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="dbo\Tables\Expenses.sql" />
-    <Build Include="dbo\Tables\Users.sql" />
+    <None Include="scripts\seed.sql" />
+    <None Include="Database.DEV.publish.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="scripts\seed.sql" />
+    <Build Include="dbo\Tables\Locations.sql" />
+    <Build Include="dbo\Tables\Users.sql" />
+    <Build Include="dbo\Tables\Projects.sql" />
   </ItemGroup>
 </Project>
