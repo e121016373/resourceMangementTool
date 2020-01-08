@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Web.API.Application.Models;
 
 namespace Web.API.Application.Repository
 {
-    public interface IUserRepository
+    public interface IUsersRepository
     {
         List<User> GetAllUsers();
         User GetAUser(string username);

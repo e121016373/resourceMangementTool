@@ -48,8 +48,9 @@ namespace Web.API
                 options.Authority = authSettings.Authority;
             });
 
-            services.AddScoped<IUserRepository>(sp => new UserRepository(connectionString));
-            services.AddScoped<IExpenseRepository>(sp => new ExpenseRepository(connectionString));
+            services.AddScoped<ILocationsRepository>(sp => new LocationsRepository(connectionString));
+            services.AddScoped<IProjectsRepository>(sp => new ProjectsRepository(connectionString));
+            services.AddScoped<IUsersRepository>(sp => new UsersRepository(connectionString));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 

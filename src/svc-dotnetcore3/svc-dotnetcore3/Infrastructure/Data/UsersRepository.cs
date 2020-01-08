@@ -8,20 +8,34 @@ using Web.API.Application.Repository;
 
 namespace Web.API.Infrastructure.Data
 {
-    public class UserRepository : IUserRepository
+    public class UsersRepository : IUsersRepository
     {
         private readonly string connectionString = string.Empty;
 
-        public UserRepository(string connectionString)
+        public UsersRepository(string connectionString)
         {
             this.connectionString = !string.IsNullOrWhiteSpace(connectionString) ? connectionString : throw new ArgumentNullException(nameof(connectionString));
+        }
+
+        public List<User> GetAllUsers()
+        {
+            var sql = @"
+                select
+                    Id, FirstName, LastName, Username, LocationId
+                from
+                    Users
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            return connection.Query<User>(sql).ToList();
         }
 
         public User GetAUser(string username)
         {
             var sql = @"
                 select
-                    Id, FirstName, LastName, Username
+                    Id, FirstName, LastName, Username, LocationId
                 from
                     Users
                 where 
@@ -31,20 +45,6 @@ namespace Web.API.Infrastructure.Data
             using var connection = new SqlConnection(connectionString);
             connection.Open();
             return connection.QueryFirstOrDefault<User>(sql, new { Username = username });
-        }
-
-        public List<User> GetAllUsers()
-        {
-            var sql = @"
-                select
-                    Id, FirstName, LastName, Username
-                from
-                    Users
-            ;";
-
-            using var connection = new SqlConnection(connectionString);
-            connection.Open();
-            return connection.Query<User>(sql).ToList();
         }
     }
 }

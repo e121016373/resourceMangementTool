@@ -9,18 +9,18 @@ namespace Web.API.Controllers
     [Authorize]
     public class UsersController : ControllerBase
     {
-        private readonly IUserRepository userRepository;
+        private readonly IUsersRepository usersRepository;
 
-        public UsersController(IUserRepository userRepository)
+        public UsersController(IUsersRepository usersRepository)
         {
-            this.userRepository = userRepository;
+            this.usersRepository = usersRepository;
         }
 
         [HttpGet]
         [Route("/users/all")]
         public IActionResult GetAllUsers()
         {
-            var users = userRepository.GetAllUsers();
+            var users = usersRepository.GetAllUsers();
             return Ok(users);
         }
 
@@ -28,7 +28,7 @@ namespace Web.API.Controllers
         [Route("/users/{username}")]
         public IActionResult GetAUser(string username)
         {
-            var user = userRepository.GetAUser(username);
+            var user = usersRepository.GetAUser(username);
             return Ok(user);
         }
 

@@ -8,43 +8,43 @@ using Dapper;
 
 namespace Web.API.Infrastructure.Data
 {
-    public class ExpenseRepository : IExpenseRepository
+    public class ProjectsRepository : IProjectsRepository
     {
         private readonly string connectionString = string.Empty;
 
-        public ExpenseRepository(string connectionString)
+        public ProjectsRepository(string connectionString)
         {
             this.connectionString = !string.IsNullOrWhiteSpace(connectionString) ? connectionString : throw new ArgumentNullException(nameof(connectionString));
         }
 
-        public List<Expense> GetAllExpenses()
+        public List<Project> GetAllProjects()
         {
             var sql = @"
                 select
-                    Id, Description, Date, Value
+                    Id, Number, Title, LocationId, CreatedAt, UpdatedAt
                 from
-                    Expenses
+                    Projects
             ;";
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            return connection.Query<Expense>(sql).ToList();
+            return connection.Query<Project>(sql).ToList();
         }
 
-        public Expense GetAnExpense(int expenseId)
+        public Project GetAProject(int projectId)
         {
             var sql = @"
                 select 
-                    Id, Description, Date, Value
+                    Id, Number, Title, LocationId, CreatedAt, UpdatedAt
                 from
-                    Expenses
+                    Projects
                 where
                     Id = @Id
             ;";
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            return connection.QueryFirstOrDefault<Expense>(sql, new { Id = expenseId });
+            return connection.QueryFirstOrDefault<Project>(sql, new { Id = projectId });
         }
     }
 }
