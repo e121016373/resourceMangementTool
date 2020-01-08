@@ -6,6 +6,7 @@ namespace Web.API.Application.Repository
     public interface IProjectsRepository
     {
         List<Project> GetAllProjects();
-        Project GetAProject(int projectId);
+        List<Project> GetMostRecentProjects();
+        Project GetAProject(string projectNumber);
     }
 }

@@ -21,10 +21,18 @@ namespace Web.API.Controllers
         }
 
         [HttpGet]
-        [Route("/projects/{projectId}")]
-        public IActionResult GetAProject(int projectId)
+        [Route("/projects/{projectNumber}")]
+        public IActionResult GetAProject(string projectNumber)
         {
-            var project = projectsRepository.GetAProject(projectId);
+            var project = projectsRepository.GetAProject(projectNumber);
+            return Ok(project);
+        }
+
+        [HttpGet]
+        [Route("/projects/most-recent")]
+        public IActionResult GetMostRecentProjects()
+        {
+            var project = projectsRepository.GetMostRecentProjects();
             return Ok(project);
         }
     }

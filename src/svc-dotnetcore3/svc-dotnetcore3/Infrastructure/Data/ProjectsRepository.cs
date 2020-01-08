@@ -31,7 +31,23 @@ namespace Web.API.Infrastructure.Data
             return connection.Query<Project>(sql).ToList();
         }
 
-        public Project GetAProject(int projectId)
+        public List<Project> GetMostRecentProjects()
+        {
+            var sql = @"
+                select top(25)
+                    Id, Number, Title, LocationId, CreatedAt, UpdatedAt
+                from
+                    Projects
+                order by
+                    UpdatedAt desc
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            return connection.Query<Project>(sql).ToList();
+        }
+
+        public Project GetAProject(string projectNumber)
         {
             var sql = @"
                 select 
@@ -39,12 +55,12 @@ namespace Web.API.Infrastructure.Data
                 from
                     Projects
                 where
-                    Id = @Id
+                    Number = @Number
             ;";
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            return connection.QueryFirstOrDefault<Project>(sql, new { Id = projectId });
+            return connection.QueryFirstOrDefault<Project>(sql, new { Number = projectNumber });
         }
     }
 }
