@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import LocationsList from './LocationsList';
 import { loadLocations } from '../../redux/actions/locationsActions';
 
@@ -16,6 +17,11 @@ const LocationsPage = ({ locations, loadLocations }) => {
       <LocationsList locations={locations} />
     </>
   );
+};
+
+LocationsPage.propTypes = {
+  locations: PropTypes.array.isRequired,
+  loadLocations: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {

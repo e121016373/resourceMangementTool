@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import UsersList from './UsersList';
 import { loadUsers } from '../../redux/actions/usersActions';
 
@@ -16,6 +17,11 @@ const UsersPage = ({ users, loadUsers }) => {
       <UsersList users={users} />
     </>
   );
+};
+
+UsersPage.propTypes = {
+  users: PropTypes.array.isRequired,
+  loadUsers: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
