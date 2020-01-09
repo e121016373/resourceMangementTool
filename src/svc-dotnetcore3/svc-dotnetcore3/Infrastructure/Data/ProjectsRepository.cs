@@ -5,19 +5,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.SqlClient;
 using Dapper;
+using System.Threading.Tasks;
+using System.Data;
 
 namespace Web.API.Infrastructure.Data
 {
     public class ProjectsRepository : IProjectsRepository
     {
+        private readonly IDbConnection connection;
         private readonly string connectionString = string.Empty;
 
         public ProjectsRepository(string connectionString)
         {
             this.connectionString = !string.IsNullOrWhiteSpace(connectionString) ? connectionString : throw new ArgumentNullException(nameof(connectionString));
+            this.connection = new SqlConnection(this.connectionString);
         }
 
-        public List<Project> GetAllProjects()
+        public Task<IEnumerable<Project>> GetAllProjects()
         {
             var sql = @"
                 select
@@ -26,12 +30,10 @@ namespace Web.API.Infrastructure.Data
                     Projects
             ;";
 
-            using var connection = new SqlConnection(connectionString);
-            connection.Open();
-            return connection.Query<Project>(sql).ToList();
+            return connection.QueryAsync<Project>(sql);
         }
 
-        public List<Project> GetMostRecentProjects()
+        public Task<IEnumerable<Project>> GetMostRecentProjects()
         {
             var sql = @"
                 select top(25)
@@ -42,12 +44,10 @@ namespace Web.API.Infrastructure.Data
                     UpdatedAt desc
             ;";
 
-            using var connection = new SqlConnection(connectionString);
-            connection.Open();
-            return connection.Query<Project>(sql).ToList();
+            return connection.QueryAsync<Project>(sql);
         }
 
-        public Project GetAProject(string projectNumber)
+        public Task<Project> GetAProject(string projectNumber)
         {
             var sql = @"
                 select 
@@ -58,9 +58,26 @@ namespace Web.API.Infrastructure.Data
                     Number = @Number
             ;";
 
-            using var connection = new SqlConnection(connectionString);
-            connection.Open();
-            return connection.QueryFirstOrDefault<Project>(sql, new { Number = projectNumber });
+            return connection.QueryFirstOrDefaultAsync<Project>(sql, new { Number = projectNumber });
+        }
+
+        public async Task<Project> CreateAProject(Project project)
+        {
+            var sql = @"
+                insert into Projects 
+                    (Number, Title, LocationId)
+                values 
+                    (@Number, @Title, @LocationId);
+                select cast(scope_identity() as int);
+            ;";
+
+            var id = await connection.QuerySingleAsync<int>(sql, new {
+                project.Number,
+                project.Title,
+                project.LocationId
+            });
+            project.Id = id;
+            return project;
         }
     }
 }
