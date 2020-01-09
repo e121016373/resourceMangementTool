@@ -24,11 +24,11 @@ UsersPage.propTypes = {
   loadUsers: PropTypes.func.isRequired,
 };
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
     users: state.users,
   };
-}
+};
 
 const mapDispatchToProps = {
   loadUsers,

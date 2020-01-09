@@ -5,11 +5,11 @@ import axios from 'axios';
 
 const baseURL = `${SVC_ROOT}locations/`;
 
-export function loadLocationsSuccess(locations) {
+export const loadLocationsSuccess = locations => {
   return { type: types.LOAD_LOCATIONS_SUCCESS, locations: locations };
-}
+};
 
-export function loadLocations() {
+export const loadLocations = () => {
   return function(dispatch) {
     return axios
       .get(baseURL + 'all', { headers })
@@ -20,4 +20,4 @@ export function loadLocations() {
         throw error;
       });
   };
-}
+};

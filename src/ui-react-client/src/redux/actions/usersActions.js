@@ -5,11 +5,11 @@ import axios from 'axios';
 
 const baseURL = `${SVC_ROOT}users/`;
 
-export function loadUsersSuccess(users) {
+export const loadUsersSuccess = users => {
   return { type: types.LOAD_USERS_SUCCESS, users: users };
-}
+};
 
-export function loadUsers() {
+export const loadUsers = () => {
   return function(dispatch) {
     return axios
       .get(baseURL + 'all', { headers })
@@ -20,4 +20,4 @@ export function loadUsers() {
         throw error;
       });
   };
-}
+};

@@ -5,14 +5,14 @@ import axios from 'axios';
 
 const baseURL = `${SVC_ROOT}projects/`;
 
-export function loadMostRecentProjectsSuccess(projects) {
+export const loadMostRecentProjectsSuccess = projects => {
   return {
     type: types.LOAD_MOST_RECENT_PROJECTS_SUCCESS,
     projects: projects,
   };
-}
+};
 
-export function loadMostRecentProjects() {
+export const loadMostRecentProjects = () => {
   return function(dispatch) {
     return axios
       .get(baseURL + 'most-recent', { headers })
@@ -23,4 +23,4 @@ export function loadMostRecentProjects() {
         throw error;
       });
   };
-}
+};
