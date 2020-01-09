@@ -1,8 +1,10 @@
 ﻿using Dapper;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using Web.API.Application.Models;
 using Web.API.Application.Repository;
 
@@ -10,14 +12,16 @@ namespace Web.API.Infrastructure.Data
 {
     public class LocationsRepository : ILocationsRepository
     {
+        private readonly IDbConnection connection;
         private readonly string connectionString = string.Empty;
 
         public LocationsRepository(string connectionString)
         {
             this.connectionString = !string.IsNullOrWhiteSpace(connectionString) ? connectionString : throw new ArgumentNullException(nameof(connectionString));
+            this.connection = new SqlConnection(this.connectionString);
         }
 
-        public List<Location> GetAllLocations()
+        public Task<IEnumerable<Location>> GetAllLocations()
         {
             var sql = @"
                 select
@@ -26,12 +30,10 @@ namespace Web.API.Infrastructure.Data
                     Locations
             ;";
 
-            using var connection = new SqlConnection(connectionString);
-            connection.Open();
-            return connection.Query<Location>(sql).ToList();
+            return connection.QueryAsync<Location>(sql);
         }
 
-        public Location GetALocation(string locationCode)
+        public Task<Location> GetALocation(string locationCode)
         {
             var sql = @"
                 select
@@ -42,9 +44,7 @@ namespace Web.API.Infrastructure.Data
                     Code = @Code
             ;";
 
-            using var connection = new SqlConnection(connectionString);
-            connection.Open();
-            return connection.QueryFirstOrDefault<Location>(sql, new { Code = locationCode });
+            return connection.QueryFirstOrDefaultAsync<Location>(sql, new { Code = locationCode });
         }
     }
 }
