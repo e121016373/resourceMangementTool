@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const baseURL = `${SVC_ROOT}projects/`;
 
-export const loadMostRecentProjectsSuccess = projects => {
+const loadMostRecentProjectsSuccess = projects => {
   return {
     type: types.LOAD_MOST_RECENT_PROJECTS_SUCCESS,
     projects: projects,
