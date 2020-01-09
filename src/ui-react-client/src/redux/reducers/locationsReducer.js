@@ -1,5 +1,9 @@
 import * as types from '../actions/actionTypes';
-import initialState from './initialState';
+import initialState from './_initialState';
+
+function executeLoadLocationsSuccessData(action) {
+  return action.locations;
+}
 
 export default function locationsReducer(
   state = initialState.locations,
@@ -7,7 +11,7 @@ export default function locationsReducer(
 ) {
   switch (action.type) {
     case types.LOAD_LOCATIONS_SUCCESS:
-      return action.locations;
+      return executeLoadLocationsSuccessData(action);
     default:
       return state;
   }
