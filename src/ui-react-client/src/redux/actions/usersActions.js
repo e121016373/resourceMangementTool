@@ -10,7 +10,7 @@ const loadUsersSuccess = users => {
 };
 
 export const loadUsers = () => {
-  return function(dispatch) {
+  return dispatch => {
     return axios
       .get(baseURL + 'all', { headers })
       .then(response => {

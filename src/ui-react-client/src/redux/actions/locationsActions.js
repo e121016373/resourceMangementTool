@@ -10,7 +10,7 @@ const loadLocationsSuccess = locations => {
 };
 
 export const loadLocations = () => {
-  return function(dispatch) {
+  return dispatch => {
     return axios
       .get(baseURL + 'all', { headers })
       .then(response => {

@@ -24,11 +24,11 @@ LocationsPage.propTypes = {
   loadLocations: PropTypes.func.isRequired,
 };
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
     locations: state.locations,
   };
-}
+};
 
 const mapDispatchToProps = {
   loadLocations,
