@@ -1,5 +1,5 @@
 export default {
-  locations: [],
   users: [],
   projects: [],
+  locations: [],
 };
