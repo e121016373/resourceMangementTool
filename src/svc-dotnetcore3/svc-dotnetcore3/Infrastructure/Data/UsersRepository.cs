@@ -1,8 +1,10 @@
 ﻿using Dapper;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using Web.API.Application.Models;
 using Web.API.Application.Repository;
 
@@ -10,14 +12,16 @@ namespace Web.API.Infrastructure.Data
 {
     public class UsersRepository : IUsersRepository
     {
+        private readonly IDbConnection connection;
         private readonly string connectionString = string.Empty;
 
         public UsersRepository(string connectionString)
         {
             this.connectionString = !string.IsNullOrWhiteSpace(connectionString) ? connectionString : throw new ArgumentNullException(nameof(connectionString));
+            this.connection = new SqlConnection(this.connectionString);
         }
 
-        public List<User> GetAllUsers()
+        public Task<IEnumerable<User>> GetAllUsers()
         {
             var sql = @"
                 select
@@ -26,12 +30,10 @@ namespace Web.API.Infrastructure.Data
                     Users
             ;";
 
-            using var connection = new SqlConnection(connectionString);
-            connection.Open();
-            return connection.Query<User>(sql).ToList();
+            return connection.QueryAsync<User>(sql);
         }
 
-        public User GetAUser(string username)
+        public Task<User> GetAUser(string username)
         {
             var sql = @"
                 select
@@ -42,9 +44,7 @@ namespace Web.API.Infrastructure.Data
                     Username = @Username
             ;";
 
-            using var connection = new SqlConnection(connectionString);
-            connection.Open();
-            return connection.QueryFirstOrDefault<User>(sql, new { Username = username });
+            return connection.QueryFirstOrDefaultAsync<User>(sql, new { Username = username });
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.API.Application.Models;
@@ -10,42 +12,30 @@ namespace Web.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUsersRepository usersRepository;
+        private readonly IMapper mapper;
 
-        public UsersController(IUsersRepository usersRepository)
+        public UsersController(IUsersRepository usersRepository, IMapper mapper)
         {
             this.usersRepository = usersRepository;
+            this.mapper = mapper;
         }
 
         [HttpGet]
         [Route("/users/all")]
-        public IActionResult GetAllUsers()
+        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
         {
-            var users = usersRepository.GetAllUsers();
-            return Ok(users);
+            var response = await usersRepository.GetAllUsers();
+            var viewModel = mapper.Map<IEnumerable<User>>(response);
+            return Ok(viewModel);
         }
 
         [HttpGet]
         [Route("/users/{username}")]
-        public IActionResult GetAUser(string username)
+        public async Task<ActionResult<User>> GetAUser(string username)
         {
-            var user = usersRepository.GetAUser(username);
-            return Ok(user);
-        }
-
-        [HttpGet]
-        [Route("/users/ad")]
-        public IActionResult GetADUser()
-        {
-            var user = new List<User>()
-            {
-                new User {
-                    Id = 0,
-                    FirstName = "Testing",
-                    LastName = "Ad",
-                    Username = User.Identity.Name
-                }
-            };
-            return Ok(user);
+            var response = await usersRepository.GetAUser(username);
+            var viewModel = mapper.Map<User>(response);
+            return Ok(viewModel);
         }
     }
 }
