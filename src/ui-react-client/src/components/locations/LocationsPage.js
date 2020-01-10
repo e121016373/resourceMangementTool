@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import LocationsList from './LocationsList';
+import LocationList from './LocationList';
 import { loadLocations } from '../../redux/actions/locationsActions';
 
 const LocationsPage = ({ locations, loadLocations }) => {
@@ -14,7 +14,7 @@ const LocationsPage = ({ locations, loadLocations }) => {
   return (
     <>
       <h1>Locations</h1>
-      <LocationsList locations={locations} />
+      <LocationList locations={locations} />
     </>
   );
 };

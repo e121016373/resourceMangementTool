@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const UsersList = ({ users }) => {
+const UserList = ({ users }) => {
   return (
     <>
       <table>
@@ -11,7 +11,7 @@ const UsersList = ({ users }) => {
             <th>First Name</th>
             <th>Last Name</th>
             <th>Username</th>
-            <th>Location Id</th>
+            <th>Location</th>
           </tr>
         </thead>
         <tbody>
@@ -21,7 +21,7 @@ const UsersList = ({ users }) => {
               <td>{user.firstName}</td>
               <td>{user.lastName}</td>
               <td>{user.username}</td>
-              <td>{user.locationId}</td>
+              <td>{user.locationName}</td>
             </tr>
           ))}
         </tbody>
@@ -30,8 +30,8 @@ const UsersList = ({ users }) => {
   );
 };
 
-UsersList.propTypes = {
+UserList.propTypes = {
   users: PropTypes.array.isRequired,
 };
 
-export default UsersList;
+export default UserList;

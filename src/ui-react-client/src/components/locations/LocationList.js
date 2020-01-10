@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const LocationsList = ({ locations }) => {
+const LocationList = ({ locations }) => {
   return (
     <>
       <table>
@@ -30,8 +30,8 @@ const LocationsList = ({ locations }) => {
   );
 };
 
-LocationsList.propTypes = {
+LocationList.propTypes = {
   locations: PropTypes.array.isRequired,
 };
 
-export default LocationsList;
+export default LocationList;
