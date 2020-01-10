@@ -7,7 +7,9 @@ import { loadLocations } from '../../redux/actions/locationsActions';
 const LocationsPage = ({ locations, loadLocations }) => {
   useEffect(() => {
     if (locations.length === 0) {
-      loadLocations();
+      loadLocations().catch(error => {
+        alert('Loading locations failed' + error);
+      });
     }
   }, [locations, loadLocations]);
 
