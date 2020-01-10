@@ -41,8 +41,8 @@ You'll need the following applications installed on your machine before getting 
 4. Give the application a name, under 'Supported account types' select 'Accounts in this organizational directory only (... only - Single tenant), under 'Platform configuration (Optional) select 'Client Application (Web, iOS, Android, Desktop+Devices)', then hit 'Register'
 5. You should be redirected to the 'Authentication' page of the app your just registered, if not then navigate to the 'Authentication' page of your app
 6. Under 'Platform configurations' click on 'Add a platform'
-7. In the Configure Web screen, under 'Redirect URIs enter http://localhost:5001, leave the 'Logout URL' blank, under 'Implicit grant' check 'Access tokens' and 'ID tokens'; hit 'Configure' to save changes
-8. After saving there will be a Web dropdown under 'Platform configurations', expand the dropdown and click 'Add URI'; and add http://localhost:3000 and hit the 'Save' button at the top
+7. In the Configure Web screen, under 'Redirect URIs enter [https://localhost:5001](https://localhost:5001), leave the 'Logout URL' blank, under 'Implicit grant' check 'Access tokens' and 'ID tokens'; hit 'Configure' to save changes
+8. After saving there will be a Web dropdown under 'Platform configurations', expand the dropdown and click 'Add URI'; and add [http://localhost:3000](http://localhost:3000) and hit the 'Save' button at the top
 
 ### Configure Database and Service
 
@@ -74,7 +74,7 @@ You'll need the following applications installed on your machine before getting 
 #### Configure the service
 
 1. In the Web.API project, create a copy of appsettings.json and name it appsettings.Development.json
-2. Edit appsettings.Development.json, in the ConnectionString replace the Data Source with the server name (same server name in SMSS), replace the Initial Catalog with the database name (same as database name in SMSS), and add http://localhost:3000 to AllowedOrigins, also populate the AzureAd Tenant and ClientId with the ID's from the app registration on azure, and save the changes to the file
+2. Edit appsettings.Development.json, in the ConnectionString replace the Data Source with the server name (same server name in SMSS), replace the Initial Catalog with the database name (same as database name in SMSS), and add [http://localhost:3000](http://localhost:3000) to AllowedOrigins, also populate the AzureAd Tenant and ClientId with the ID's from the app registration on azure, and save the changes to the file
 
    ```json
    "ConnectionString": "Data Source=server_name; Initial Catalog=database_name; Integrated Security=True;"
@@ -87,8 +87,8 @@ You'll need the following applications installed on your machine before getting 
    ```
 
 3. Run the Web.API project
-4. Visit [http://localhost:5001/users/all](), [http://localhost:5001/projects/all](), [http://localhost:5001/locations/all]() you should be getting a 401 unauthorized, this is expected
-5. To ensure the database is connected, navigate to the LocationsController (Web.API>Controllers>LocationControllers) and comment out the [Authorize] attribute, now run the Web.API project again and visit [http://localhost:5001/locations/all](), you should be getting the locations data back; the same can be done to test for the other controllers
+4. Visit [https://localhost:5001/users/all](https://localhost:5001/users/all), [https://localhost:5001/projects/all](https://localhost:5001/projects/all), [https://localhost:5001/locations/all](https://localhost:5001/locations/all) you should be getting a 401 unauthorized, this is expected
+5. To ensure the database is connected, navigate to the LocationsController (Web.API>Controllers>LocationControllers) and comment out the [Authorize] attribute, now run the Web.API project again and visit [https://localhost:5001/locations/all](https://localhost:5001/locations/all), you should be getting the locations data back; the same can be done to test for the other controllers
 
 ### Configure the Client
 
@@ -136,6 +136,6 @@ You'll need the following applications installed on your machine before getting 
    ```
 
 3. Will be prompted with a microsoft login / permissions page, enter the necessary login credentials (if you're already logged in then it will take you directly to the main page of the application)
-4. Click on the [http://localhost:3000/users](Users), [http://localhost:3000/projects](Projects), and [http://localhost:3000/locations](Locations) navigation links and you should be getting data back on the pages
+4. Click on the [http://localhost:3000/users](http://localhost:3000/users), [http://localhost:3000/projects](http://localhost:3000/projects), and [http://localhost:3000/locations](http://localhost:3000/locations) navigation links and you should be getting data back on the pages
 
 - note: the projects and users endpoints may take longer to load
