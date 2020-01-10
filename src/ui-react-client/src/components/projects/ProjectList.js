@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 const ProjectList = ({ projects }) => {
   return (
@@ -21,11 +20,7 @@ const ProjectList = ({ projects }) => {
             <tr key={project.id}>
               <td>{project.id}</td>
               <td>{project.number}</td>
-              <td>
-                <Link to={`/project/${project.slug}`}>
-                  {project.title}
-                </Link>
-              </td>
+              <td>{project.title}</td>
               <td>{project.locationName}</td>
               <td>{project.createdAt}</td>
               <td>{project.updatedAt}</td>

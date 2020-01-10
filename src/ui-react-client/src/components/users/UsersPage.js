@@ -1,37 +1,65 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import UsersList from './UsersList';
+import UserList from './UserList';
 import { loadUsers } from '../../redux/actions/usersActions';
+import { loadLocations } from '../../redux/actions/locationsActions';
 
-const UsersPage = ({ users, loadUsers }) => {
+const UsersPage = ({
+  users,
+  locations,
+  loadUsers,
+  loadLocations,
+}) => {
   useEffect(() => {
     if (users.length === 0) {
-      loadUsers();
+      loadUsers().catch(error => {
+        alert('Loading users failed' + error);
+      });
     }
-  }, [users, loadUsers]);
+
+    if (locations.length === 0) {
+      loadLocations().catch(error => {
+        alert('Loading locations failed' + error);
+      });
+    }
+  });
 
   return (
     <>
       <h1>Users</h1>
-      <UsersList users={users} />
+      <UserList users={users} />
     </>
   );
 };
 
 UsersPage.propTypes = {
   users: PropTypes.array.isRequired,
+  locations: PropTypes.array.isRequired,
   loadUsers: PropTypes.func.isRequired,
+  loadLocations: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => {
   return {
-    users: state.users,
+    users:
+      state.locations.length === 0
+        ? []
+        : state.users.map(user => {
+            return {
+              ...user,
+              locationName: state.locations.find(
+                element => element.id === user.locationId,
+              ).name,
+            };
+          }),
+    locations: state.locations,
   };
 };
 
 const mapDispatchToProps = {
   loadUsers,
+  loadLocations,
 };
 
 export default connect(

@@ -1,40 +1,72 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import ProjectsList from './ProjectsList';
-import { loadMostRecentProjects } from '../../redux/actions/projectsActions';
+import {
+  createProject,
+  loadProjectsMostRecent,
+} from '../../redux/actions/projectsActions';
+import { loadLocations } from '../../redux/actions/locationsActions.js';
+import ProjectList from './ProjectList';
 
-const ProjectsPage = ({ projects, loadMostRecentProjects }) => {
+const _ProjectsPage = ({
+  projects,
+  locations,
+  loadProjectsMostRecent,
+  loadLocations,
+}) => {
   useEffect(() => {
     if (projects.length === 0) {
-      loadMostRecentProjects();
+      loadProjectsMostRecent().catch(error => {
+        alert('Loading projects failed' + error);
+      });
     }
-  }, [projects, loadMostRecentProjects]);
+
+    if (locations.length === 0) {
+      loadLocations().catch(error => {
+        alert('Loading locations failed' + error);
+      });
+    }
+  });
 
   return (
     <>
-      <h1>Projects</h1>
-      <ProjectsList projects={projects} />
+      <h2>Projects</h2>
+      <ProjectList projects={projects} locations={locations} />
     </>
   );
 };
 
-ProjectsPage.propTypes = {
+_ProjectsPage.propTypes = {
   projects: PropTypes.array.isRequired,
+  locations: PropTypes.array.isRequired,
   loadMostRecentProjects: PropTypes.func.isRequired,
+  loadLocations: PropTypes.func.isRequired,
 };
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
-    projects: state.projects,
+    projects:
+      state.locations.length === 0
+        ? []
+        : state.projects.map(project => {
+            return {
+              ...project,
+              locationName: state.locations.find(
+                element => element.id === project.locationId,
+              ).name,
+            };
+          }),
+    locations: state.locations,
   };
-}
+};
 
 const mapDispatchToProps = {
-  loadMostRecentProjects,
+  createProject,
+  loadProjectsMostRecent,
+  loadLocations,
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ProjectsPage);
+)(_ProjectsPage);
