@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Web.API.Application.Repository;
 
 namespace Web.API.Controllers
 {
+    //[Authorize]
     public class ProjectsController : ControllerBase
     {
         private readonly IProjectsRepository projectsRepository;
@@ -31,8 +33,9 @@ namespace Web.API.Controllers
         [Route("/projects/{projectNumber}", Name = "GetAProject")]
         public async Task<ActionResult<Project>> GetAProject(string projectNumber)
         {
-            var project = await projectsRepository.GetAProject(projectNumber);
-            return Ok(project);
+            var response = await projectsRepository.GetAProject(projectNumber);
+            var viewModel = mapper.Map<Project>(response);
+            return Ok(viewModel);
         }
 
         [HttpGet]
@@ -51,6 +54,24 @@ namespace Web.API.Controllers
             var response = await projectsRepository.CreateAProject(project);
             var viewModel = mapper.Map<Project>(response);
             return Created("GetAProject", viewModel);
+        }
+
+        [HttpPut]
+        [Route("/projects")]
+        public async Task<ActionResult<Project>> UpdateAProject([FromBody] Project project)
+        {
+            var response = await projectsRepository.UpdateAProject(project);
+            var viewModel = mapper.Map<Project>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpDelete]
+        [Route("/projects/{number}")]
+        public async Task<ActionResult<Project>> DeleteAProject([FromRoute] string number)
+        {
+            var response = await projectsRepository.DeleteAProject(number);
+            var viewModel = mapper.Map<Project>(response);
+            return Ok(viewModel);
         }
     }
 }

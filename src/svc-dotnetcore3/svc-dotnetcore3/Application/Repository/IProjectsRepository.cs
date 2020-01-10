@@ -15,7 +15,9 @@ namespace Web.API.Application.Repository
         Task<Project> CreateAProject(Project project);
 
         // PUT
+        Task<Project> UpdateAProject(Project project);
 
         // DELETE
+        Task<Project> DeleteAProject(string number);
     }
 }
