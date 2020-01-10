@@ -1,22 +1,19 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {
-  createProject,
-  loadProjectsMostRecent,
-} from '../../redux/actions/projectsActions';
+import { loadProjects } from '../../redux/actions/projectsActions';
 import { loadLocations } from '../../redux/actions/locationsActions.js';
 import ProjectList from './ProjectList';
 
 const _ProjectsPage = ({
   projects,
   locations,
-  loadProjectsMostRecent,
+  loadProjects,
   loadLocations,
 }) => {
   useEffect(() => {
     if (projects.length === 0) {
-      loadProjectsMostRecent().catch(error => {
+      loadProjects().catch(error => {
         alert('Loading projects failed' + error);
       });
     }
@@ -39,7 +36,7 @@ const _ProjectsPage = ({
 _ProjectsPage.propTypes = {
   projects: PropTypes.array.isRequired,
   locations: PropTypes.array.isRequired,
-  loadMostRecentProjects: PropTypes.func.isRequired,
+  loadProjects: PropTypes.func.isRequired,
   loadLocations: PropTypes.func.isRequired,
 };
 
@@ -61,8 +58,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  createProject,
-  loadProjectsMostRecent,
+  loadProjects,
   loadLocations,
 };
 
