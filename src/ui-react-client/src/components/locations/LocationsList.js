@@ -15,13 +15,13 @@ const LocationsList = ({ locations }) => {
           </tr>
         </thead>
         <tbody>
-          {locations.map(item => (
-            <tr key={item.id}>
-              <td>{item.id}</td>
-              <td>{item.code}</td>
-              <td>{item.name}</td>
-              <td>{item.restricted.toString()}</td>
-              <td>{item.enabled.toString()}</td>
+          {locations.map(location => (
+            <tr key={location.id}>
+              <td>{location.id}</td>
+              <td>{location.code}</td>
+              <td>{location.name}</td>
+              <td>{location.restricted.toString()}</td>
+              <td>{location.enabled.toString()}</td>
             </tr>
           ))}
         </tbody>

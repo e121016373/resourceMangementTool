@@ -15,13 +15,13 @@ const UsersList = ({ users }) => {
           </tr>
         </thead>
         <tbody>
-          {users.map(item => (
-            <tr key={item.id}>
-              <td>{item.id}</td>
-              <td>{item.firstName}</td>
-              <td>{item.lastName}</td>
-              <td>{item.username}</td>
-              <td>{item.locationId}</td>
+          {users.map(user => (
+            <tr key={user.id}>
+              <td>{user.id}</td>
+              <td>{user.firstName}</td>
+              <td>{user.lastName}</td>
+              <td>{user.username}</td>
+              <td>{user.locationId}</td>
             </tr>
           ))}
         </tbody>
