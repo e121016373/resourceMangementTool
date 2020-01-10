@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const baseURL = `${SVC_ROOT}users/`;
 
-const loadUsersSuccess = users => {
+const loadUsersSuccessData = users => {
   return { type: types.LOAD_USERS_SUCCESS, users: users };
 };
 
@@ -14,7 +14,7 @@ export const loadUsers = () => {
     return axios
       .get(baseURL + 'all', { headers })
       .then(response => {
-        dispatch(loadUsersSuccess(response.data));
+        dispatch(loadUsersSuccessData(response.data));
       })
       .catch(error => {
         throw error;

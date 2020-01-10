@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const baseURL = `${SVC_ROOT}locations/`;
 
-const loadLocationsSuccess = locations => {
+const loadLocationsSuccessData = locations => {
   return { type: types.LOAD_LOCATIONS_SUCCESS, locations: locations };
 };
 
@@ -14,7 +14,7 @@ export const loadLocations = () => {
     return axios
       .get(baseURL + 'all', { headers })
       .then(response => {
-        dispatch(loadLocationsSuccess(response.data));
+        dispatch(loadLocationsSuccessData(response.data));
       })
       .catch(error => {
         throw error;
