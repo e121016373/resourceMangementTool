@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Web.API.Application.Repository;
 
 namespace Web.API.Controllers
 {
+    [Authorize]
     public class LocationsController : ControllerBase
     {
         private readonly ILocationsRepository locationsRepository;
