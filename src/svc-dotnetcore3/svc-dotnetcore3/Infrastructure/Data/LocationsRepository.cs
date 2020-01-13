@@ -25,7 +25,7 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 select
-                    Id, Code, [Name], Restricted, [Enabled]
+                    Id, Code, [Name]
                 from
                     Locations
             ;";
@@ -37,7 +37,7 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 select
-                    Id, Code, [Name], Restricted, [Enabled]
+                    Id, Code, [Name]
                 from
                     Locations
                 where 
