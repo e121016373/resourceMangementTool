@@ -10,8 +10,6 @@ const LocationList = ({ locations }) => {
             <th>Id</th>
             <th>Code</th>
             <th>Name</th>
-            <th>Restricted</th>
-            <th>Enabled</th>
           </tr>
         </thead>
         <tbody>
@@ -20,8 +18,6 @@ const LocationList = ({ locations }) => {
               <td>{location.id}</td>
               <td>{location.code}</td>
               <td>{location.name}</td>
-              <td>{location.restricted.toString()}</td>
-              <td>{location.enabled.toString()}</td>
             </tr>
           ))}
         </tbody>
