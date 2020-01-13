@@ -1,9 +1,7 @@
 ﻿using Dapper;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Threading.Tasks;
 using Web.API.Application.Models;
 using Web.API.Application.Repository;
@@ -12,16 +10,14 @@ namespace Web.API.Infrastructure.Data
 {
     public class UsersRepository : IUsersRepository
     {
-        private readonly IDbConnection connection;
         private readonly string connectionString = string.Empty;
 
         public UsersRepository(string connectionString)
         {
             this.connectionString = !string.IsNullOrWhiteSpace(connectionString) ? connectionString : throw new ArgumentNullException(nameof(connectionString));
-            this.connection = new SqlConnection(this.connectionString);
         }
 
-        public Task<IEnumerable<User>> GetAllUsers()
+        public async Task<IEnumerable<User>> GetAllUsers()
         {
             var sql = @"
                 select
@@ -30,10 +26,12 @@ namespace Web.API.Infrastructure.Data
                     Users
             ;";
 
-            return connection.QueryAsync<User>(sql);
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            return await connection.QueryAsync<User>(sql);
         }
 
-        public Task<User> GetAUser(string username)
+        public async Task<User> GetAUser(string username)
         {
             var sql = @"
                 select
@@ -44,7 +42,9 @@ namespace Web.API.Infrastructure.Data
                     Username = @Username
             ;";
 
-            return connection.QueryFirstOrDefaultAsync<User>(sql, new { Username = username });
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            return await connection.QueryFirstOrDefaultAsync<User>(sql, new { Username = username });
         }
     }
 }
