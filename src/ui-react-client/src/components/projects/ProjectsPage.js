@@ -23,7 +23,7 @@ const _ProjectsPage = ({
         alert('Loading locations failed' + error);
       });
     }
-  });
+  }, [projects, locations, loadProjects, loadLocations]);
 
   return (
     <>

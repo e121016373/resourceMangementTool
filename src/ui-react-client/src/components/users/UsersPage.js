@@ -23,7 +23,7 @@ const UsersPage = ({
         alert('Loading locations failed' + error);
       });
     }
-  });
+  }, [users, locations, loadUsers, loadLocations]);
 
   return (
     <>
