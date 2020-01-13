@@ -7,7 +7,7 @@ namespace Tests.Unit
 {
     public class ProjectTests
     {
-        private DateTime dateTime = new DateTime(2020, 1, 1);
+        private readonly DateTime dateTime = new DateTime(2020, 1, 1);
 
         [Fact]
         public void PropertiesShouldBeEqual()
