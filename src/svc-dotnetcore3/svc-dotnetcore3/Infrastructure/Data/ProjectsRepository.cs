@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using Dapper;
 using System.Threading.Tasks;
-using System.Data;
 
 namespace Web.API.Infrastructure.Data
 {
