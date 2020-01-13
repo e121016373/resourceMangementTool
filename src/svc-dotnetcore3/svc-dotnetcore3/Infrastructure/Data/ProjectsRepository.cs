@@ -11,16 +11,14 @@ namespace Web.API.Infrastructure.Data
 {
     public class ProjectsRepository : IProjectsRepository
     {
-        private readonly IDbConnection connection;
         private readonly string connectionString = string.Empty;
 
         public ProjectsRepository(string connectionString)
         {
             this.connectionString = !string.IsNullOrWhiteSpace(connectionString) ? connectionString : throw new ArgumentNullException(nameof(connectionString));
-            this.connection = new SqlConnection(this.connectionString);
         }
 
-        public Task<IEnumerable<Project>> GetAllProjects()
+        public async Task<IEnumerable<Project>> GetAllProjects()
         {
             var sql = @"
                 select
@@ -29,10 +27,12 @@ namespace Web.API.Infrastructure.Data
                     Projects
             ;";
 
-            return connection.QueryAsync<Project>(sql);
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            return await connection.QueryAsync<Project>(sql);
         }
 
-        public Task<IEnumerable<Project>> GetMostRecentProjects()
+        public async Task<IEnumerable<Project>> GetMostRecentProjects()
         {
             var sql = @"
                 select top(25)
@@ -43,10 +43,12 @@ namespace Web.API.Infrastructure.Data
                     UpdatedAt desc
             ;";
 
-            return connection.QueryAsync<Project>(sql);
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            return await connection.QueryAsync<Project>(sql);
         }
 
-        public Task<Project> GetAProject(string projectNumber)
+        public async Task<Project> GetAProject(string projectNumber)
         {
             var sql = @"
                 select 
@@ -57,7 +59,9 @@ namespace Web.API.Infrastructure.Data
                     Number = @Number
             ;";
 
-            return connection.QueryFirstOrDefaultAsync<Project>(sql, new { Number = projectNumber });
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            return await connection.QueryFirstOrDefaultAsync<Project>(sql, new { Number = projectNumber });
         }
 
         public async Task<Project> CreateAProject(Project project)
@@ -70,6 +74,8 @@ namespace Web.API.Infrastructure.Data
                 select cast(scope_identity() as int);
             ;";
 
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
             var id = await connection.QuerySingleAsync<int>(sql, new {
                 project.Number,
                 project.Title,
@@ -92,6 +98,8 @@ namespace Web.API.Infrastructure.Data
                     Id = @Id
             ;";
 
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
             int result = await connection.ExecuteAsync(sql, new
             {
                 project.Id,
@@ -109,6 +117,8 @@ namespace Web.API.Infrastructure.Data
                 delete from Projects where Number = @Number
             ;";
 
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
             await connection.ExecuteAsync(sql, new { number });
             return project;
         }
