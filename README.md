@@ -139,3 +139,14 @@ You'll need the following applications installed on your machine before getting 
 4. Click on the [http://localhost:3000/users](http://localhost:3000/users), [http://localhost:3000/projects](http://localhost:3000/projects), and [http://localhost:3000/locations](http://localhost:3000/locations) navigation links and you should be getting data back on the pages
 
 - note: the projects and users endpoints may take longer to load
+
+### Tests
+
+#### Service
+
+1. Navigate to the 'Test Explorer'
+2. Select test(s) to run
+
+#### Client
+
+1. Type npm test to run all tests
