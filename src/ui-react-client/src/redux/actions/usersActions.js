@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const baseURL = `${SVC_ROOT}users/`;
 
-const loadUsersAllData = users => {
+export const loadUsersAllData = users => {
   return { type: types.LOAD_USERS_ALL, users: users };
 };
 

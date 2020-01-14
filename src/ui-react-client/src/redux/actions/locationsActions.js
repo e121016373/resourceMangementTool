@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const baseURL = `${SVC_ROOT}locations/`;
 
-const loadLocationsAllData = locations => {
+export const loadLocationsAllData = locations => {
   return { type: types.LOAD_LOCATIONS_ALL, locations: locations };
 };
 

@@ -5,37 +5,37 @@ import axios from 'axios';
 
 const baseURL = `${SVC_ROOT}projects/`;
 
-const loadProjectsMostRecentSuccessData = projects => {
+export const loadProjectsMostRecentData = projects => {
   return {
     type: types.LOAD_PROJECTS_MOST_RECENT,
     projects: projects,
   };
 };
 
-const loadProjectsData = projects => {
+export const loadProjectsData = projects => {
   return {
     type: types.LOAD_PROJECTS_ALL,
     projects: projects,
   };
 };
 
-const createProjectData = project => {
+export const createProjectData = project => {
   return {
-    types: types.CREATE_PROJECT,
+    type: types.CREATE_PROJECT,
     project: project,
   };
 };
 
-const updateProjectData = project => {
+export const updateProjectData = project => {
   return {
-    types: types.UPDATE_PROJECT,
+    type: types.UPDATE_PROJECT,
     project: project,
   };
 };
 
-const deleteProjectData = project => {
+export const deleteProjectData = project => {
   return {
-    types: types.DELETE_PROJECT,
+    type: types.DELETE_PROJECT,
     project: project,
   };
 };
@@ -45,7 +45,7 @@ export const loadProjectsMostRecent = () => {
     return axios
       .get(`${baseURL}most-recent`, { headers })
       .then(response => {
-        dispatch(loadProjectsMostRecentSuccessData(response.data));
+        dispatch(loadProjectsMostRecentData(response.data));
       })
       .catch(error => {
         throw error;
