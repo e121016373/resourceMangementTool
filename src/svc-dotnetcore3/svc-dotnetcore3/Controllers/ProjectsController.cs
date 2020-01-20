@@ -21,7 +21,7 @@ namespace Web.API.Controllers
         }
 
         [HttpGet]
-        [Route("/projects/all")]
+        [Route("/projects")]
         public async Task<ActionResult<IEnumerable<Project>>> GetAllProjects()
         {
             var response = await projectsRepository.GetAllProjects();

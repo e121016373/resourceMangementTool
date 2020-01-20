@@ -21,7 +21,7 @@ namespace Web.API.Controllers
         }
 
         [HttpGet]
-        [Route("/locations/all")]
+        [Route("/locations")]
         public async Task<ActionResult<IEnumerable<Location>>> GetAllLocations()
         {
             var response = await locationsRepository.GetAllLocations();

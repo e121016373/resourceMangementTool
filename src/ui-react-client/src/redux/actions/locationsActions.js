@@ -12,7 +12,7 @@ export const loadLocationsAllData = locations => {
 export const loadLocations = () => {
   return dispatch => {
     return axios
-      .get(baseURL + 'all', { headers })
+      .get(baseURL, { headers })
       .then(response => {
         dispatch(loadLocationsAllData(response.data));
       })

@@ -12,7 +12,7 @@ export const loadUsersAllData = users => {
 export const loadUsers = () => {
   return dispatch => {
     return axios
-      .get(baseURL + 'all', { headers })
+      .get(baseURL, { headers })
       .then(response => {
         dispatch(loadUsersAllData(response.data));
       })

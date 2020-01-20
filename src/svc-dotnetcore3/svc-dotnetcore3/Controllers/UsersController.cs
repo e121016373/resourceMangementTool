@@ -21,7 +21,7 @@ namespace Web.API.Controllers
         }
 
         [HttpGet]
-        [Route("/users/all")]
+        [Route("/users")]
         public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
         {
             var response = await usersRepository.GetAllUsers();
