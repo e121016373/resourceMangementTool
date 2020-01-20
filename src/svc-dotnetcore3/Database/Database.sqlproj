@@ -68,5 +68,7 @@
     <Build Include="dbo\Tables\Locations.sql" />
     <Build Include="dbo\Tables\Users.sql" />
     <Build Include="dbo\Tables\Projects.sql" />
+    <Build Include="dbo\Tables\Disciplines.sql" />
+    <Build Include="dbo\Tables\Skills.sql" />
   </ItemGroup>
 </Project>
