@@ -21,10 +21,6 @@ You'll need the following applications installed on your machine before getting 
 
 1. Clone the repo [here](https://dev.azure.com/associated/AE-UBC/_git/cpsc319-2020-winter-blueprint)
 
-   ```bash
-   git clone https:path/to/repo
-   ```
-
 2. After the repo is cloned, navigate to the ../cpsc319-2020-winter-blueprint directory
 
    ```bash
@@ -49,7 +45,7 @@ You'll need the following applications installed on your machine before getting 
 #### Create local database
 
 1. Open SQL Server Management Studio (SSMS)
-2. Create a new local database instance (Right-click Databases>New Database...>give Database a name)
+2. Create a new local database instance (Right-click Databases>New Database...>give Database a name (eg. ResourceMGMT))
 
 #### Prepare the database and populate
 
@@ -59,7 +55,7 @@ You'll need the following applications installed on your machine before getting 
    cd src/svc-dotnetcore3
    ```
 
-2. Double click on svc-dotnetcore.sln to open up the Visual Studio solution, in solution explorer you will find two projects (Database, Web.API)
+2. Double click on svc-dotnetcore.sln to open up the Visual Studio solution, in solution explorer you will find three projects (Database, Tests, Web.API)
 3. Right click on the Database project and select 'Publish...'
 4. In the Publish Database window select 'Edit...'
 5. Select the 'Browse' tab and enter the server name (same as the one in SSMS), using the dropdown menu, select the database instance in (SMSS), click on 'Test Connection' and ensure the connection is successful, click 'OK' once the test connection is successful
@@ -86,9 +82,9 @@ You'll need the following applications installed on your machine before getting 
    }
    ```
 
-3. Run the Web.API project
-4. Visit [https://localhost:5001/users/all](https://localhost:5001/users/all), [https://localhost:5001/projects/all](https://localhost:5001/projects/all), [https://localhost:5001/locations/all](https://localhost:5001/locations/all) you should be getting a 401 unauthorized, this is expected
-5. To ensure the database is connected, navigate to the LocationsController (Web.API>Controllers>LocationControllers) and comment out the [Authorize] attribute, now run the Web.API project again and visit [https://localhost:5001/locations/all](https://localhost:5001/locations/all), you should be getting the locations data back; the same can be done to test for the other controllers
+3. Run the Web.API project (default might be IIS Express in the debugging options), click on the (green play button button dropdown and change to Web.API); to see more detail about the port settings go to the Web.API project and go to properties > launchSettings.json. Feel free to make any changes to the ports but make sure the changes are echoed in the Azure Active Directory ports as well.
+4. Visit [https://localhost:5001/users/](https://localhost:5001/users/), [https://localhost:5001/projects/](https://localhost:5001/projects/), [https://localhost:5001/locations/](https://localhost:5001/locations/) you should be getting a 401 unauthorized, this is expected
+5. To ensure the database is connected, navigate to the LocationsController (Web.API>Controllers>LocationControllers) and comment out the [Authorize] attribute, now run the Web.API project again and visit [https://localhost:5001/locations/](https://localhost:5001/locations/), you should be getting the locations data back; the same can be done to test for the other controllers
 
 ### Configure the Client
 
