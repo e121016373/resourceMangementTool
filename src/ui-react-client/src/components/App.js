@@ -7,7 +7,7 @@ import UsersPage from './users/UsersPage';
 import ProjectsPage from './projects/ProjectsPage';
 import LocationsPage from './locations/LocationsPage';
 import PageNotFound from './PageNotFound';
-
+import AdminPage from './admin/AdminPage';
 const App = () => {
   return (
     <>
@@ -18,6 +18,8 @@ const App = () => {
         <Route path="/users" component={UsersPage} />
         <Route path="/projects" component={ProjectsPage} />
         <Route path="/locations" component={LocationsPage} />
+        {/* add admine component */}
+        <Route path="/admin" component={AdminPage} />
         <Route component={PageNotFound} />
       </Switch>
     </>
