@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Form } from 'simple-react-form';
 const AdminPage = () => {
   return (
     <div className="container">
