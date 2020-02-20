@@ -63,7 +63,7 @@
   <ItemGroup>
     <None Include="scripts\seed.sql" />
     <None Include="Database.DEV.publish.xml" />
-    <None Include="Database.DEV.publish.publish.xml" />
+    <None Include="Database.DEV.test.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Locations.sql" />
@@ -71,5 +71,9 @@
     <Build Include="dbo\Tables\Projects.sql" />
     <Build Include="dbo\Tables\Disciplines.sql" />
     <Build Include="dbo\Tables\Skills.sql" />
+    <Build Include="dbo\Tables\Admin.sql" />
+    <Build Include="dbo\Tables\UserHasSkills.sql" />
+    <Build Include="dbo\Tables\UserInProject.sql" />
+    <Build Include="dbo\Tables\UserWorksDiscipline.sql" />
   </ItemGroup>
 </Project>
