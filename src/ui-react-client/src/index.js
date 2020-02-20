@@ -1,11 +1,18 @@
 import { runWithAdal } from 'react-adal';
-import { authContext } from './config/adalConfig';
+import { authContext, headers } from './config/adalConfig';
 
 const DO_NOT_LOGIN = false;
 
-runWithAdal(authContext, () => {
-
-  // eslint-disable-next-line
-  require('./indexApp.js');
-
-},DO_NOT_LOGIN);
+function run() {
+  runWithAdal(
+    authContext,
+    () => {
+      console.log('the headers is ' + headers.Authorization);
+      // eslint-disable-next-line
+      require('./indexApp.js');
+    },
+    DO_NOT_LOGIN,
+  );
+}
+//run();
+require('./indexHome.js');

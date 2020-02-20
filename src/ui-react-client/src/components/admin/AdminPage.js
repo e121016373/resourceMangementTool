@@ -1,11 +1,10 @@
 import React from 'react';
-import { Form } from 'simple-react-form';
 const AdminPage = () => {
   return (
     <div className="container">
       <h2>Administrator</h2>
       <p>You can either remover User or update User profile here.</p>
-      <div className="search-container"></div>
+      <div className="search-container"> </div>
       <table className="table table-bordered">
         <thead>
           <tr>
