@@ -46,5 +46,80 @@ namespace Web.API.Infrastructure.Data
             connection.Open();
             return await connection.QueryFirstOrDefaultAsync<User>(sql, new { Username = username });
         }
+       
+        // TODO multiple queries
+        public async Task<User> UpdateAUser(string firstName, string lastName, string username, string location, string type)
+        {
+            var sql = @"
+                DECLARE @LID INT
+                SET @LID = (
+                    SELECT Id
+                    FROM [dbo].[Locations]
+                    WHERE Name = @Location
+                )
+
+                UPDATE [dbo].[Users]
+                SET FirstName = @FirstName,
+                    LastName = @LastName,
+                    LocationId = @\@LID,
+                    Type = @Type
+                WHERE
+                    [dbo].[Users].Username = @Username
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            var param = new { 
+                FirstName = firstName, 
+                LastName = lastName, 
+                Username = username, 
+                Location = location,
+                Type = type 
+            };
+            return await connection.QueryFirstOrDefaultAsync<User>(sql, param);
+        }
+        //TODO multiple queries
+        public async Task<User> AddAUser(string firstName, string lastName, string username, string location, string type)
+        {
+            var sql = @"
+                DECLARE @LID INT
+                SET @LID = (
+                    SELECT Id
+                    FROM [dbo].[Locations]
+                    WHERE Name = @Location
+                )
+
+                INSERT [dbo].[Users] ([FirstName], [LastName], [Username], [LocationId], [Type])
+                VALUES (@FirstName, @LastName, @Username, \@LID, @Type)
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            var param = new { 
+                FirstName = firstName, 
+                LastName = lastName, 
+                Username = username, 
+                Location = location,
+                Type = type 
+            };
+            return await connection.QueryFirstOrDefaultAsync<User>(sql, param);
+        }
+
+        public async Task<User> RemoveAUser(string username)
+        {
+            var sql = @"
+                DELETE FROM [dbo].[Users]
+                WHERE Username = @Username
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            var param = new { 
+                Username = username, 
+            };
+            return await connection.QueryFirstOrDefaultAsync<User>(sql, param);
+        }
+
+        
     }
 }
