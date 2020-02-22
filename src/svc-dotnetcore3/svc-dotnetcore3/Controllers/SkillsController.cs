@@ -11,7 +11,7 @@ namespace Web.API.Controllers
     [Authorize]
     public class SkillsController : ControllerBase
     {
-        private readonly ISkillsController skillsRepository;
+        private readonly ISkillsRepository skillsRepository;
         private readonly IMapper mapper;
 
         public SkillsController(ISkillsRepository skillsRepository, IMapper mapper)
@@ -25,7 +25,7 @@ namespace Web.API.Controllers
         public async Task<ActionResult<IEnumerable<Skill>>> GetAllSkills()
         {
             var response = await skillsRepository.GetAllSkills();
-            var viewModel = mapper.Map<IEnumerable<SKill>>(response);
+            var viewModel = mapper.Map<IEnumerable<Skill>>(response);
             return Ok(viewModel);
         }
 

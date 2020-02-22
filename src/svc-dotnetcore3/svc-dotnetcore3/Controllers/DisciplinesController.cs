@@ -11,10 +11,10 @@ namespace Web.API.Controllers
     [Authorize]
     public class DisciplinesController : ControllerBase
     {
-        private readonly IDisciplinesController disiciplinesRepository;
+        private readonly IDisciplinesRepository disciplinesRepository;
         private readonly IMapper mapper;
 
-        public DisciplinesController(IDisiciplinesRepository disciplinesRepository, IMapper mapper)
+        public DisciplinesController(IDisciplinesRepository disciplinesRepository, IMapper mapper)
         {
             this.disciplinesRepository = disciplinesRepository;
             this.mapper = mapper;

@@ -8,7 +8,7 @@ using Web.API.Application.Repository;
 
 namespace Web.API.Infrastructure.Data
 {
-    public class SkillsRepository : ISkillRepository
+    public class SkillsRepository : ISkillsRepository
     {
         private readonly string connectionString = string.Empty;
 
