@@ -21,7 +21,7 @@ namespace Web.API.Controllers
         }
 
         [HttpGet]
-        [Route("/discipline")]
+        [Route("/disciplines")]
         public async Task<ActionResult<IEnumerable<Discipline>>> GetAllDisciplines()
         {
             var response = await disciplinesRepository.GetAllDisciplines();

@@ -21,7 +21,7 @@ namespace Web.API.Controllers
         }
         
         [HttpGet]
-        [Route("/skill")]
+        [Route("/skills")]
         public async Task<ActionResult<IEnumerable<Skill>>> GetAllSkills()
         {
             var response = await skillsRepository.GetAllSkills();
