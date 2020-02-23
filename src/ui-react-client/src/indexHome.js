@@ -1,10 +1,10 @@
 import React from 'react';
 import { render } from 'react-dom';
-import './css/home.css';
+import './scss/home.scss';
 import configureStore from './redux/configureStore';
 import { Provider } from 'react-redux';
 import { runWithAdal } from 'react-adal';
-import { authContext, headers } from './config/adalConfig';
+import { authContext } from './config/adalConfig';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -20,7 +20,7 @@ render(
         className="my-button"
         onClick={authentication}
       >
-        user
+        users
       </Button>
       <Button
         size="lg"
@@ -38,14 +38,11 @@ function authentication() {
   runWithAdal(
     authContext,
     () => {
-      console.log('the headers is ' + headers.Authorization);
-      // eslint-disable-next-line
       require('./indexApp.js');
     },
     DO_NOT_LOGIN,
   );
 }
 function admin() {
-  console.log('go the admine');
   require('./indexAdmin.js');
 }
