@@ -56,10 +56,10 @@ namespace Web.API.Infrastructure.Data
                 NewName = newName,
                 OldName = oldName
             };
-            return await connection.ExecuteAsync(sql, param);
+            return await connection.QueryFirstOrDefaultAsync<Discipline>(sql, param);
         }
 
-        public async Task<Discipline> AddADiscipline(Discipline dicipline)
+        public async Task<Discipline> AddADiscipline(Discipline discipline)
         {
             var sql = @"
                 INSERT INTO Disciplines ([Name])
@@ -78,7 +78,7 @@ namespace Web.API.Infrastructure.Data
 
         public async Task<Discipline> DeleteADisicipline(string name)
         {
-            var discipline = await GetADiscipline(name)
+            var discipline = await GetADiscipline(name);
             var sql = @"
                 DELETE FROM Disciplines
                 WHERE Name = @Name

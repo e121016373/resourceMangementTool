@@ -58,10 +58,10 @@ namespace Web.API.Controllers
 
         [HttpDelete]
         [Route("/disciplines")]
-        public async Task<ActionResult<Project>> DeleteADiscipline(string name)
+        public async Task<ActionResult<Discipline>> DeleteADiscipline(string name)
         {
-            var response = await projectsRepository.DeleteAProject(name);
-            var viewModel = mapper.Map<Project>(response);
+            var response = await disciplinesRepository.DeleteADisicipline(name);
+            var viewModel = mapper.Map<Discipline>(response);
             return Ok(viewModel);
         }
     }
