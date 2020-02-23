@@ -49,10 +49,10 @@ namespace Web.API.Controllers
 
         [HttpPost]
         [Route("/users")]
-        public async Task<ActionResult<Project>> CreateAUser([FromBody] User user)
+        public async Task<ActionResult<User>> CreateAUser([FromBody] User user)
         {
             var response = await usersRepository.CreateAUser(user);
-            var viewModel = mapper.Map<Project>(response);
+            var viewModel = mapper.Map<User>(response);
             return Created("GetAUser", viewModel);
         }
     }
