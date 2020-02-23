@@ -8,7 +8,7 @@ using Web.API.Application.Repository;
 
 namespace Web.API.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IUsersRepository usersRepository;
@@ -36,6 +36,24 @@ namespace Web.API.Controllers
             var response = await usersRepository.GetAUser(username);
             var viewModel = mapper.Map<User>(response);
             return Ok(viewModel);
+        }
+
+        [HttpDelete]
+        [Route("/users/{username}")]
+        public async Task<ActionResult<User>> DeleteAUser([FromRoute] string username)
+        {
+            var response = await usersRepository.DeleteAUser(username);
+            var viewModel = mapper.Map<User>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpPost]
+        [Route("/users")]
+        public async Task<ActionResult<Project>> CreateAUser([FromBody] User user)
+        {
+            var response = await usersRepository.CreateAUser(user);
+            var viewModel = mapper.Map<Project>(response);
+            return Created("GetAUser", viewModel);
         }
     }
 }

@@ -46,80 +46,43 @@ namespace Web.API.Infrastructure.Data
             connection.Open();
             return await connection.QueryFirstOrDefaultAsync<User>(sql, new { Username = username });
         }
-       
-        // TODO multiple queries
-        public async Task<User> UpdateAUser(string firstName, string lastName, string username, string location, string type)
+
+        public async Task<User> CreateAUser(User user)
         {
             var sql = @"
-                DECLARE @LID INT
-                SET @LID = (
-                    SELECT Id
-                    FROM [dbo].[Locations]
-                    WHERE Name = @Location
-                )
-
-                UPDATE [dbo].[Users]
-                SET FirstName = @FirstName,
-                    LastName = @LastName,
-                    LocationId = @\@LID,
-                    Type = @Type
-                WHERE
-                    [dbo].[Users].Username = @Username
+                insert into Users 
+                    (Id, FirstName, LastName, Username, LocationId)
+                values 
+                    (@Id, @FirstName, @LastName, @Username, @LocationId);
+                select cast(scope_identity() as int);
             ;";
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            var param = new { 
-                FirstName = firstName, 
-                LastName = lastName, 
-                Username = username, 
-                Location = location,
-                Type = type 
-            };
-            return await connection.QueryFirstOrDefaultAsync<User>(sql, param);
-        }
-        //TODO multiple queries
-        public async Task<User> AddAUser(string firstName, string lastName, string username, string location, string type)
-        {
-            var sql = @"
-                DECLARE @LID INT
-                SET @LID = (
-                    SELECT Id
-                    FROM [dbo].[Locations]
-                    WHERE Name = @Location
-                )
+            var id = await connection.QuerySingleAsync<int>(sql, new
+            {
+                user.Id,
+                user.FirstName,
+                user.LastName,
+                user.Username,
+                user.LocationId
 
-                INSERT [dbo].[Users] ([FirstName], [LastName], [Username], [LocationId], [Type])
-                VALUES (@FirstName, @LastName, @Username, \@LID, @Type)
+            });
+            user.Id = id;
+            return user;
+        }
+
+        public async Task<User> DeleteAUser(string username)
+        {
+            var user = await GetAUser(username);
+            var sql = @"
+                delete from Users where Username = @Username
             ;";
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            var param = new { 
-                FirstName = firstName, 
-                LastName = lastName, 
-                Username = username, 
-                Location = location,
-                Type = type 
-            };
-            return await connection.QueryFirstOrDefaultAsync<User>(sql, param);
+            await connection.ExecuteAsync(sql, new { username });
+            return user;
         }
-
-        public async Task<User> RemoveAUser(string username)
-        {
-            var sql = @"
-                DELETE FROM [dbo].[Users]
-                WHERE Username = @Username
-            ;";
-
-            using var connection = new SqlConnection(connectionString);
-            connection.Open();
-            var param = new { 
-                Username = username, 
-            };
-            return await connection.QueryFirstOrDefaultAsync<User>(sql, param);
-        }
-
-        
     }
 }

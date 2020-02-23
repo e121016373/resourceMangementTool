@@ -8,5 +8,7 @@ namespace Web.API.Application.Repository
     {
         Task<IEnumerable<User>> GetAllUsers();
         Task<User> GetAUser(string username);
+        Task<User> DeleteAUser(string username);
+        Task<User> CreateAUser(User user);
     }
 }

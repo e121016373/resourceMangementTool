@@ -8,7 +8,7 @@ using Web.API.Application.Repository;
 
 namespace Web.API.Controllers
 {
-    [Authorize]
+    // [Authorize]
     public class DisciplinesController : ControllerBase
     {
         private readonly IDisciplinesRepository disciplinesRepository;
