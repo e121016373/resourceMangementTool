@@ -14,7 +14,7 @@ namespace Web.API.Application.Repository
         Task<Skill> AddASkill(string name, string disciplineName);
 
         // PUT
-        Task<Skill> UpdateASkill(string name, string disciplineName);
+        Task<Skill> UpdateASkill(string oldName, string newName, string discipline);
         
         // DELETE
         Task<Skill> DeleteASkill(string name);

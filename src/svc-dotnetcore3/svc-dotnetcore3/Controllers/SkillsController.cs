@@ -29,5 +29,41 @@ namespace Web.API.Controllers
             return Ok(viewModel);
         }
 
+        [HttpGet]
+        [Route("/skills/{name}")]
+        public async Task<ActionResult<Skill>> GetASkill(string name)
+        {
+            var response = await skillsRepository.GetASkill(name);
+            var viewModel = mapper.Map<Skill>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpPut]
+        [Route("/skills")]
+        public async Task<ActionResult<Skill>> UpdateASkill(string oldName, string newName, string discipline)
+        {
+            var response = await skillsRepository.GetASkill(oldName);
+            var viewModel = mapper.Map<Skill>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpPut]
+        [Route("/skills")]
+        public async Task<ActionResult<Skill>> AddASkill(string skillName, string disciplineName)
+        {
+            var response = await skillsRepository.AddASkill(skillName, disciplineName);
+            var viewModel = mapper.Map<Skill>(response);
+            return Created("GetASkill", viewModel);
+        }
+
+        [HttpDelete]
+        [Route("/skills")]
+        public async Task<ActionResult<Skill>> DeleteASkill(string name)
+        {
+            var response = await skillsRepository.DeleteASkill(name);
+            var viewModel = mapper.Map<Skill>(response);
+            return Ok(viewModel);
+        }
+
     }
 }

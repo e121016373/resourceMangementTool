@@ -92,9 +92,9 @@ namespace Web.API.Infrastructure.Data
             return await connection.QueryFirstOrDefaultAsync<Skill>(sql, param);
         }
 
-        public async Task<Discipline> DeleteADisicipline(string name)
+        public async Task<Skill> DeleteASkill(string name)
         {
-            var discipline = await GetADiscipline(name);
+            var skill = await GetASkill(name);
             var sql = @"
                 DELETE FROM Disciplines
                 WHERE Name = @Name
@@ -106,7 +106,7 @@ namespace Web.API.Infrastructure.Data
                 Name = name, 
             };
             await connection.ExecuteAsync(sql, param);
-            return discipline;
+            return skill;
         }
 
     }
