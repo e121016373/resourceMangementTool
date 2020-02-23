@@ -28,6 +28,41 @@ namespace Web.API.Controllers
             var viewModel = mapper.Map<IEnumerable<Discipline>>(response);
             return Ok(viewModel);
         }
+
+        [HttpGet]
+        [Route("/disciplines/{name}")]
+        public async Task<ActionResult<Discipline>> GetADiscipline(string name)
+        {
+            var response = await disciplinesRepository.GetADiscipline(name);
+            var viewModel = mapper.Map<Discipline>(response);
+            return Ok(viewModel);
+        }
         
+        [HttpPut]
+        [Route("/disciplines")]
+        public async Task<ActionResult<Discipline>> UpdateADiscipline(string name)
+        {
+            var response = await disciplinesRepository.GetADiscipline(name);
+            var viewModel = mapper.Map<Discipline>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpPut]
+        [Route("/disciplines")]
+        public async Task<ActionResult<Discipline>> AddADiscipline([FromBody] Discipline discipline)
+        {
+            var response = await disciplinesRepository.AddADiscipline(discipline);
+            var viewModel = mapper.Map<Discipline>(response);
+            return Created("GetADiscipline", viewModel);
+        }
+
+        [HttpDelete]
+        [Route("/disciplines")]
+        public async Task<ActionResult<Project>> DeleteADiscipline(string name)
+        {
+            var response = await projectsRepository.DeleteAProject(name);
+            var viewModel = mapper.Map<Project>(response);
+            return Ok(viewModel);
+        }
     }
 }

@@ -29,5 +29,69 @@ namespace Web.API.Infrastructure.Data
             return await connection.QueryAsync<Discipline>(sql);
         }
 
+        public async Task<Discipline> GetADiscipline(string name)
+        {
+            var sql = @"
+                SELECT Id, Name
+                FROM Disciplines
+                WHERE Name = @Name
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            return await connection.QueryFirstOrDefaultAsync<Discipline>(sql, new { Name = name });
+        }
+       
+        public async Task<Discipline> UpdateADiscipline(string oldName, string newName)
+        {
+            var sql = @"
+                UPDATE Disciplines
+                SET Name = @NewName
+                WHERE Name = @OldName
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            var param = new { 
+                NewName = newName,
+                OldName = oldName
+            };
+            return await connection.ExecuteAsync(sql, param);
+        }
+
+        public async Task<Discipline> AddADiscipline(Discipline dicipline)
+        {
+            var sql = @"
+                INSERT INTO Disciplines ([Name])
+                VALUES (@Name)
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            var param = new { 
+                discipline.Name
+            };
+            var id = await connection.QuerySingleAsync<int>(sql, param);
+            discipline.Id = id;
+            return discipline;
+        }
+
+        public async Task<Discipline> DeleteADisicipline(string name)
+        {
+            var discipline = await GetADiscipline(name)
+            var sql = @"
+                DELETE FROM Disciplines
+                WHERE Name = @Name
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            var param = new { 
+                Name = name, 
+            };
+            await connection.ExecuteAsync(sql, param);
+            return discipline;
+        }
+
     }
 }
