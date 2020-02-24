@@ -20,9 +20,8 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<Skill>> GetAllSkills()
         {
             var sql = @"
-                SELECT D.Id AS Discipline_Id, D.Name AS Discipline, S.Id AS Skill_Id, S.Name AS Skill
-                FROM dbo.Disciplines D
-	                INNER JOIN dbo.Skills S ON S.DisciplineId = D.Id
+                SELECT Id, DisciplineId, Name
+                FROM Skills
             ;";
 
             using var connection = new SqlConnection(connectionString);
