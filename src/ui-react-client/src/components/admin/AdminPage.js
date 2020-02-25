@@ -15,7 +15,7 @@ const AdminPage = () => {
              <UserTable/>
              <LocationTable/>
          </div>
-         <div class = "main">
+         <div class = "center">
              <SkillTable/>
          </div>
          <div class = "rightSide">

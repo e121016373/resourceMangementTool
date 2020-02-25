@@ -9,20 +9,21 @@
 
 /* User table + skills table */
 .leftSide {
-
+  vertical-align: top;
   background-color: white;
   padding: 20px;
   border: black;
 }
 
 /* disciplines table */
-.main {
+.center {
+  vertical-align: top;
   background-color: white;
   padding: 20px;
 }
 
 .rightSide {
-
+  vertical-align: top;
   background-color: white;
   padding: 20px;
 }
