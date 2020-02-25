@@ -62,7 +62,7 @@ const ProjectsPage = () => {
                     <tr key={project.id}>
                         <td>{project.id}</td>
                         <td>
-                            <a href={"/users/projects/"+project.name}>{project.name}</a>
+                            <a href={"/projects/"+project.name}>{project.name}</a>
                         </td>
                         <td>{project.status}</td>
                         <td>{project.location}</td>

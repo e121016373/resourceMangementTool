@@ -61,7 +61,7 @@ const ProjectInfoPage = () => {
                 {users.map(user => (
                     <tr key={user.id}>
                         <td>
-                            <a href={"/users/projects/"+project.name+"/"+user.name}>{user.name}</a>
+                            <a href={"/projects/"+project.name+"/"+user.name}>{user.name}</a>
                         </td>
                         {/*<td>{user.name}</td>*/}
                         <td>{user.utilization}</td>

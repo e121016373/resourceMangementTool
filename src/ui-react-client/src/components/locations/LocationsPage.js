@@ -4,30 +4,21 @@ import PropTypes from 'prop-types';
 import LocationList from './LocationList';
 import { loadLocations } from '../../redux/actions/locationsActions';
 
-// const LocationsPage = ({ locations, loadLocations }) => {
-//   useEffect(() => {
-//     if (locations.length === 0) {
-//       loadLocations().catch(error => {
-//         alert('Loading locations failed' + error);
-//       });
-//     }
-//   }, [locations, loadLocations]);
-//
-//   return (
-//     <>
-//       <h1>Locations</h1>
-//       <LocationList locations={locations} />
-//     </>
-//   );
-// };
+const LocationsPage = ({ locations, loadLocations }) => {
+  useEffect(() => {
+    if (locations.length === 0) {
+      loadLocations().catch(error => {
+        alert('Loading locations failed' + error);
+      });
+    }
+  }, [locations, loadLocations]);
 
-const LocationsPage = () => {
-    return (
-        <>
-            <h1>Locations</h1>
-            <LocationList />
-        </>
-    );
+  return (
+    <>
+      <h1>Locations</h1>
+      <LocationList locations={locations} />
+    </>
+  );
 };
 
 LocationsPage.propTypes = {
