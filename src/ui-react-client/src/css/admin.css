@@ -1,0 +1,42 @@
+.Login {
+  padding: 60px 0;
+}
+
+.Login form {
+  margin: 0 auto;
+  max-width: 320px;
+}
+
+/* User table + skills table */
+.leftSide {
+
+  background-color: white;
+  padding: 20px;
+  border: black;
+}
+
+/* disciplines table */
+.main {
+  background-color: white;
+  padding: 20px;
+}
+
+.rightSide {
+
+  background-color: white;
+  padding: 20px;
+}
+
+/* Footer */
+.footer {
+  padding: 20px;
+  text-align: center;
+  background: #ddd;
+}
+
+.myBotton {
+  margin:5px;
+  background-color: #09ADF4;
+  border-radius: 8px;
+  color:white;
+}
