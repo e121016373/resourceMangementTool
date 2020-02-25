@@ -9,35 +9,21 @@
 
 /* User table + skills table */
 .leftSide {
-<<<<<<< HEAD
-=======
   vertical-align: top;
->>>>>>> 89fcf83619e6bf267556d178e8ff40fd7baa870b
   background-color: white;
   padding: 20px;
   border: black;
 }
 
 /* disciplines table */
-<<<<<<< HEAD
-.main {
-  position: flex;
-  flex-direction: column;
-}
-.sub {
-  width: 60px;
-=======
+
 .center {
   vertical-align: top;
->>>>>>> 89fcf83619e6bf267556d178e8ff40fd7baa870b
   background-color: white;
 }
 
 .rightSide {
-<<<<<<< HEAD
-=======
   vertical-align: top;
->>>>>>> 89fcf83619e6bf267556d178e8ff40fd7baa870b
   background-color: white;
   padding: 20px;
 }
@@ -53,9 +39,6 @@
   margin: 5px;
   background-color: #09adf4;
   border-radius: 8px;
-<<<<<<< HEAD
+
   color: white;
-=======
-  color:white;
->>>>>>> 89fcf83619e6bf267556d178e8ff40fd7baa870b
 }
