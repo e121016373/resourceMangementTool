@@ -70,8 +70,11 @@ const ProjectInfoPage = () => {
                     </tr>
                 ))}
                 </tbody>
-
             </table>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
         </>
     );
 };
