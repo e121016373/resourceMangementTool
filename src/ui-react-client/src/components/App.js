@@ -14,12 +14,12 @@ const App = () => {
       <Header />
       <Switch>
         {/*All our Routes goes here!*/}
-        <Route exact path="/" component={HomePage} />
-        <Route path="/users" component={UsersPage} />
-        <Route path="/projects" component={ProjectsPage} />
-        <Route path="/locations" component={LocationsPage} />
+        <Route exact path="/users" component={HomePage} />
+        <Route path="/users/users" component={UsersPage} />
+        <Route path="/users/projects" component={ProjectsPage} />
+        <Route path="/users/locations" component={LocationsPage} />
         {/* add admine component */}
-        <Route path="/admin" component={AdminPage} />
+        <Route path="/users/admin" component={AdminPage} />
         <Route component={PageNotFound} />
       </Switch>
     </>

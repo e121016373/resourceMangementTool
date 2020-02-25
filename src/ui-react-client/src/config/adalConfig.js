@@ -16,7 +16,8 @@ export const adalConfig = {
 
 export const authContext = new AuthenticationContext(adalConfig);
 
-export const adalApiFetch = (fetch, url, options) =>
+export const adalApiFetch = (fetch, url, options) => {
+  console.log('the url to fetch is ' + url);
   adalFetch(
     authContext,
     adalConfig.endpoints.api,
@@ -24,6 +25,7 @@ export const adalApiFetch = (fetch, url, options) =>
     url,
     options,
   );
+};
 
 export const withAdalLoginApi = withAdalLogin(
   authContext,
