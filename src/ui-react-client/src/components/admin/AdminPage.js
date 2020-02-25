@@ -10,6 +10,7 @@ import '../../css/admin.css';
 
 const AdminPage = () => {
   return (
+<<<<<<< HEAD
     <div className="main" class="d-flex p-3 bg secondary">
       <div className="main">
         <div class="sub">
@@ -26,6 +27,21 @@ const AdminPage = () => {
         </div>
       </div>
     </div>
+=======
+     <div className="main" class="d-flex p-3 bg secondary">
+         <div class="leftSide">
+             <UserTable/>
+             <LocationTable/>
+         </div>
+         <div class = "center">
+             <SkillTable/>
+         </div>
+         <div class = "rightSide">
+             <DisciplineTable/>
+         </div>
+     </div>
+
+>>>>>>> 89fcf83619e6bf267556d178e8ff40fd7baa870b
   );
 };
 export default AdminPage;

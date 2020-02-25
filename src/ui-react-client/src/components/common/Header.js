@@ -52,6 +52,10 @@ const Header = () => {
             <NavLink className="item" to="/admin">
               admin
             </NavLink>
+            {' | '}
+            <NavLink className="item" to="/personalProfile">
+              personalProfile
+            </NavLink>
             {/* <NavDropdown
               title="Dropdown"
               id="collasible-nav-dropdown"
