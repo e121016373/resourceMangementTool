@@ -9,6 +9,7 @@ import LocationsPage from './locations/LocationsPage';
 import PageNotFound from './PageNotFound';
 import AdminPage from './admin/AdminPage';
 import ProjectInfoPage from "./projects/ProjectInfoPage";
+import UserInfoPage from "./projects/UserInfoPage";
 const App = () => {
   return (
     <>
@@ -17,6 +18,7 @@ const App = () => {
         {/*All our Routes goes here!*/}
         <Route exact path="/users" component={HomePage} />
         <Route path="/users/users" component={UsersPage} />
+          <Route path="/users/projects/:project/:user" component={UserInfoPage}/>
           <Route path="/users/projects/:project" component={ProjectInfoPage} />
         <Route path="/users/projects" component={ProjectsPage} />
         <Route path="/users/locations" component={LocationsPage} />

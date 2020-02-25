@@ -62,7 +62,6 @@ const ProjectsPage = () => {
                     <tr key={project.id}>
                         <td>{project.id}</td>
                         <td>
-                            {/*<Link to="/users/project/projects1"> {project.name}</Link>*/}
                             <a href={"/users/projects/"+project.name}>{project.name}</a>
                         </td>
                         <td>{project.status}</td>
