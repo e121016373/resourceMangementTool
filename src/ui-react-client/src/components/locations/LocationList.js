@@ -26,6 +26,7 @@ const LocationList = ({ locations }) => {
   );
 };
 
+
 LocationList.propTypes = {
   locations: PropTypes.array.isRequired,
 };

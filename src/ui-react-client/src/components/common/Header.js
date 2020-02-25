@@ -35,7 +35,7 @@ const Header = () => {
             {' | '}
             <NavLink
               className="item"
-              to="/projects"
+              to="/users/projects"
               activeStyle={activeStyle}
             >
               Projects
