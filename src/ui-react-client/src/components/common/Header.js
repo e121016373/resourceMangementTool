@@ -5,14 +5,17 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import { NavDropdown } from 'react-bootstrap';
 import '../../scss/admin.scss';
-
+import '../../scss/header.scss';
+import AEICON from '../icons/associated-engineering-logo-png-transparent.png';
 const Header = () => {
   const activeStyle = { color: '#F15B2A' };
 
   return (
     <>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Navbar.Brand href="#home">Users</Navbar.Brand>
+        <Navbar.Brand href="#home">
+          <img src={AEICON}></img>
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <div className="barContent">
