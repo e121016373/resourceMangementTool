@@ -205,6 +205,7 @@ INSERT [dbo].[Projects] ([Id], [Number], [Title], [LocationId], [Hours]) VALUES 
 INSERT [dbo].[Projects] ([Id], [Number], [Title], [LocationId], [Hours]) VALUES (100, '2010-PKMU-41', 'Ut est harum ducimus minima ut.', 82, 100)
 SET IDENTITY_INSERT [dbo].[Projects] OFF
 
+SET IDENTITY_INSERT [dbo].[Disciplines] ON
 Insert into Disciplines (Id,[Name]) values (1,'Services');
 Insert into Disciplines (Id,[Name]) values (2,'Delivery');
 Insert into Disciplines (Id,[Name]) values (3,'Environmental Management');
@@ -252,6 +253,7 @@ Insert into Disciplines (Id,[Name]) values (210,'Structures-Buildings');
 Insert into Disciplines (Id,[Name]) values (211,'Structures-Civil & Hydraulic');
 Insert into Disciplines (Id,[Name]) values (212,'Sustainable Design & Management');
 Insert into Disciplines (Id,[Name]) values (213,'Watershed Management');
+SET IDENTITY_INSERT [dbo].[Disciplines] OFF
 
 Insert into Skills (DisciplineId,Id,[Name]) values (1,2,'Class Environmental Assessments');
 Insert into Skills (DisciplineId,Id,[Name]) values (1,3,'Condition Assessments');
