@@ -42,7 +42,7 @@ namespace Web.API.Controllers
         [Route("/skills")]
         public async Task<ActionResult<Skill>> UpdateASkill(string oldName, string newName, string discipline)
         {
-            var response = await skillsRepository.GetASkill(oldName);
+            var response = await skillsRepository.UpdateASkill(oldName, newName, discipline);
             var viewModel = mapper.Map<Skill>(response);
             return Ok(viewModel);
         }
