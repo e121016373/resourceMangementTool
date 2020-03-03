@@ -16,9 +16,9 @@ const AdminPage = () => {
         <LocationTable />
       </div>
       <div class="center">
-        <SkillTable />
       </div>
       <div class="rightSide">
+        <SkillTable />
         <DisciplineTable />
       </div>
     </div>
