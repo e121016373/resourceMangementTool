@@ -3,4 +3,5 @@ export default {
   projects: [],
   locations: [],
   skills: [],
+  disciplines:[],
 };

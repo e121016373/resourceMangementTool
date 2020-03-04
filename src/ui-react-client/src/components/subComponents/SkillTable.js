@@ -1,11 +1,11 @@
 import {BootstrapTable, TableHeaderColumn} from "react-bootstrap-table";
 import "../../css/admin.css"
 import "bootstrap/dist/css/bootstrap.min.css";
-import {loadSkills} from '../../redux/actions/skillsAction'
+import { loadSkills } from '../../redux/actions/skillsAction'
 import { connect } from 'react-redux';
 import React, { useEffect } from 'react';
 
-const $ = window.$;
+// const $ = window.$;
 
 // function createData(name,number) {
 //     return{"id":name,"code":number};
@@ -31,7 +31,7 @@ const $ = window.$;
 
 const SkillTable = ({
     skills,
-    loadSkills
+    loadSkills,
   }) => {
     useEffect(() => {
       if (skills.length === 0) {
@@ -40,6 +40,7 @@ const SkillTable = ({
         });
       }
     }, [skills, loadSkills]);
+    
   
     return (
         <div>
