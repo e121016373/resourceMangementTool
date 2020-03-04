@@ -14,7 +14,7 @@ import React, { useEffect } from 'react';
 //     {"id":"shuaiqi Zhang","userName":"sshun123","location":"Toronto"},
 //     {"id":"siddhartha Gupta","userName":"siddsds145","location":"Edmonton"},
 //     {"id":"Bob Ghosh","userName":"bbobb55","location":"Calgary"}
-// ];
+// ];\
 const UserTable = ({
   users,
   locations,
@@ -37,7 +37,8 @@ const UserTable = ({
 
   return (
     <div>
-        <button type="button" className="myBotton" onClick={createAUser}>Add User</button>
+        {/* add user button */}
+        {/* <button type="button" className="myBotton">Add User</button>         */}
         <button type="button" className="myBotton">Remove User</button>
         <BootstrapTable data={ users } striped hover condensed
           className="scrollbar table-wrapper-scroll-y">
@@ -47,7 +48,7 @@ const UserTable = ({
             <TableHeaderColumn width="150" dataField='username'>User Name</TableHeaderColumn>
             <TableHeaderColumn width="150" dataField='locationName'>Location</TableHeaderColumn>
         </BootstrapTable>
-    </div>
+      </div>
   );
 };
 
