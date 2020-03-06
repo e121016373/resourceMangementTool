@@ -5,6 +5,8 @@
   "dependencies": {
     "axios": "^0.19.1",
     "bootstrap": "^4.4.1",
+    "d3-ease": "^1.0.6",
+    "d3-interpolate": "^1.4.0",
     "datatables.net": "^1.10.20",
     "datatables.net-dt": "^1.10.20",
     "font-awesome": "^4.7.0",

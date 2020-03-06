@@ -44,10 +44,10 @@ export class PersonalProfile extends React.Component {
                   <td>FirstName</td>
                   <td>
                     <input
-                      id="firstName"
-                      type="text"
-                      defaultValue={this.personProfile.firstName}
-                    ></input>
+    id="firstName"
+    type="text"
+    defaultValue={this.personProfile.firstName}
+    />
                   </td>
                 </tr>
                 <tr>

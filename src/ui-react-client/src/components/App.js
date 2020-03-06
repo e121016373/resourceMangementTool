@@ -4,13 +4,14 @@ import { Route, Switch } from 'react-router-dom';
 import Header from './common/Header';
 import HomePage from './home/HomePage';
 import UsersPage from './users/UsersPage';
-import ProjectsPage from './projects/ProjectsPage';
 import LocationsPage from './locations/LocationsPage';
 import PageNotFound from './PageNotFound';
 import AdminPage from './admin/AdminPage';
 import ProjectInfoPage from './projects/ProjectInfoPage';
 import UserInfoPage from './projects/UserInfoPage';
 import { PersonalProfile } from './personalProfile/personalProfile';
+import {ProjectsPage} from "./projects/ProjectsPage";
+
 const App = () => {
   return (
     <>
