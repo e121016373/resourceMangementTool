@@ -38,7 +38,7 @@ const UserTable = ({
   return (
     <div>
         {/* add user button */}
-        {/* <button type="button" className="myBotton">Add User</button>         */}
+        <button type="button" className="myBotton">Add User</button>        
         <button type="button" className="myBotton">Remove User</button>
         <BootstrapTable data={ users } striped hover condensed
           className="scrollbar table-wrapper-scroll-y">
