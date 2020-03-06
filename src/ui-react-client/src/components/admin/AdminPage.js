@@ -10,7 +10,7 @@ import '../../css/admin.css';
 
 const AdminPage = () => {
   return (
-    <div className="main" class="d-flex p-3 bg secondary">
+    <div className="d-flex p-3 bg secondary">
       <div className="leftSide">
         <UserTable />
         <LocationTable />
