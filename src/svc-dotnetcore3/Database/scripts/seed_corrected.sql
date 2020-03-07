@@ -255,6 +255,7 @@ Insert into Disciplines (Id,[Name]) values (212,'Sustainable Design & Management
 Insert into Disciplines (Id,[Name]) values (213,'Watershed Management');
 SET IDENTITY_INSERT [dbo].[Disciplines] OFF
 
+SET IDENTITY_INSERT [dbo].[Skills] ON
 Insert into Skills (DisciplineId,Id,[Name]) values (1,2,'Class Environmental Assessments');
 Insert into Skills (DisciplineId,Id,[Name]) values (1,3,'Condition Assessments');
 Insert into Skills (DisciplineId,Id,[Name]) values (1,4,'Commissioning');
@@ -1392,3 +1393,4 @@ Insert into Skills (DisciplineId,Id,[Name]) values (213,19,'Source Water Assessm
 Insert into Skills (DisciplineId,Id,[Name]) values (213,20,'Water Balance Modelling and Assessments');
 Insert into Skills (DisciplineId,Id,[Name]) values (213,21,'Water Licensing Support');
 Insert into Skills (DisciplineId,Id,[Name]) values (213,22,'Water Supply-Demand Investigations/Mgmnt');
+SET IDENTITY_INSERT [dbo].[Skills] OFF

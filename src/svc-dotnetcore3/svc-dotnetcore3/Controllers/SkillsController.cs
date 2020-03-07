@@ -47,7 +47,7 @@ namespace Web.API.Controllers
             return Ok(viewModel);
         }
 
-        [HttpPut]
+        [HttpPost]
         [Route("/skills")]
         public async Task<ActionResult<Skill>> AddASkill(string skillName, string disciplineName)
         {

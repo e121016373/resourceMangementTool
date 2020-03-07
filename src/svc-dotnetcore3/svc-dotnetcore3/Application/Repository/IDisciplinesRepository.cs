@@ -8,7 +8,7 @@ namespace Web.API.Application.Repository
     {
         Task<IEnumerable<Discipline>> GetAllDisciplines();
         Task<Discipline> GetADiscipline(string Name);
-        Task<Discipline> UpdateADiscipline(string oldName, string newName);
+        Task<Discipline> UpdateADiscipline(Discipline discipline);
         Task<Discipline> AddADiscipline(Discipline discipline);
         Task<Discipline> DeleteADisicipline(string name);
     }
