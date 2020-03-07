@@ -30,7 +30,7 @@ namespace Web.API.Controllers
         }
 
         [HttpGet]
-        [Route("/skills/{name}")]
+        [Route("/skills/{name}", Name = "GetASkill")]
         public async Task<ActionResult<Skill>> GetASkill(string name)
         {
             var response = await skillsRepository.GetASkill(name);
@@ -40,25 +40,25 @@ namespace Web.API.Controllers
 
         [HttpPut]
         [Route("/skills")]
-        public async Task<ActionResult<Skill>> UpdateASkill(string oldName, string newName, string discipline)
+        public async Task<ActionResult<Skill>> UpdateASkill([FromBody] Skill skill)
         {
-            var response = await skillsRepository.UpdateASkill(oldName, newName, discipline);
+            var response = await skillsRepository.UpdateASkill(skill);
             var viewModel = mapper.Map<Skill>(response);
             return Ok(viewModel);
         }
 
         [HttpPost]
         [Route("/skills")]
-        public async Task<ActionResult<Skill>> AddASkill(string skillName, string disciplineName)
+        public async Task<ActionResult<Skill>> AddASkill([FromBody] Skill skill)
         {
-            var response = await skillsRepository.AddASkill(skillName, disciplineName);
+            var response = await skillsRepository.AddASkill(skill);
             var viewModel = mapper.Map<Skill>(response);
             return Created("GetASkill", viewModel);
         }
 
         [HttpDelete]
-        [Route("/skills")]
-        public async Task<ActionResult<Skill>> DeleteASkill(string name)
+        [Route("/skills/{name}")]
+        public async Task<ActionResult<Skill>> DeleteASkill([FromRoute] string name)
         {
             var response = await skillsRepository.DeleteASkill(name);
             var viewModel = mapper.Map<Skill>(response);

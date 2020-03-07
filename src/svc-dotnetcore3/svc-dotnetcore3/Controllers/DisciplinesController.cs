@@ -30,7 +30,7 @@ namespace Web.API.Controllers
         }
 
         [HttpGet]
-        [Route("/disciplines/{name}")]
+        [Route("/disciplines/{name}", Name = "GetADiscipline")]
         public async Task<ActionResult<Discipline>> GetADiscipline(string name)
         {
             var response = await disciplinesRepository.GetADiscipline(name);
