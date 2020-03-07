@@ -84,5 +84,18 @@ namespace Web.API.Infrastructure.Data
             await connection.ExecuteAsync(sql, new { username });
             return user;
         }
+
+        public async Task<User> UpdateAUser(PersonalProfile pp)
+        {
+            var sql = @"
+                update Users
+                set LocationID = (select Id from Locations where Name = @Name)
+                where Username = @Username;
+            ";
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            await connection.ExecuteAsync(sql, new { Name = pp.Location, pp.Username });
+            return await GetAUser(pp.Username);
+        }
     }
 }

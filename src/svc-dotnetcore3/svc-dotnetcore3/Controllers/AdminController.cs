@@ -20,7 +20,7 @@ namespace Web.API.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet]
+        /*[HttpGet]
         [Route("/adminlogin")]
         public async Task<ActionResult<IEnumerable<Admin>>> GetAllAdmins()
         {
@@ -34,6 +34,15 @@ namespace Web.API.Controllers
         public async Task<ActionResult<Admin>> GetAAdmin(string username)
         {
             var response = await adminRepository.GetAAdmin(username);
+            var viewModel = mapper.Map<Admin>(response);
+            return Ok(viewModel);
+        }*/
+
+        [HttpGet]
+        [Route("/adminlogin/{username}/{password}")]
+        public async Task<ActionResult<Admin>> CheckAAdmin(string username, string password)
+        {
+            var response = await adminRepository.CheckAAdmin(username, password);
             var viewModel = mapper.Map<Admin>(response);
             return Ok(viewModel);
         }

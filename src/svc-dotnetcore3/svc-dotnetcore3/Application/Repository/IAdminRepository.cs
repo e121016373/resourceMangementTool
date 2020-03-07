@@ -8,6 +8,7 @@ namespace Web.API.Application.Repository
     {
         Task<IEnumerable<Admin>> GetAllAdmins();
         Task<Admin> GetAAdmin(string username);
+        Task<Admin> CheckAAdmin(string username, string password);
         Task<Admin> DeleteAAdmin(string username);
         Task<Admin> CreateAAdmin(Admin admin);
     }
