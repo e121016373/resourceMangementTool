@@ -30,7 +30,7 @@ namespace Web.API.Controllers
         }
 
         [HttpGet]
-        [Route("locations/{locationCode}")]
+        [Route("locations/{locationCode}", Name = "GetALocation")]
         public async Task<ActionResult<Location>> GetALocation(string locationCode)
         {
             var response = await locationsRepository.GetALocation(locationCode);
