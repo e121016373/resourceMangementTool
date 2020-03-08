@@ -47,6 +47,22 @@ namespace Web.API.Infrastructure.Data
             return await connection.QueryFirstOrDefaultAsync<Admin>(sql, new { Username = username });
         }
 
+        public async Task<Admin> CheckAAdmin(string username, string password)
+        {
+            var sql = @"
+                    select
+                    Username , Password
+                    from Admin
+                    where Username = @Username
+                    and  Password = @Password
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            return await connection.QueryFirstOrDefaultAsync<Admin>(sql,
+                new { Username = username, Password = password });
+        }
+
         public async Task<Admin> CreateAAdmin(Admin admin)
         {
             var sql = @"
