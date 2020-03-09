@@ -41,58 +41,62 @@ function ProjectInfoPage(props) {
     // noinspection JSAnnotator
     return (
         <div>
-            <h3> {props.project.name} DETAILS</h3>
+            <h5> {props.project.name} Details</h5>
             <hr/>
-            <table>
-                <tr>
-                    <th colSpan={2}>INFO</th>
-                </tr>
-                <tr>
-                    <td>Status</td>
-                    <td>{project1.status}</td>
-                </tr>
-                <tr>
-                    <td>Location</td>
-                    <td>{project1.location}</td>
-                </tr>
-                <tr>
-                    <td>Start Date</td>
-                    <td>{project1.startDate}</td>
-                </tr>
-                <tr>
-                    <td>End Date</td>
-                    <td>{project1.endDate}</td>
-                </tr>
-            </table>
-            <hr/>
-
-            <table id="t01">
-                <thead>
-                <tr>
-                    <th>Members</th>
-                    <th>Availability</th>
-                    {/*<th>edit</th>*/}
-                    {/*<th>delete</th>*/}
-                </tr>
-                </thead>
-                <tbody>
-                {props.users.map(user => (
-                    <tr key={user.id}>
-                        <td>
-                            {user.name}
-                        </td>
-                        {/*<td>{user.name}</td>*/}
-                        <td>{user.utilization}</td>
-                        <td>
-                            <button type="button">Edit</button>
-                        </td>
-                        <td>
-                            <button type="button">Delete</button>
-                        </td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+            <div className="container-projectInfo">
+                <div className="d4">
+                    <table>
+                        <tr>
+                            <th colSpan={2}>INFO</th>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>{project1.status}</td>
+                        </tr>
+                        <tr>
+                            <td>Location</td>
+                            <td>{project1.location}</td>
+                        </tr>
+                        <tr>
+                            <td>Start Date</td>
+                            <td>{project1.startDate}</td>
+                        </tr>
+                        <tr>
+                            <td>End Date</td>
+                            <td>{project1.endDate}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div className="d3">
+                    <table id="t01">
+                        <thead>
+                        <tr>
+                            <th>Members</th>
+                            <th>Availability</th>
+                            {/*<th>edit</th>*/}
+                            {/*<th>delete</th>*/}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {props.users.map(user => (
+                            <tr key={user.id}>
+                                <td>
+                                    {user.name}
+                                </td>
+                                {/*<td>{user.name}</td>*/}
+                                <td>{user.utilization}</td>
+                                <td>
+                                    <button type="button">Edit</button>
+                                </td>
+                                <td>
+                                    <button type="button">Delete</button>
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     );
 };

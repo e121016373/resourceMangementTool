@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import '../../css/collapseStyle.css';
 import rd3 from 'react-d3-library';
 import ProjectInfoPage from "./ProjectInfoPage";
+import {BootstrapTable} from 'react-bootstrap-table';
 
 // import {connect} from 'react-redux';
 // import PropTypes from 'prop-types';
@@ -100,7 +101,7 @@ export class ProjectsPage extends React.Component {
         const clickCallback = () => this.handleRowClick(project.id);
         const projectRows = [
             <tr onClick={clickCallback} key={"row-data-" + project.id}>
-                <td>{project.id}</td>
+                <th>{project.id}</th>
                 {/*<td><a href={"/projects/" + project.name}>{project.name}</a></td>*/}
                 <td>{project.name}</td>
                 <td>{project.status}</td>
@@ -137,21 +138,20 @@ export class ProjectsPage extends React.Component {
 
         return (
             <div className="container-project">
-                <div className="d1">1</div>
+                <div className="d1"/>
                 <div className="d2">
                     <h1 >PROJECTS</h1>
-
                     <hr/>
-                    <table id="t01">
+                    <table className="table">
                         <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Status</th>
-                            <th>Location</th>
-                            <th>StartDate</th>
-                            <th>EndDate</th>
-                            <th>Utilization</th>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">StartDate</th>
+                            <th scope="col">EndDate</th>
+                            <th scope="col">Utilization</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -159,7 +159,7 @@ export class ProjectsPage extends React.Component {
                         </tbody>
                     </table>
                 </div>
-                <div class="d1">3</div>
+                <div class="d1"/>
             </div>
 
 
