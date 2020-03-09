@@ -1,32 +1,31 @@
 import React, { useState } from 'react';
 import '../../scss/autoComplete.scss';
-const AutoComplete = () => {
-  const [items, setItems] = useState([
-    'Davl',
-    'Damie',
-    'winton',
-    'winson',
-    'win',
-  ]);
+import PropTypes from 'prop-types';
+
+const AutoComplete = ({ elements }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [text, setText] = useState('');
   const onTextChanged = e => {
     const value = e.target.value;
-    console.log('the value length is ', value.length);
+    // console.log('the value length is ', value.length);
     setText(value);
     if (value.length > 0) {
       const regex = new RegExp(`^${value}`, 'i');
-      console.log(suggestions);
-      let tempItem = items.sort().filter(item => regex.test(item));
-      console.log(tempItem);
+      // console.log(suggestions);
+      let tempItem = [];
+      // console.log('items are', elements);
+      if (elements != null) {
+        tempItem = elements.sort().filter(item => regex.test(item));
+      }
+      // console.log(tempItem);
       setSuggestions(tempItem);
     } else {
       setSuggestions([]);
     }
-    console.log(suggestions);
+    // console.log(suggestions);
   };
   const renderSuggestions = () => {
-    console.log('the length is ', suggestions.length);
+    // console.log('the length is ', suggestions.length);
     if (suggestions.length === 0) {
       return null;
     }

@@ -5,4 +5,6 @@ export default {
   users: [],
   projects: [],
   locations: [],
+  disciplines: [],
+  skills: [],
 };

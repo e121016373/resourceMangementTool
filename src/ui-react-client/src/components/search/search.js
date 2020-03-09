@@ -1,8 +1,70 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import AutoComplete from './autocomplete';
-const Search = () => {
+import { loadDisciplines } from '../../redux/actions/disciplinesActions';
+import { loadSkills } from '../../redux/actions/skillsActions';
+import { loadLocations } from '../../redux/actions/locationsActions';
+const Search = ({
+  disciplines,
+  loadDisciplines,
+  skills,
+  loadSkills,
+  locations,
+  loadLocations,
+}) => {
+  // const [parsedDisciplines, setParsedDisciplines] = useState([]);
+  useEffect(() => {
+    if (disciplines.length === 0) {
+      loadDisciplines().catch(error => {
+        alert('Loading disciplines failed' + error);
+      });
+    }
+    if (skills.length === 0) {
+      loadSkills().catch(error => {
+        alert('Loading skills failed' + error);
+      });
+    }
+    if (locations.length === 0) {
+      loadLocations().catch(error => {
+        alert('Loading locations failed' + error);
+      });
+    }
+  }, [
+    disciplines,
+    loadDisciplines,
+    skills,
+    loadSkills,
+    locations,
+    loadLocations,
+  ]);
+  const parseDisciplines = () => {
+    if (disciplines.length !== 0) {
+      let disciplinesName = disciplines.map(discipline => {
+        return discipline.name;
+      });
+      // setParsedDisciplines(disciplinesName);
+      return disciplinesName;
+    }
+  };
+  const parseSkills = () => {
+    if (skills.length !== 0) {
+      let skillsName = skills.map(skill => {
+        return skill.name;
+      });
+      // setParsedDisciplines(disciplinesName);
+      return skillsName;
+    }
+  };
+  const parseLocations = () => {
+    if (locations.length !== 0) {
+      let locationName = locations.map(location => {
+        return location.name;
+      });
+      // setParsedDisciplines(disciplinesName);
+      return locationName;
+    }
+  };
   return (
     <div className="container">
       <div className="searchCard">
@@ -24,7 +86,7 @@ const Search = () => {
               </div>
             </td>
             <td>
-              <AutoComplete />
+              <AutoComplete elements={parseDisciplines()} />
             </td>
           </tr>
           <tr>
@@ -51,7 +113,7 @@ const Search = () => {
               </div>
             </td>
             <td>
-              <AutoComplete />
+              <AutoComplete elements={parseSkills()} />
             </td>
           </tr>
           <tr>
@@ -83,7 +145,7 @@ const Search = () => {
               </div>
             </td>
             <td>
-              <AutoComplete />
+              <AutoComplete elements={parseLocations()} />
             </td>
           </tr>
           <tr>
@@ -102,8 +164,18 @@ const Search = () => {
     </div>
   );
 };
-const mapStateToProps = state => {};
+const mapStateToProps = state => {
+  return {
+    disciplines: state.disciplines,
+    skills: state.skills,
+    locations: state.locations,
+  };
+};
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  loadDisciplines,
+  loadSkills,
+  loadLocations,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);
