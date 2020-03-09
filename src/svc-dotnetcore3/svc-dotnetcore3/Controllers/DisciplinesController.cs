@@ -30,7 +30,7 @@ namespace Web.API.Controllers
         }
 
         [HttpGet]
-        [Route("/disciplines/{name}")]
+        [Route("/disciplines/{name}", Name = "GetADiscipline")]
         public async Task<ActionResult<Discipline>> GetADiscipline(string name)
         {
             var response = await disciplinesRepository.GetADiscipline(name);
@@ -40,14 +40,14 @@ namespace Web.API.Controllers
         
         [HttpPut]
         [Route("/disciplines")]
-        public async Task<ActionResult<Discipline>> UpdateADiscipline(string name)
+        public async Task<ActionResult<Discipline>> UpdateADiscipline([FromBody] Discipline discipline)
         {
-            var response = await disciplinesRepository.GetADiscipline(name);
+            var response = await disciplinesRepository.UpdateADiscipline(discipline);
             var viewModel = mapper.Map<Discipline>(response);
             return Ok(viewModel);
         }
 
-        [HttpPut]
+        [HttpPost]
         [Route("/disciplines")]
         public async Task<ActionResult<Discipline>> AddADiscipline([FromBody] Discipline discipline)
         {
@@ -57,7 +57,7 @@ namespace Web.API.Controllers
         }
 
         [HttpDelete]
-        [Route("/disciplines")]
+        [Route("/disciplines/{name}")]
         public async Task<ActionResult<Discipline>> DeleteADiscipline(string name)
         {
             var response = await disciplinesRepository.DeleteADisicipline(name);

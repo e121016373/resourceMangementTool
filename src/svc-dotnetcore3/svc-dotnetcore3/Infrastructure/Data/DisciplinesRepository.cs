@@ -42,28 +42,30 @@ namespace Web.API.Infrastructure.Data
             return await connection.QueryFirstOrDefaultAsync<Discipline>(sql, new { Name = name });
         }
        
-        public async Task<Discipline> UpdateADiscipline(string oldName, string newName)
+        public async Task<Discipline> UpdateADiscipline(Discipline discipline)
         {
             var sql = @"
                 UPDATE Disciplines
-                SET Name = @NewName
-                WHERE Name = @OldName
+                SET Name = @Name
+                WHERE Id = @Id
             ;";
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            var param = new { 
-                NewName = newName,
-                OldName = oldName
-            };
-            return await connection.QueryFirstOrDefaultAsync<Discipline>(sql, param);
+            int result = await connection.ExecuteAsync(sql, new
+            {
+                discipline.Id,
+                discipline.Name
+            });
+            return result == 1 ? discipline : null;
         }
 
         public async Task<Discipline> AddADiscipline(Discipline discipline)
         {
             var sql = @"
                 INSERT INTO Disciplines ([Name])
-                VALUES (@Name)
+                VALUES (@Name);
+                SELECT cast(scope_identity() as int);
             ;";
 
             using var connection = new SqlConnection(connectionString);

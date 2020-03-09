@@ -11,10 +11,10 @@ namespace Web.API.Application.Repository
         Task<Skill> GetASkill(string name);
 
         // POST
-        Task<Skill> AddASkill(string name, string disciplineName);
+        Task<Skill> AddASkill(Skill skill);
 
         // PUT
-        Task<Skill> UpdateASkill(string oldName, string newName, string discipline);
+        Task<Skill> UpdateASkill(Skill skill);
         
         // DELETE
         Task<Skill> DeleteASkill(string name);

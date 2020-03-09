@@ -9,16 +9,20 @@ import PageNotFound from './PageNotFound';
 import AdminPage from './admin/AdminPage';
 import ProjectInfoPage from './projects/ProjectInfoPage';
 import UserInfoPage from './projects/UserInfoPage';
-import { PersonalProfile } from './personalProfile/personalProfile';
-import {ProjectsPage} from "./projects/ProjectsPage";
-
+import {ProjectsPage} from './projects/ProjectsPage';
+import PersonalProfile from './personalProfile/personalProfile';
+import Search from './search/search';
+import '../scss/sidebar.scss';
+import '../scss/profileMain.scss';
+import './App.css';
+import '../scss/search.scss';
 const App = () => {
   return (
-    <>
+    <div className="App">
       <Header />
       <Switch>
         {/*All our Routes goes here!*/}
-        <Route exact path="/" component={HomePage} />
+        <Route exact path="/homepage" component={HomePage} />
         <Route path="/users" component={UsersPage} />
         <Route
           path="/projects/:project/:user"
@@ -30,12 +34,17 @@ const App = () => {
         />
         <Route path="/projects" component={ProjectsPage} />
         <Route path="/locations" component={LocationsPage} />
-        <Route path="/personalProfile" component={PersonalProfile} />
+        <Route
+          exact
+          path="/personalProfile"
+          component={PersonalProfile}
+        />
         {/* add admin component */}
         <Route path="/admin" component={AdminPage} />
+        <Route path="/search" component={Search} />
         <Route component={PageNotFound} />
       </Switch>
-    </>
+    </div>
   );
 };
 

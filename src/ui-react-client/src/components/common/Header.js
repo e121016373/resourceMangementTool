@@ -2,8 +2,6 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import UserHeaderMenu from './UserHeaderMenu';
 import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import { NavDropdown } from 'react-bootstrap';
 import '../../scss/admin.scss';
 import '../../scss/header.scss';
 import AEICON from '../icons/associated-engineering-logo-png-transparent.png';
@@ -56,30 +54,18 @@ const Header = () => {
               admin
             </NavLink>
             {' | '}
-            <NavLink className="item" to="/personalProfile">
-              personalProfile
+            <NavLink className="item" to="/search">
+              search
             </NavLink>
-            {/* <NavDropdown
-              title="Dropdown"
-              id="collasible-nav-dropdown"
-            >
-              <NavDropdown.Item href="#action/3.1">
-                Action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">
-                Something
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown> */}
           </div>
         </Navbar.Collapse>
         <UserHeaderMenu />
+        <NavLink className="item" to="/personalProfile">
+          <i
+            style={{ color: 'white', 'margin-left': '12px' }}
+            className="far fa-user fa-2x"
+          ></i>
+        </NavLink>
       </Navbar>
     </>
   );

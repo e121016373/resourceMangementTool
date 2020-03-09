@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  width: 70%;
+}
+.searchCard {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  margin-top: 4%;
+  background-color: white;
+  z-index: 1;
+  border-radius: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+}
+.row {
+  margin: 1px;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  margin-bottom: 0;
+}
+.title {
+  margin: 7px;
+}
+.searchBox {
+  width: 200px;
+  height: 35px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  margin: 7px;
+  padding-left: 10;
+}
+.header {
+  margin-top: 20px;
+  margin-left: 20px;
+  font-size: large;
+  font-family: 'Times New Roman', Times, serif;
+}
+table {
+  font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  text-align: left;
+  width: 100%;
+  td,
+  th {
+    margin-top: 1px;
+    border-bottom: 1px solid #dddddd;
+    text-align: left;
+    padding: 1px;
+  }
+}

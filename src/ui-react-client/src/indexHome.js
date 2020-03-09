@@ -4,13 +4,13 @@ import './scss/home.scss';
 import configureStore from './redux/configureStore';
 import { Provider } from 'react-redux';
 import { runWithAdal } from 'react-adal';
-import { authContext } from './config/adalConfig';
+import { authContext, headers } from './config/adalConfig';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/ProjectsTableStyle.css';
 
 const store = configureStore();
-const DO_NOT_LOGIN = true;
+const DO_NOT_LOGIN = false;
 
 render(
   <Provider store={store}>
@@ -39,6 +39,7 @@ function authentication() {
   runWithAdal(
     authContext,
     () => {
+      console.log('the token is ', authContext);
       require('./indexApp.js');
     },
     DO_NOT_LOGIN,
