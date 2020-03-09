@@ -42,60 +42,51 @@ namespace Web.API.Infrastructure.Data
             return await connection.QueryFirstOrDefaultAsync<Skill>(sql, new { Name = name });
         }
 
-        public async Task<Skill> UpdateASkill(string oldName, string newName, string discipline)
+        public async Task<Skill> UpdateASkill(Skill skill)
         {
             var sql = @"
-                DECLARE \@DisciplineId INT
-                SET \@DisciplineId = (
-                    SELECT Id
-                    FROM Disciplines
-                    WHERE Name = @Discipline
-                )
-
                 UPDATE Skills
-                SET Name = @NewName, 
-                    DisciplineId = \@DisciplineId
-                WHERE Name = @OldName
+                SET Name = @Name
+                WHERE Id = @Id 
+                    AND DisciplineId = @DisciplineId
             ;";
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            var param = new { 
-                NewName = newName,
-                OldName = oldName,
-                Discipline = discipline
-            };
-            return await connection.QueryFirstOrDefaultAsync<Skill>(sql, param);
+            int result = await connection.ExecuteAsync(sql, new
+            {
+                skill.Id,
+                skill.DisciplineId,
+                skill.Name
+            });
+            return result == 1 ? skill : null;
         }
 
-        public async Task<Skill> AddASkill(string skillName, string disciplineName)
+        public async Task<Skill> AddASkill(Skill skill)
         {
             var sql = @"
-                DECLARE \@DisciplineId INT
-                SET \@DisciplineId = (
-                    SELECT Id
-                    FROM Disciplines
-                    WHERE Name = @Discipline
-                )
-
                 INSERT INTO Skills ([Name], [DisciplineId])
-                VALUES (@Name, @DisciplineId)
+                VALUES (@Name, @DisciplineId);
+
+                SELECT cast(scope_identity() as int);
             ;";
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            var param = new { 
-                Name = skillName,
-                Discipline = disciplineName
-            };
-            return await connection.QueryFirstOrDefaultAsync<Skill>(sql, param);
+            var id = await connection.QuerySingleAsync<int>(sql, new
+            {
+                skill.DisciplineId,
+                skill.Name
+            });
+            skill.Id = id;
+            return skill;
         }
 
         public async Task<Skill> DeleteASkill(string name)
         {
             var skill = await GetASkill(name);
             var sql = @"
-                DELETE FROM Disciplines
+                DELETE FROM Skills
                 WHERE Name = @Name
             ;";
 

@@ -65,6 +65,7 @@
     <None Include="Database.DEV.publish.xml" />
     <None Include="Database.DEV.test.publish.xml" />
     <None Include="Database.azure.corrected.publish.xml" />
+    <None Include="Database.DEV.test2.publish.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Locations.sql" />

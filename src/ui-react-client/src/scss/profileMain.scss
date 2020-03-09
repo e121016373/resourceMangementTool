@@ -1,0 +1,139 @@
+@import 'config';
+.pagination {
+  margin-top: 10px;
+  float: right;
+  a {
+    color: black;
+    float: left;
+    padding: 3px 8px;
+    text-decoration: none;
+    &:hover {
+      background-color: grey;
+    }
+  }
+  .active {
+    background-color: #4caf50;
+    color: white;
+    border-radius: 5px;
+  }
+}
+.profileMain {
+  float: right;
+  left: 18%;
+  width: 82%;
+  display: flex;
+
+  .col1 {
+    .chart {
+      width: 400px;
+      height: 200px;
+    }
+    .table {
+      font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      text-align: left;
+      width: 100%;
+      td,
+      th {
+        margin-top: 30px;
+        border-bottom: 1px solid #dddddd;
+        text-align: left;
+        padding: 15px;
+      }
+      button {
+        border: none;
+      }
+    }
+    .button-add {
+      margin: 10px;
+      float: left;
+      width: 40px;
+      height: 30px;
+    }
+    .content-add {
+      margin: 5px;
+      border-style: solid;
+      float: left;
+      display: flex;
+      border-width: 1px;
+      border-radius: 5px;
+      border-color: #e4e6eb;
+      input {
+        height: 30px;
+        margin: 10px;
+        font-size: 17px;
+      }
+
+      input::placeholder {
+        font-size: 15px;
+      }
+      button {
+        background-color: #fcba03; /* Green */
+        border: none;
+        color: white;
+        font-size: 20px;
+        margin: 10px 6px;
+        cursor: pointer;
+        &:hover {
+          background-color: #dea404;
+        }
+      }
+    }
+  }
+  .col2 {
+    width: 400px;
+    .table {
+      font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      text-align: left;
+      width: 100%;
+      td,
+      th {
+        margin-top: 30px;
+        border-bottom: 1px solid #dddddd;
+        text-align: left;
+        padding: 15px;
+      }
+      button {
+        border: none;
+      }
+    }
+    .button-add {
+      margin: 10px;
+      float: left;
+      width: 40px;
+      height: 30px;
+    }
+    .content-add {
+      width: 200px;
+      margin: 5px;
+      border-style: solid;
+      float: left;
+      display: flex;
+      border-width: 1px;
+      border-radius: 5px;
+      border-color: #e4e6eb;
+      input {
+        height: 30px;
+        margin: 10px;
+        font-size: 17px;
+      }
+
+      input::placeholder {
+        font-size: 15px;
+      }
+      button {
+        float: right;
+        background-color: #fcba03; /* Green */
+        border: none;
+        color: white;
+        font-size: 20px;
+        margin: 10px 6px;
+        cursor: pointer;
+        &:hover {
+          background-color: #dea404;
+        }
+      }
+    }
+  }
+}

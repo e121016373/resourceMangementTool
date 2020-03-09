@@ -21,7 +21,7 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 select
-                    Id, Number, Title, LocationId, CreatedAt, UpdatedAt
+                    Id, Number, Title, LocationId, CreatedAt, UpdatedAt, StartDate, EndDate, Hours
                 from
                     Projects
             ;";
@@ -35,7 +35,7 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 select top(25)
-                    Id, Number, Title, LocationId, CreatedAt, UpdatedAt
+                    Id, Number, Title, LocationId, CreatedAt, UpdatedAt, StartDate, EndDate, Hours
                 from
                     Projects
                 order by
@@ -51,7 +51,7 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 select 
-                    Id, Number, Title, LocationId, CreatedAt, UpdatedAt
+                    Id, Number, Title, LocationId, CreatedAt, UpdatedAt, StartDate, EndDate, Hours
                 from
                     Projects
                 where
@@ -67,9 +67,9 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 insert into Projects 
-                    (Number, Title, LocationId)
+                    (Number, Title, LocationId, StartDate, EndDate, Hours)
                 values 
-                    (@Number, @Title, @LocationId);
+                    (@Number, @Title, @LocationId, @StartDate, @EndDate, @Hours);
                 select cast(scope_identity() as int);
             ;";
 
@@ -78,7 +78,10 @@ namespace Web.API.Infrastructure.Data
             var id = await connection.QuerySingleAsync<int>(sql, new {
                 project.Number,
                 project.Title,
-                project.LocationId
+                project.LocationId,
+                project.StartDate,
+                project.EndDate,
+                project.Hours
             });
             project.Id = id;
             return project;
@@ -93,6 +96,9 @@ namespace Web.API.Infrastructure.Data
                     Number = @Number,
                     Title = @Title,
                     LocationId = @LocationId
+                    StartDate = @StartDate
+                    EndDate = @EndDate
+                    Hours = @Hours
                 where 
                     Id = @Id
             ;";
@@ -104,7 +110,10 @@ namespace Web.API.Infrastructure.Data
                 project.Id,
                 project.Number,
                 project.Title,
-                project.LocationId
+                project.LocationId,
+                project.StartDate,
+                project.EndDate,
+                project.Hours
             });
             return result == 1 ? project : null;
         }

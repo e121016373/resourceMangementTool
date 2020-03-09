@@ -31,7 +31,7 @@ namespace Web.API.Controllers
 
         [HttpGet]
         [Route("/users/{username}")]
-        public async Task<ActionResult<User>> GetAUser(string username)
+        public async Task<ActionResult<User>> GetAUser([FromRoute]string username)
         {
             var response = await usersRepository.GetAUser(username);
             var viewModel = mapper.Map<User>(response);
@@ -54,6 +54,15 @@ namespace Web.API.Controllers
             var response = await usersRepository.CreateAUser(user);
             var viewModel = mapper.Map<User>(response);
             return Created("GetAUser", viewModel);
+        }
+
+        [HttpPatch]
+        [Route("/users")]
+        public async Task<ActionResult<User>> UpdateAUser([FromBody] PersonalProfile pp)
+        {
+            var response = await usersRepository.UpdateAUser(pp);
+            var viewModel = mapper.Map<User>(response);
+            return Accepted("GetAUser", viewModel);
         }
     }
 }

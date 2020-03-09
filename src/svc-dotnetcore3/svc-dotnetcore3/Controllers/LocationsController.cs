@@ -30,10 +30,37 @@ namespace Web.API.Controllers
         }
 
         [HttpGet]
-        [Route("locations/{locationCode}")]
+        [Route("locations/{locationCode}", Name = "GetALocation")]
         public async Task<ActionResult<Location>> GetALocation(string locationCode)
         {
             var response = await locationsRepository.GetALocation(locationCode);
+            var viewModel = mapper.Map<Location>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpPost]
+        [Route("/locations")]
+        public async Task<ActionResult<Location>> CreateALocation([FromBody] Location location)
+        {
+            var response = await locationsRepository.CreateALocation(location);
+            var viewModel = mapper.Map<Location>(response);
+            return Created("GetALocation", viewModel);
+        }
+
+        [HttpPut]
+        [Route("/locations")]
+        public async Task<ActionResult<Location>> UpdateALocation([FromBody] Location location)
+        {
+            var response = await locationsRepository.UpdateALocation(location);
+            var viewModel = mapper.Map<Location>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpDelete]
+        [Route("/locations/{code}")]
+        public async Task<ActionResult<Location>> DeleteALocation([FromRoute] string code)
+        {
+            var response = await locationsRepository.DeleteALocation(code);
             var viewModel = mapper.Map<Location>(response);
             return Ok(viewModel);
         }
