@@ -21,7 +21,7 @@ namespace Web.API.Controllers
         }
 
         [HttpGet]
-        [Route("/sd/{username}")]
+        [Route("/userskills/{username}")]
         public async Task<ActionResult<IEnumerable<UserSD>>> GetASD([FromRoute]string username)
         {
             var response = await sdRepository.GetASD(username);
@@ -30,7 +30,7 @@ namespace Web.API.Controllers
         }
 
         [HttpDelete]
-        [Route("/sd/{username}/skill/{skill}")]
+        [Route("/userskills/{username}/{skill}")]
         public async Task<ActionResult<IEnumerable<UserSD>>> DeleteAS([FromRoute] string username, string skill)
         {
             var response = await sdRepository.DeleteAS(username, skill);
@@ -39,7 +39,7 @@ namespace Web.API.Controllers
         }
 
         [HttpDelete]
-        [Route("/sd/{username}/discipline/{discipline}")]
+        [Route("/userdiscipline/{username}/{discipline}")]
         public async Task<ActionResult<IEnumerable<UserSD>>> DeleteAD([FromRoute] string username, string discipline)
         {
             var response = await sdRepository.DeleteAS(username, discipline);
@@ -48,7 +48,7 @@ namespace Web.API.Controllers
         }
 
         [HttpPost]
-        [Route("/sd")]
+        [Route("/userskills")]
         public async Task<ActionResult<UserSD>> CreateASD([FromBody] UserSD usd)
         {
             var response = await sdRepository.CreateASD(usd);
@@ -57,7 +57,7 @@ namespace Web.API.Controllers
         }
 
         [HttpPatch]
-        [Route("/sd")]
+        [Route("/userskills")]
         public async Task<ActionResult<IEnumerable<UserSD>>> UpdateASD([FromBody] UserSD usd)
         {
             var response = await sdRepository.UpdateASD(usd);
