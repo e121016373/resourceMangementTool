@@ -21,7 +21,7 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 select
-                    Id, FirstName, LastName, Username, LocationId
+                    Id, FirstName, LastName, Username, LocationId, Type
                 from
                     Users
             ;";
@@ -35,7 +35,7 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 select
-                    Id, FirstName, LastName, Username, LocationId
+                    Id, FirstName, LastName, Username, LocationId, Type
                 from
                     Users
                 where 
@@ -51,9 +51,9 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 insert into Users 
-                    (Id, FirstName, LastName, Username, LocationId)
+                    (Id, FirstName, LastName, Username, LocationId, Type)
                 values 
-                    (@Id, @FirstName, @LastName, @Username, @LocationId);
+                    (@Id, @FirstName, @LastName, @Username, @LocationId, @Type);
                 select cast(scope_identity() as int);
             ;";
 
@@ -65,7 +65,8 @@ namespace Web.API.Infrastructure.Data
                 user.FirstName,
                 user.LastName,
                 user.Username,
-                user.LocationId
+                user.LocationId,
+                user.Type
 
             });
             user.Id = id;
@@ -85,7 +86,7 @@ namespace Web.API.Infrastructure.Data
             return user;
         }
 
-        public async Task<User> UpdateAUser(PersonalProfile pp)
+        public async Task<User> UpdateALocation(UserLocation pp)
         {
             var sql = @"
                 update Users
@@ -97,5 +98,6 @@ namespace Web.API.Infrastructure.Data
             await connection.ExecuteAsync(sql, new { Name = pp.Location, pp.Username });
             return await GetAUser(pp.Username);
         }
+
     }
 }

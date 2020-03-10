@@ -56,6 +56,7 @@ namespace Web.API
             services.AddScoped<ISkillsRepository>(sp => new SkillsRepository(connectionString));
             services.AddScoped<IAdminRepository>(sp => new AdminRepository(connectionString));
             services.AddScoped<IDisciplinesRepository>(sp => new DisciplinesRepository(connectionString));
+            services.AddScoped<ISDRepository>(sp => new SDRepository(connectionString));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
