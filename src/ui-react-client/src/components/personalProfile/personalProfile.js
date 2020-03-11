@@ -1,32 +1,42 @@
-import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ProfileMain from './profileMain';
 import Sidebar from './sidebar';
 import { loadPersonalProfile } from '../../redux/actions/personalProfileAction';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
 
-class PersonalProfile extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  componentDidMount() {
-    // console.log('the props is ', this.props);
-    this.props.loadPersonalProfile();
-    // console.log('the persona file ', this.props.personalProfileUser);
-  }
-  render() {
-    console.log(this.props.personalProfileUser);
+const PersonalProfile = ({
+  personalProfileUser,
+  loadPersonalProfile,
+}) => {
+  useEffect(() => {
+    if (Object.keys(personalProfileUser).length === 0) {
+      loadPersonalProfile().catch(error => {
+        alert('Loading personalProfile failed' + error);
+      });
+    }
+  }, [personalProfileUser]);
+
+  const renderPersonalProfile = () => {
+    if (Object.keys(personalProfileUser).length === 0) {
+      return <div>loading</div>;
+    }
     return (
       <div>
         <Sidebar
-          personalProfileUser={this.props.personalProfileUser}
+          personalProfileUser={personalProfileUser.userProfile}
         />
-        <ProfileMain />
+        <ProfileMain
+          skills={personalProfileUser.skills}
+          disciplines={personalProfileUser.disciplines}
+        />
       </div>
     );
-  }
-}
+  };
+
+  return <div>{renderPersonalProfile()}</div>;
+};
 
 PersonalProfile.propTypes = {
   personalProfileUser: PropTypes.object.isRequired,

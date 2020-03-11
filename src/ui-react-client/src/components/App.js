@@ -1,4 +1,3 @@
-import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 //Import all needed Components
 import Header from './common/Header';
@@ -9,17 +8,57 @@ import PageNotFound from './PageNotFound';
 import AdminPage from './admin/AdminPage';
 import ProjectInfoPage from './projects/ProjectInfoPage';
 import UserInfoPage from './projects/UserInfoPage';
-import {ProjectsPage} from './projects/ProjectsPage';
+import { ProjectsPage } from './projects/ProjectsPage';
 import PersonalProfile from './personalProfile/personalProfile';
 import Search from './search/search';
 import '../scss/sidebar.scss';
 import '../scss/profileMain.scss';
 import './App.css';
 import '../scss/search.scss';
-const App = () => {
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { loadPersonalProfile } from '../redux/actions/personalProfileAction';
+import { connect } from 'react-redux';
+// const PrivateRoute = ({ component: Component, ...rest }) => (
+//   <Route
+//     {...rest}
+//     render={props =>
+//       userType === 'Resource Manager' ? (
+//         <Component {...props} />
+//       ) : (
+//         <Redirect
+//           to={{
+//             pathname: '/',
+//           }}
+//         />
+//       )
+//     }
+//   />
+// );
+const App = ({ personalProfileUser, loadPersonalProfile }) => {
+  useEffect(() => {
+    if (Object.keys(personalProfileUser).length === 0) {
+      loadPersonalProfile().catch(error => {
+        alert('Loading personalProfile failed' + error);
+      });
+      console.log('tyeepeppe', personalProfileUser);
+      // userType = personalProfileUser.userProfile.type;
+    }
+  }, [personalProfileUser]);
+
+  const userType = personalProfileUser.userProfile
+    ? personalProfileUser.userProfile.type
+    : '';
+
+  const renderPrivateRoute = () => {
+    if (userType === 'Resource Manager') {
+      return <Route path="/projects" component={ProjectsPage} />;
+    }
+  };
   return (
     <div className="App">
       <Header />
+
       <Switch>
         {/*All our Routes goes here!*/}
         <Route exact path="/homepage" component={HomePage} />
@@ -28,11 +67,12 @@ const App = () => {
           path="/projects/:project/:user"
           component={UserInfoPage}
         />
-        <Route
+        {renderPrivateRoute()}
+        {/* <Route
           path="/projects/:project"
           component={ProjectInfoPage}
-        />
-        <Route path="/projects" component={ProjectsPage} />
+        /> */}
+        {/* <Route path="/projects" component={ProjectsPage} /> */}
         <Route path="/locations" component={LocationsPage} />
         <Route
           exact
@@ -47,5 +87,18 @@ const App = () => {
     </div>
   );
 };
+Header.propTypes = {
+  personalProfileUser: PropTypes.object.isRequired,
+  loadPersonalProfile: PropTypes.func.isRequired,
+};
 
-export default App;
+const mapStateToProps = state => ({
+  personalProfileUser: state.currentUserProfile,
+});
+
+const mapDispatchToProps = {
+  loadPersonalProfile: loadPersonalProfile,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+// export default App;
