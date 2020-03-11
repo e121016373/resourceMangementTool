@@ -18,16 +18,17 @@ export const Sidebar = ({ personalProfileUser }) => {
             </div>
           </div>
           <div className="profileText">
-            <h3>FirstName</h3>
-            <h4>{personalProfileUser.firstName}</h4>
-            <h3>LastName</h3>
-            <h4>{personalProfileUser.lastName}</h4>
-            <h3>UserName</h3>
-            <h4>{personalProfileUser.username}</h4>
-            <h3>Location</h3>
-            <h4>{personalProfileUser.locationId}</h4>
+            {/* <h4>Welcome</h4> */}
+            <h5 style={{ color: 'grey' }}>
+              {personalProfileUser.username}
+            </h5>
+            <h5 style={{ color: 'grey' }}>
+              {personalProfileUser.location}
+            </h5>
           </div>
-          <button onClick={open}>Edit</button>
+          <div className="btn-red" onClick={open}>
+            Edit
+          </div>
           {/* <Modal /> */}
         </div>
       </div>

@@ -28,6 +28,7 @@ const PersonalProfile = ({
           personalProfileUser={personalProfileUser.userProfile}
         />
         <ProfileMain
+          personalProfileUser={personalProfileUser.userProfile}
           skills={personalProfileUser.skills}
           disciplines={personalProfileUser.disciplines}
         />
