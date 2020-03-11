@@ -8,7 +8,7 @@ const baseURL = `${SVC_ROOT}disciplines/`;
 export const loadDisciplineAllData = disciplines => {
   return {
     type: types.LOAD_DISCIPLINES_ALL,
-    disciplines: disciplines,
+    disciplines: disciplines
   };
 };
 

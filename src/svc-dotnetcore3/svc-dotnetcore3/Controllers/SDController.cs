@@ -21,7 +21,7 @@ namespace Web.API.Controllers
         }
 
         [HttpGet]
-        [Route("/userskills/{username}")]
+        [Route("/personal/{username}")]
         public async Task<ActionResult<IEnumerable<UserSD>>> GetASD([FromRoute]string username)
         {
             var response = await sdRepository.GetASD(username);
@@ -29,26 +29,18 @@ namespace Web.API.Controllers
             return Ok(viewModel);
         }
 
-        [HttpDelete]
-        [Route("/userskills/{username}/{skill}")]
-        public async Task<ActionResult<IEnumerable<UserSD>>> DeleteAS([FromRoute] string username, string skill)
-        {
-            var response = await sdRepository.DeleteAS(username, skill);
-            var viewModel = mapper.Map<UserSD>(response);
-            return Ok(viewModel);
-        }
 
         [HttpDelete]
-        [Route("/userdiscipline/{username}/{discipline}")]
-        public async Task<ActionResult<IEnumerable<UserSD>>> DeleteAD([FromRoute] string username, string discipline)
+        [Route("/personal")]
+        public async Task<ActionResult<IEnumerable<UserSD>>> DeleteASD([FromBody] UserSD usd)
         {
-            var response = await sdRepository.DeleteAS(username, discipline);
-            var viewModel = mapper.Map<UserSD>(response);
+            var response = await sdRepository.DeleteASD(usd);
+            var viewModel = mapper.Map<IEnumerable<UserSD>>(response);
             return Ok(viewModel);
         }
 
         [HttpPost]
-        [Route("/userskills")]
+        [Route("/personal")]
         public async Task<ActionResult<UserSD>> CreateASD([FromBody] UserSD usd)
         {
             var response = await sdRepository.CreateASD(usd);
@@ -57,11 +49,11 @@ namespace Web.API.Controllers
         }
 
         [HttpPatch]
-        [Route("/userskills")]
+        [Route("/personal")]
         public async Task<ActionResult<IEnumerable<UserSD>>> UpdateASD([FromBody] UserSD usd)
         {
             var response = await sdRepository.UpdateASD(usd);
-            var viewModel = mapper.Map<UserSD>(response);
+            var viewModel = mapper.Map<IEnumerable<UserSD>>(response);
             return Accepted("GetASD", viewModel);
         }
     }
