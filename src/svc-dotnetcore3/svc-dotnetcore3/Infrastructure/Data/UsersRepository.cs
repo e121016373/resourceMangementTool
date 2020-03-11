@@ -98,6 +98,5 @@ namespace Web.API.Infrastructure.Data
             await connection.ExecuteAsync(sql, new { Name = pp.Location, pp.Username });
             return await GetAUser(pp.Username);
         }
-
     }
 }
