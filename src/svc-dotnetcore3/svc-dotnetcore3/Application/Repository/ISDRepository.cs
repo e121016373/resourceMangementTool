@@ -8,8 +8,7 @@ namespace Web.API.Application.Repository
     {
         Task<IEnumerable<UserSD>> GetASD(string username);
         Task<UserSD> CreateASD(UserSD usd);
-        Task<IEnumerable<UserSD>> DeleteAD(string username, string discipline);
-        Task<IEnumerable<UserSD>> DeleteAS(string username, string skill);
+        Task<IEnumerable<UserSD>> DeleteASD(UserSD usd);
         Task<IEnumerable<UserSD>> UpdateASD(UserSD usd);
     }
 }
