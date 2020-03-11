@@ -57,10 +57,10 @@ namespace Web.API.Controllers
         }
 
         [HttpPatch]
-        [Route("/users/location")]
-        public async Task<ActionResult<User>> UpdateALocation([FromBody] User user)
+        [Route("/users")]
+        public async Task<ActionResult<User>> UpdateAUser([FromBody] User user)
         {
-            var response = await usersRepository.UpdateALocation(user);
+            var response = await usersRepository.UpdateAUser(user);
             var viewModel = mapper.Map<User>(response);
             return Accepted("GetAUser", viewModel);
         }
