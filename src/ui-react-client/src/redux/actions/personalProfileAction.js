@@ -26,9 +26,13 @@ export const loadUserProfile = (userProfile, disciplines, skills) => {
 export const loadPersonalProfile = () => {
   return dispatch => {
     console.log('the URL is ', baseURL);
+
+    //personal profile
     return axios
       .get(baseURL, { headers })
       .then(response => {
+        console.log('the personal profile response ', response);
+
         //discipline request
         axios
           .get(`${SVC_ROOT}userdisciplines/${currentUser}`, {

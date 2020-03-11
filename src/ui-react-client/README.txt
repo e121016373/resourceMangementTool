@@ -5,3 +5,8 @@ date: 3/9
 3. clicking the figure on the right hand side of the hearder will go to personal profile.
 
 4. adding the collapsible feature to project table which will display projects detail for selected row.
+
+
+date:3/10
+1.add loading page to the 'personal profile page'
+2.add icons to the 'header'
