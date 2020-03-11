@@ -74,17 +74,18 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<UserSD>> DeleteASD(UserSD usd)
         { 
             var sql = @"
-                delete US from UserHasSkills US
-                 INNER JOIN UserWorksDiscipline UWD
-		            on UWD.UserId = US.UserId
-                 where US.UserId = (select Id from Users where Username = @Username)
-                AND US.DisciplineId = (select Id from Disciplines where Name = @Discipline)
-                AND US.SkillId = (select Id from Skills where Name = @Skill);
+                delete from UserHasSkills
+                    where UserId = (select Id from Users where Username = @Username)
+                    AND DisciplineId = (select Id from Disciplines where Name = @Discipline)
+                    AND SkillId = (select Id from Skills where Name = @Skill);
+                delete from UserWorksDiscipline
+                    where UserId = (select Id from Users where Username = @Username)
+                    AND DisciplineId = (select Id from Disciplines where Name = @Discipline);
              ";
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            await connection.ExecuteAsync(sql, new { usd.Username, usd.Discipline, usd.Skill });
+            await connection.ExecuteAsync(sql, new { Username = usd.Username, Discipline = usd.Discipline, Skill = usd.Skill });
             return await GetASD(usd.Username);
         }
 
