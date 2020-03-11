@@ -9,7 +9,7 @@ import PageNotFound from './PageNotFound';
 import AdminPage from './admin/AdminPage';
 import ProjectInfoPage from './projects/ProjectInfoPage';
 import UserInfoPage from './projects/UserInfoPage';
-import {ProjectsPage} from './projects/ProjectsPage';
+import { ProjectsPage } from './projects/ProjectsPage';
 import PersonalProfile from './personalProfile/personalProfile';
 import Search from './search/search';
 import '../scss/sidebar.scss';
@@ -20,6 +20,7 @@ const App = () => {
   return (
     <div className="App">
       <Header />
+
       <Switch>
         {/*All our Routes goes here!*/}
         <Route exact path="/homepage" component={HomePage} />
