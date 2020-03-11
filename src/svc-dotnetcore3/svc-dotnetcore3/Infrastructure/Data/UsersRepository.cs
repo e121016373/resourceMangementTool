@@ -21,9 +21,11 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 select
-                    Id, FirstName, LastName, Username, LocationId, Type
+                    U.Id, U.FirstName, U.LastName, U.Username, L.Name as Location, U.Type
                 from
-                    Users
+                    Users U
+                INNER JOIN Locations L
+                    on L.Id = U.LocationId
             ;";
 
             using var connection = new SqlConnection(connectionString);
@@ -35,9 +37,11 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 select
-                    Id, FirstName, LastName, Username, LocationId, Type
+                    U.Id, U.FirstName, U.LastName, U.Username, L.Name as Location, U.Type
                 from
-                    Users
+                    Users U
+                INNER JOIN Locations L
+                    on L.Id = U.LocationId
                 where 
                     Username = @Username
             ;";
@@ -53,7 +57,8 @@ namespace Web.API.Infrastructure.Data
                 insert into Users 
                     (Id, FirstName, LastName, Username, LocationId, Type)
                 values 
-                    (@Id, @FirstName, @LastName, @Username, @LocationId, @Type);
+                    (@Id, @FirstName, @LastName, @Username, 
+                    (select Id from Locations where Name = @Location), @Type);
                 select cast(scope_identity() as int);
             ;";
 
@@ -65,7 +70,7 @@ namespace Web.API.Infrastructure.Data
                 user.FirstName,
                 user.LastName,
                 user.Username,
-                user.LocationId,
+                user.Location,
                 user.Type
 
             });
@@ -86,17 +91,17 @@ namespace Web.API.Infrastructure.Data
             return user;
         }
 
-        public async Task<User> UpdateALocation(UserLocation pp)
+        public async Task<User> UpdateALocation(User user)
         {
             var sql = @"
                 update Users
-                set LocationID = (select Id from Locations where Name = @Name)
+                set LocationID = (select Id from Locations where Name = @Location)
                 where Username = @Username;
             ";
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            await connection.ExecuteAsync(sql, new { Name = pp.Location, pp.Username });
-            return await GetAUser(pp.Username);
+            await connection.ExecuteAsync(sql, new { Name = user.Location, user.Username });
+            return await GetAUser(user.Username);
         }
     }
 }
