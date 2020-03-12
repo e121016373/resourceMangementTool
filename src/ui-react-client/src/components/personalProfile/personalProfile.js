@@ -22,15 +22,15 @@ const PersonalProfile = ({
     if (Object.keys(personalProfileUser).length === 0) {
       return <div>loading</div>;
     }
-    // console.log('sss', personalProfileUser);
     return (
       <div>
-        {/* <Sidebarss
+        <Sidebar
           personalProfileUser={personalProfileUser.userProfile}
-        /> */}
+        />
         <ProfileMain
           personalProfileUser={personalProfileUser.userProfile}
-          disSkill={personalProfileUser.disSkill}
+          skills={personalProfileUser.skills}
+          disciplines={personalProfileUser.disciplines}
         />
       </div>
     );

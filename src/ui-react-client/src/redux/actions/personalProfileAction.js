@@ -10,12 +10,12 @@ const currentUser = authContext
 
 const baseURL = `${SVC_ROOT}users/${currentUser}`;
 
-export const loadUserProfile = (userProfile, disSkill) => {
+export const loadUserProfile = (userProfile, disciplines, skills) => {
   let profile = {
     userProfile: userProfile,
-    disSkill: disSkill,
+    disciplines: disciplines,
+    skills: skills,
   };
-  console.log('the total is ', profile);
   return { type: types.LOAD_PERSONALPROFILE, payload: profile };
 };
 
@@ -33,16 +33,29 @@ export const loadPersonalProfile = () => {
       .then(response => {
         console.log('the personal profile response ', response);
 
-        //discipline and skill request
+        //discipline request
         axios
-          .get(`${SVC_ROOT}personal/${currentUser}`, {
+          .get(`${SVC_ROOT}userdisciplines/${currentUser}`, {
             headers,
           })
-          .then(disSkillResponse => {
-            console.log('the personal skill', disSkillResponse);
-            dispatch(
-              loadUserProfile(response.data, disSkillResponse.data),
-            );
+          .then(disciplinesResponse => {
+            //skills request
+            axios
+              .get(`${SVC_ROOT}userskills/${currentUser}`, {
+                headers,
+              })
+              .then(skillsResponse => {
+                dispatch(
+                  loadUserProfile(
+                    response.data,
+                    disciplinesResponse.data,
+                    skillsResponse.data,
+                  ),
+                );
+              })
+              .catch(error => {
+                throw error;
+              });
           })
           .catch(error => {
             throw error;

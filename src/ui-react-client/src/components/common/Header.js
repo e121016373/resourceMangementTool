@@ -50,81 +50,76 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
   };
   console.log('the user type is ', userType);
   return (
-    <div>
-      <div className="Hnavbar">
-        <div>
-          <NavLink to="/">
-            <img src={AEICON}></img>
-          </NavLink>
-        </div>
-        <div>
-          <ul>
-            <li style={{ 'margin-left': '0px' }}>
-              <NavLink
-                className="item"
-                to="/"
-                activeStyle={activeStyle}
-                exact
-              >
-                <i
-                  style={{
-                    display: 'block',
-                  }}
-                  class="fas fa-home fa-lg"
-                ></i>
-                Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                className="item"
-                to="/search"
-                activeStyle={activeStyle}
-              >
-                <i
-                  style={{
-                    display: 'block',
-                  }}
-                  class="fas fa-search fa-lg"
-                ></i>
-                Search
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                className="item"
-                to="/personalProfile"
-                activeStyle={activeStyle}
-              >
-                <i
-                  style={{
-                    display: 'block',
-                  }}
-                  className="far fa-user fa-lg"
-                ></i>
-                Profile
-              </NavLink>
-            </li>
-            {renderProject()}
-          </ul>
-        </div>
-        <div className="logout" onClick={() => authContext.logOut()}>
-          <i
-            style={{
-              display: 'block',
-              color: 'white',
-            }}
-            className="fas fa-sign-out-alt fa-lg"
-          >
-            <h6
-              style={{ 'font-size': '15px', 'font-weight': 'bold' }}
-            >
-              Log out
-            </h6>
-          </i>
-        </div>
+    <div className="Hnavbar">
+      <div>
+        <NavLink to="/">
+          <img src={AEICON}></img>
+        </NavLink>
       </div>
-      <div class="space-occupy"></div>
+      <div>
+        <ul>
+          <li style={{ 'margin-left': '0px' }}>
+            <NavLink
+              className="item"
+              to="/"
+              activeStyle={activeStyle}
+              exact
+            >
+              <i
+                style={{
+                  display: 'block',
+                }}
+                class="fas fa-home fa-lg"
+              ></i>
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              className="item"
+              to="/search"
+              activeStyle={activeStyle}
+            >
+              <i
+                style={{
+                  display: 'block',
+                }}
+                class="fas fa-search fa-lg"
+              ></i>
+              Search
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              className="item"
+              to="/personalProfile"
+              activeStyle={activeStyle}
+            >
+              <i
+                style={{
+                  display: 'block',
+                }}
+                className="far fa-user fa-lg"
+              ></i>
+              Profile
+            </NavLink>
+          </li>
+          {renderProject()}
+        </ul>
+      </div>
+      <div className="logout" onClick={() => authContext.logOut()}>
+        <i
+          style={{
+            display: 'block',
+            color: 'white',
+          }}
+          className="fas fa-sign-out-alt fa-lg"
+        >
+          <h6 style={{ 'font-size': '15px', 'font-weight': 'bold' }}>
+            Log out
+          </h6>
+        </i>
+      </div>
     </div>
   );
 };

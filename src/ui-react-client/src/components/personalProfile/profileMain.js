@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import { data } from './data/DoughnutConfig';
 import { Doughnut } from 'react-chartjs-2';
 import Posts from './post';
@@ -7,7 +7,11 @@ import * as msg from './feedbackMsg/feedbackMsg';
 import { Modal } from './modal';
 import personImage from '../../image/person.png';
 
-const ProfileMain = ({ personalProfileUser, disSkill }) => {
+const ProfileMain = ({
+  skills,
+  disciplines,
+  personalProfileUser,
+}) => {
   const addSkill = () => {
     this.setState({
       ...this.state,
@@ -19,32 +23,6 @@ const ProfileMain = ({ personalProfileUser, disSkill }) => {
       ...this.state,
       showAddDiscipline: !this.state.showAddDiscipline,
     });
-  };
-
-  const parseDisSkill = () => {
-    let parsed = {};
-    disSkill.map(temp => {
-      if (!Object.keys(parsed).includes(temp.discipline)) {
-        parsed[temp.discipline] = {};
-        parsed[temp.discipline]['Years of experience'] = temp.yoe;
-        parsed[temp.discipline]['Skills'] = [];
-      }
-      parsed[temp.discipline]['Skills'].push(temp.skill);
-    });
-    parsed = Object.entries(parsed);
-    console.log(parsed);
-    return parsed;
-  };
-  const parsedDisSkill = parseDisSkill();
-
-  const [skills, setSkills] = useState(
-    parsedDisSkill[0][1]['Skills'],
-  );
-
-  // let skills = parsedDisSkill[0][1]['Skills'];
-  const updateSkills = index => {
-    setSkills(parsedDisSkill[index][1]['Skills']);
-    console.log(skills);
   };
 
   return (
@@ -100,15 +78,11 @@ const ProfileMain = ({ personalProfileUser, disSkill }) => {
                   <th scope="col">Years of experience</th>
                   <th scope="col">peration</th>
                 </tr>
-                {parsedDisSkill.map((discipline, index) => {
+                {disciplines.map((discipline, index) => {
                   return (
-                    <tr
-                      onClick={() => {
-                        updateSkills(index);
-                      }}
-                    >
-                      <td>{discipline[0]}</td>
-                      <td>{discipline[1]['Years of experience']}</td>
+                    <tr>
+                      <td>{discipline.discipline}</td>
+                      <td>{discipline.yoe}</td>
                       <td>
                         <button
                           // onClick={this.delete(index)}
@@ -159,7 +133,7 @@ const ProfileMain = ({ personalProfileUser, disSkill }) => {
                 {skills.map((skill, index) => {
                   return (
                     <tr>
-                      <td>{skill}</td>
+                      <td>{skill.Skills}</td>
                       <td>
                         <button
                           // onClick={this.delete(index)}
