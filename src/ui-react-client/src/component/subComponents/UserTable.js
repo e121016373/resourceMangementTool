@@ -47,33 +47,33 @@ const UserTable = ({
                     show={modalShow}
                     onHide={() => setModalShow(false)}
                 />
-            </ButtonToolbar>
-            <BootstrapTable data={ users } search ={true} pagination = {true} striped hover condensed>
-                <TableHeaderColumn width="150" dataField='id' isKey>Id</TableHeaderColumn>
-                <TableHeaderColumn width="150" dataField='firstName'>First Name</TableHeaderColumn>
-                <TableHeaderColumn width="150" dataField='lastName'>Last Name</TableHeaderColumn>
-                <TableHeaderColumn width="150" dataField='username'>User Name</TableHeaderColumn>
-                <TableHeaderColumn width="150" dataField='locationName'>Location</TableHeaderColumn>
-            </BootstrapTable>
-        </div>
-    );
+                </ButtonToolbar>
+    <BootstrapTable data={ users } search ={true} pagination = {true} striped hover condensed>
+        <TableHeaderColumn width="150" dataField='id' isKey>Id</TableHeaderColumn>
+        <TableHeaderColumn width="150" dataField='firstName'>First Name</TableHeaderColumn>
+        <TableHeaderColumn width="150" dataField='lastName'>Last Name</TableHeaderColumn>
+        <TableHeaderColumn width="150" dataField='username'>User Name</TableHeaderColumn>
+        <TableHeaderColumn width="150" dataField='location'>Location</TableHeaderColumn>
+        <TableHeaderColumn width="150" dataField='type'>Type</TableHeaderColumn>
+    </BootstrapTable>
+</div>
+);
 };
-
 const mapStateToProps = state => {
-    return {
-        users:
-            state.locations.length === 0
-                ? []
-                : state.users.map(user => {
-                    return {
-                        ...user,
-                        locationName: state.locations.find(
-                            element => element.id === user.locationId,
-                        ).name,
-                    };
-                }),
-        locations: state.locations,
-    };
+return {
+users:
+    state.locations.length === 0
+        ? []
+        : state.users.map(user => {
+            return {
+                ...user,
+                locationName: state.locations.find(
+                    element => element.id === user.locationId,
+                ),
+            };
+        }),
+locations: state.locations,
+};
 };
 
 const mapDispatchToProps = {
@@ -85,5 +85,3 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps,
 )(UserTable);
-
-
