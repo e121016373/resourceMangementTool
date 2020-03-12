@@ -40,6 +40,7 @@ namespace Web.API.Infrastructure.Data
                     AND D.Name = @Discipline
                     AND S.Name = @Skill
                     AND L.Name = @Location
+                    AND LTRIM(UWD.Year) = @YearOfExperience
             ;";
 
             using var connection = new SqlConnection(connectionString);
@@ -48,6 +49,7 @@ namespace Web.API.Infrastructure.Data
                 search.Discipline,
                 search.Skill,
                 search.Location,
+                search.YearOfExperience
             });
         }
     }
