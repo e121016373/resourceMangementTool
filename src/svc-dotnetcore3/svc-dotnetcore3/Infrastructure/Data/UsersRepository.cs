@@ -91,16 +91,17 @@ namespace Web.API.Infrastructure.Data
             return user;
         }
 
-        public async Task<User> UpdateALocation(User user)
+        public async Task<User> UpdateAUser(User user)
         {
             var sql = @"
                 update Users
-                set LocationID = (select Id from Locations where Name = @Location)
+                set LocationID = (select Id from Locations where Name = @Location),
+                    Type = @Type
                 where Username = @Username;
             ";
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            await connection.ExecuteAsync(sql, new { Name = user.Location, user.Username });
+            await connection.ExecuteAsync(sql, new { user.Location, user.Type, user.Username });
             return await GetAUser(user.Username);
         }
     }

@@ -33,6 +33,12 @@
       border-collapse: collapse;
       text-align: left;
       width: 100%;
+      tr {
+        &:hover {
+          color: grey;
+          cursor: pointer;
+        }
+      }
       td,
       th {
         margin-top: 30px;
