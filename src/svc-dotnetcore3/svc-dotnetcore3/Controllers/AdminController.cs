@@ -64,5 +64,13 @@ namespace Web.API.Controllers
             var viewModel = mapper.Map<Admin>(response);
             return Created("GetAAdmin", viewModel);
         }
+        [HttpPatch]
+        [Route("/adminlogin/{password}")]
+        public async Task<ActionResult<Admin>> UpdateAAdmin([FromRoute] string password, [FromBody] Admin admin)
+        {
+            var response = await adminRepository.UpdateAAdmin(password, admin);
+            var viewModel = mapper.Map<Admin>(response);
+            return Accepted(viewModel);
+        }
     }
 }

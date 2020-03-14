@@ -17,7 +17,7 @@ namespace Web.API.Infrastructure.Data
             this.connectionString = !string.IsNullOrWhiteSpace(connectionString) ? connectionString : throw new ArgumentNullException(nameof(connectionString));
         }
 
-        
+
         public async Task<IEnumerable<UserProject>> GetProject(string username)
         {
             var sql = @"
@@ -36,6 +36,68 @@ namespace Web.API.Infrastructure.Data
             connection.Open();
             return await connection.QueryAsync<UserProject>(sql, new { Username = username });
         }
+        public async Task<UserProject> CreateProject(string username, UserProject proj)
+        {
+            var sql = @"
+                insert into UserInProjects
+                (UserId, ProjectId, FromDate, ToDate, Hours)
+                values ((select Id from Users where Username = @Username),
+                (select Id from Projects where Title = @Project),
+                @FromDate, @ToDate, @Hours)
+            ;";
 
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            await connection.ExecuteAsync(sql, new
+            {
+                Username = username,
+                Project = proj.Project,
+                FromDate = proj.FromDate,
+                ToDate = proj.ToDate,
+                Hours = proj.Hours
+            });
+            return proj;
+        }
+        public async Task<UserProject> DeleteProject(string username, UserProject proj)
+        {
+            var sql = @"
+                delete from UserInProjects
+                where ProjectId = (select Id from Projects where Title = @Project)
+                and UserId = (select Id from Users where Username = @Username)
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            await connection.ExecuteAsync(sql, new
+            {
+                Username = username,
+                Project = proj.Project
+            });
+            return proj;
+        }
+        public async Task<UserProject> UpdateProject(string username, UserProject proj)
+        {
+            var sql = @"
+                update UserInProjects
+                set FromDate = @FromDate,
+                    ToDate = @ToDate,
+                    Hours = @Hours
+                where UserId = (select Id from Users where Username = @Username)
+                and ProjectId = (select Id from Projects where Title = @Project)
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            await connection.ExecuteAsync(sql, new
+            {
+                Username = username,
+                Project = proj.Project,
+                FromDate = proj.FromDate,
+                ToDate = proj.ToDate,
+                Hours = proj.Hours
+            });
+            return proj;
+
+        }
     }
 }

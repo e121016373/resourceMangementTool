@@ -55,9 +55,9 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 insert into Users 
-                    (Id, FirstName, LastName, Username, LocationId, Type)
+                    (FirstName, LastName, Username, LocationId, Type)
                 values 
-                    (@Id, @FirstName, @LastName, @Username, 
+                    (@FirstName, @LastName, @Username, 
                     (select Id from Locations where Name = @Location), @Type);
                 select cast(scope_identity() as int);
             ;";
@@ -66,7 +66,6 @@ namespace Web.API.Infrastructure.Data
             connection.Open();
             var id = await connection.QuerySingleAsync<int>(sql, new
             {
-                user.Id,
                 user.FirstName,
                 user.LastName,
                 user.Username,

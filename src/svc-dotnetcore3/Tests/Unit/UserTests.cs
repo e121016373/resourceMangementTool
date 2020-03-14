@@ -1,4 +1,8 @@
 ﻿using FluentAssertions;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using Web.API.Application.Models;
 using Xunit;
 
@@ -15,13 +19,14 @@ namespace Tests.Unit
                 FirstName = "John",
                 LastName = "Doe",
                 Username = "doej",
-                LocationId = 8
+                Location = "Vancouver"
             };
 
             properties.Id.Should().Be(1);
             properties.FirstName.Should().Be("John");
             properties.LastName.Should().Be("Doe");
-            properties.LocationId.Should().Be(8);
+            properties.Location.Should().Be("Vancouver");
+        }
         }
     }
 }

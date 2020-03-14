@@ -95,9 +95,9 @@ namespace Web.API.Infrastructure.Data
                 set 
                     Number = @Number,
                     Title = @Title,
-                    LocationId = @LocationId
-                    StartDate = @StartDate
-                    EndDate = @EndDate
+                    LocationId = @LocationId,
+                    StartDate = @StartDate,
+                    EndDate = @EndDate,
                     Hours = @Hours
                 where 
                     Id = @Id
@@ -115,7 +115,7 @@ namespace Web.API.Infrastructure.Data
                 project.EndDate,
                 project.Hours
             });
-            return result == 1 ? project : null;
+            return project;
         }
 
         public async Task<Project> DeleteAProject(string number)
