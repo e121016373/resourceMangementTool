@@ -27,6 +27,5 @@ namespace Tests.Unit
             properties.LastName.Should().Be("Doe");
             properties.Location.Should().Be("Vancouver");
         }
-        }
     }
 }
