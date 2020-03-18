@@ -8,6 +8,7 @@ import ProjectsPage from './projects/ProjectsPage';
 import LocationsPage from './locations/LocationsPage';
 import PageNotFound from './PageNotFound';
 import AdminPage from './admin/AdminPage';
+
 const App = () => {
   return (
     <>
@@ -17,9 +18,8 @@ const App = () => {
         <Route exact path="/users" component={HomePage} />
         <Route path="/users/users" component={UsersPage} />
         <Route path="/users/projects" component={ProjectsPage} />
-        <Route path="/users/locations" component={LocationsPage} />
+        <Route path="/locations" component={LocationsPage} />
         {/* add admine component */}
-        <Route path="/users/admin" component={AdminPage} />
         <Route component={PageNotFound} />
       </Switch>
     </>

@@ -1,9 +1,10 @@
 .barContent {
-  position: flex;
-  align-content: center;
   .item {
     color: white;
     margin-right: 10px;
+    position: flex;
+    flex-direction: row;
+    align-content: center;
     &:hover {
       color: grey;
     }

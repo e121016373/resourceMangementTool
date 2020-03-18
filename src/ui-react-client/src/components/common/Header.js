@@ -12,7 +12,7 @@ const Header = () => {
   return (
     <>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Navbar.Brand href="#home">Users</Navbar.Brand>
+        <Navbar.Brand>Users</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <div className="barContent">
@@ -24,10 +24,10 @@ const Header = () => {
             >
               Home
             </NavLink>
-
+            {' | '}
             <NavLink
               className="item"
-              to="/users"
+              to="/users/users"
               activeStyle={activeStyle}
             >
               Users
@@ -35,7 +35,7 @@ const Header = () => {
             {' | '}
             <NavLink
               className="item"
-              to="/projects"
+              to="/users/projects"
               activeStyle={activeStyle}
             >
               Projects
@@ -49,9 +49,6 @@ const Header = () => {
               Locations
             </NavLink>
             {' | '}
-            <NavLink className="item" to="/admin">
-              admin
-            </NavLink>
             {/* <NavDropdown
               title="Dropdown"
               id="collasible-nav-dropdown"

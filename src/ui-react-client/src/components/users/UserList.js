@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import Table from 'react-bootstrap/Table';
 const UserList = ({ users }) => {
   return (
     <>
-      <table>
+      <Table striped bordered hover variant="dark">
         <thead>
           <tr>
             <th>Id</th>
@@ -25,7 +25,7 @@ const UserList = ({ users }) => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     </>
   );
 };

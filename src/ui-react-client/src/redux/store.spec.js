@@ -4,6 +4,7 @@ import initialState from './reducers/_initialState';
 import * as projectsActions from './actions/projectsActions';
 
 it('Should handle creating projects', () => {
+  console.log('1', rootReducer);
   const store = createStore(rootReducer, initialState);
   const project = {
     number: '2020-ABC-001',

@@ -7,11 +7,14 @@ import { Provider } from 'react-redux';
 
 const store = configureStore();
 
-render(
-  <Provider store={store}>
-    <Router>
-      <App />
-    </Router>
-  </Provider>,
-  document.getElementById('root'),
-);
+const Users = () => {
+  return (
+    <Provider store={store}>
+      <Router>
+        <App />
+      </Router>
+    </Provider>
+  );
+};
+
+export default Users;

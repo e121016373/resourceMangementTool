@@ -10,19 +10,16 @@ import {
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import configureStore from './redux/configureStore';
-import { Login } from './components/login/login';
+import LoginPage from './components/login/LoginPage';
+import AdminPage from './components/admin/AdminPage';
 const store = configureStore();
-render(
+const indexAdmin = render(
   <Provider store={store}>
-    <Login />
-    {/* <Router>
-      <NavLink to="/admin/login"></NavLink>
-      <Switch>
-        <nav>
-          <Route path="/admin/login" component={Login} />
-        </nav>
-      </Switch>
-    </Router> */}
+    <Router>
+      <Route path="/adminpage" component={AdminPage} />
+    </Router>
+    <LoginPage />
   </Provider>,
   document.getElementById('root'),
 );
+export default indexAdmin;
