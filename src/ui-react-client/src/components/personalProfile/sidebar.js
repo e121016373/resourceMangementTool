@@ -3,9 +3,13 @@ import personImage from '../../image/person.png';
 import { Modal } from './modal';
 import { editLocation } from '../../redux/actions/personalProfileAction';
 import { connect } from 'react-redux';
-import * as msg from './feedbackMsg/feedbackMsg';
-export const Sidebar = ({ personalProfileUser, editLocation }) => {
-  const [msgContent, SetmsgContent] = useState([]);
+import ShowFeedbackMsg from '../feedbackMsg/feedbackMsg';
+import { addFeedback } from '../../redux/actions/feedbackAction';
+export const Sidebar = ({
+  personalProfileUser,
+  editLocation,
+  addFeedback,
+}) => {
   const edit = () => {
     let location = document.getElementById('location');
     location.disabled = false;
@@ -22,14 +26,19 @@ export const Sidebar = ({ personalProfileUser, editLocation }) => {
       .then(() => {
         location.disabled = true;
         content.style.transform = 'translateY(0px)';
-        SetmsgContent({
+        addFeedback({
           type: 'success',
-          data: 'EditLocation successfully',
+          data: 'Edit Location successfully',
           show: true,
         });
-        console.log(msgContent);
       })
-      .catch(error => {});
+      .catch(error => {
+        addFeedback({
+          type: 'error',
+          data: 'Edit Location unsuccessfully',
+          show: true,
+        });
+      });
     // console.log('the status is ', status);
     // if (status === '202') {
     //   content.style.transform = 'translateY(0px)';
@@ -37,7 +46,6 @@ export const Sidebar = ({ personalProfileUser, editLocation }) => {
   };
   return (
     <div>
-      <msg.ShowFeedbackMsg msg={msgContent} />
       <div className="sidebar">
         <div>
           <div className="profileImage">
@@ -87,6 +95,7 @@ export const Sidebar = ({ personalProfileUser, editLocation }) => {
 
 const mapDispatchToProps = {
   editLocation: editLocation,
+  addFeedback: addFeedback,
 };
 
 export default connect(null, mapDispatchToProps)(Sidebar);

@@ -3,7 +3,7 @@ import { data } from './data/DoughnutConfig';
 import { Doughnut } from 'react-chartjs-2';
 import Posts from './post';
 import Table from './table';
-import * as msg from './feedbackMsg/feedbackMsg';
+import * as msg from '../feedbackMsg/feedbackMsg';
 import { Modal } from './modal';
 import personImage from '../../image/person.png';
 

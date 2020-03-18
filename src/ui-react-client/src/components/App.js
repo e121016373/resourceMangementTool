@@ -21,6 +21,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { loadPersonalProfile } from '../redux/actions/personalProfileAction';
 import { connect } from 'react-redux';
+import ShowFeedbackMsg from './feedbackMsg/feedbackMsg';
+
 // const PrivateRoute = ({ component: Component, ...rest }) => (
 //   <Route
 //     {...rest}
@@ -60,7 +62,7 @@ const App = ({ personalProfileUser, loadPersonalProfile }) => {
   return (
     <div className="App">
       <Header />
-
+      <ShowFeedbackMsg />
       <Switch>
         {/*All our Routes goes here!*/}
         <Route exact path="/" component={Loading} />
