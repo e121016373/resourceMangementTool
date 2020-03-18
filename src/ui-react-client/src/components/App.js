@@ -6,6 +6,7 @@ import UsersPage from './users/UsersPage';
 import LocationsPage from './locations/LocationsPage';
 import PageNotFound from './PageNotFound';
 import AdminPage from './admin/AdminPage';
+import Loading from './loading/loading';
 import ProjectInfoPage from './projects/ProjectInfoPage';
 import UserInfoPage from './projects/UserInfoPage';
 import { ProjectsPage } from './projects/ProjectsPage';
@@ -15,6 +16,7 @@ import '../scss/sidebar.scss';
 import '../scss/profileMain.scss';
 import './App.css';
 import '../scss/search.scss';
+import '../scss/loading.scss';
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { loadPersonalProfile } from '../redux/actions/personalProfileAction';
@@ -61,7 +63,7 @@ const App = ({ personalProfileUser, loadPersonalProfile }) => {
 
       <Switch>
         {/*All our Routes goes here!*/}
-        <Route exact path="/homepage" component={HomePage} />
+        <Route exact path="/" component={Loading} />
         <Route path="/users" component={UsersPage} />
         <Route
           path="/projects/:project/:user"
@@ -72,7 +74,7 @@ const App = ({ personalProfileUser, loadPersonalProfile }) => {
           path="/projects/:project"
           component={ProjectInfoPage}
         /> */}
-        {/* <Route path="/projects" component={ProjectsPage} /> */}
+
         <Route path="/locations" component={LocationsPage} />
         <Route
           exact

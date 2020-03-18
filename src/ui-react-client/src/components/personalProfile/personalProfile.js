@@ -25,9 +25,9 @@ const PersonalProfile = ({
     // console.log('sss', personalProfileUser);
     return (
       <div>
-        {/* <Sidebarss
+        <Sidebar
           personalProfileUser={personalProfileUser.userProfile}
-        /> */}
+        />
         <ProfileMain
           personalProfileUser={personalProfileUser.userProfile}
           disSkill={personalProfileUser.disSkill}

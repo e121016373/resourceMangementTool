@@ -62,27 +62,15 @@ const ProfileMain = ({ personalProfileUser, disSkill }) => {
         ]}
       /> */}
       <div
-        style={{ display: 'flex', 'flex-direction': 'row' }}
+        style={{
+          display: 'flex',
+          'flex-direction': 'row',
+          width: '100vw',
+          height: '100vh',
+          margin: 0,
+        }}
         className="card"
       >
-        <div className="sidebar">
-          <div>
-            <div className="profileImage">
-              <div className="personImage">
-                <img src={personImage}></img>
-              </div>
-            </div>
-            <div className="profileText">
-              {/* <h4>Welcome</h4> */}
-              <h5 style={{ color: 'grey' }}>
-                {personalProfileUser.username}
-              </h5>
-              <h5 style={{ color: 'grey' }}>vancouver</h5>
-            </div>
-            <div className="btn-red">Edit</div>
-            {/* <Modal /> */}
-          </div>
-        </div>
         <div className="col1">
           <div className="card">
             <div className="chart">

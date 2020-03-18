@@ -10,7 +10,9 @@ import { loadPersonalProfile } from '../../redux/actions/personalProfileAction';
 import { connect } from 'react-redux';
 
 const Header = ({ personalProfileUser, loadPersonalProfile }) => {
-  const activeStyle = { color: '#B39CD0' };
+  const activeStyle = {
+    // color: '#B39CD0',
+  };
 
   useEffect(() => {
     if (Object.keys(personalProfileUser).length === 0) {
@@ -30,25 +32,48 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
     if (userType === 'Resource Manager') {
       return (
         <li>
-          <NavLink
-            className="item"
-            to="/projects"
-            activeStyle={activeStyle}
-          >
-            <i
-              style={{
-                display: 'block',
-              }}
-              class="fas fa-calendar-minus fa-lg"
-            ></i>
-            Projects
-          </NavLink>
+          <div>
+            <NavLink
+              className="item"
+              to="/projects"
+              activeStyle={activeStyle}
+            >
+              <div onClick={e => moveBar(e)}>
+                <i
+                  style={{
+                    display: 'block',
+                  }}
+                  class="fas fa-calendar-minus fa-lg"
+                ></i>
+                Projects
+              </div>
+            </NavLink>
+          </div>
         </li>
       );
     }
     return <div></div>;
   };
   console.log('the user type is ', userType);
+  let originalBarPosition;
+  const moveBar = e => {
+    // let offsets = e.getBoundingClientRect();
+    // let top = offsets.top;
+    // let left = offsets.left;
+    let bar = document.getElementById('bar');
+    if (originalBarPosition === undefined) {
+      originalBarPosition = document
+        .getElementById('bar')
+        .getBoundingClientRect().x;
+    }
+    let difference =
+      e.target.getBoundingClientRect().x - originalBarPosition - 4;
+    console.log('the difference is ', bar.style.transform);
+    bar.style.transform = 'translate(' + difference + 'px)';
+    bar.style.width =
+      e.target.getBoundingClientRect().width + 8 + 'px';
+    console.log('the width  ', bar.style.width);
+  };
   return (
     <div>
       <div className="Hnavbar">
@@ -66,13 +91,15 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
                 activeStyle={activeStyle}
                 exact
               >
-                <i
-                  style={{
-                    display: 'block',
-                  }}
-                  class="fas fa-home fa-lg"
-                ></i>
-                Home
+                <div onClick={e => moveBar(e)}>
+                  <i
+                    style={{
+                      display: 'block',
+                    }}
+                    class="fas fa-home fa-lg"
+                  ></i>
+                  Home
+                </div>
               </NavLink>
             </li>
             <li>
@@ -81,13 +108,15 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
                 to="/search"
                 activeStyle={activeStyle}
               >
-                <i
-                  style={{
-                    display: 'block',
-                  }}
-                  class="fas fa-search fa-lg"
-                ></i>
-                Search
+                <div id="search" onClick={e => moveBar(e)}>
+                  <i
+                    style={{
+                      display: 'block',
+                    }}
+                    class="fas fa-search fa-lg"
+                  ></i>
+                  Search
+                </div>
               </NavLink>
             </li>
             <li>
@@ -96,17 +125,20 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
                 to="/personalProfile"
                 activeStyle={activeStyle}
               >
-                <i
-                  style={{
-                    display: 'block',
-                  }}
-                  className="far fa-user fa-lg"
-                ></i>
-                Profile
+                <div onClick={e => moveBar(e)}>
+                  <i
+                    style={{
+                      display: 'block',
+                    }}
+                    className="far fa-user fa-lg"
+                  ></i>
+                  Profile
+                </div>
               </NavLink>
             </li>
             {renderProject()}
           </ul>
+          <div id="bar" className="bar"></div>
         </div>
         <div className="logout" onClick={() => authContext.logOut()}>
           <i
@@ -124,7 +156,7 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
           </i>
         </div>
       </div>
-      <div class="space-occupy"></div>
+      <div className="space-occupy"></div>
     </div>
   );
 };

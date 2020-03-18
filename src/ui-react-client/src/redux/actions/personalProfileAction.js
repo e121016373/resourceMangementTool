@@ -19,6 +19,14 @@ export const loadUserProfile = (userProfile, disSkill) => {
   return { type: types.LOAD_PERSONALPROFILE, payload: profile };
 };
 
+export const editLocationAction = userProfile => {
+  return {
+    type: types.EDIT_LOCATION,
+    payload: userProfile.data,
+    status: userProfile.status,
+  };
+};
+
 // export const loadUserDisciplineAction = discipline => {
 //   return { type: types.LOAD_USERDISCIPLINE_ALL, payload: discipline };
 // };
@@ -54,16 +62,18 @@ export const loadPersonalProfile = () => {
   };
 };
 
-// export const loadUserDiscipline = () => {
-//   return dispatch => {
-//     console.log(`${SVC_ROOT}userdisciplines/${currentUser}`, baseURL);
-//     return axios
-//       .get(baseURL, { headers })
-//       .then(response => {
-//         dispatch(loadUserDisciplineAction(response.data));
-//       })
-//       .catch(error => {
-//         throw error;
-//       });
-//   };
-// };
+export const editLocation = profile => {
+  return dispatch => {
+    console.log('editlocatio url', `${SVC_ROOT}users`, baseURL);
+    let url = `${SVC_ROOT}users`;
+    return axios
+      .patch(url, { header: headers }, { data: profile })
+      .then(response => {
+        dispatch(editLocationAction(response));
+        return response;
+      })
+      .catch(error => {
+        throw error;
+      });
+  };
+};

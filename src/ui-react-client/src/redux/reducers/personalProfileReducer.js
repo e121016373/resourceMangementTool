@@ -7,6 +7,9 @@ const executeLoadPersonalProfileUser = (state, action) => {
 const execteLoadDiscipline = (state, action) => {
   return { ...state, discipline: action.payload };
 };
+const execteEditLocation = (state, action) => {
+  return { ...state, userProfile: action.payload };
+};
 export const personalProfileReducer = (
   state = initialState.currentUserProfile,
   action,
@@ -14,6 +17,8 @@ export const personalProfileReducer = (
   switch (action.type) {
     case types.LOAD_PERSONALPROFILE:
       return executeLoadPersonalProfileUser(state, action);
+    case types.EDIT_LOCATION:
+      return execteEditLocation(state, action);
     default:
       return state;
   }

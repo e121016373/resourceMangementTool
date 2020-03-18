@@ -1,6 +1,6 @@
 import '../../../scss/feedbackMsg.scss';
 import React, { useState, useEffect } from 'react';
-export const ShowSuccessMsg = ({ msg }) => {
+export const ShowFeedbackMsg = ({ msg }) => {
   const [show, setShow] = useState(true);
   let [message, setMsg] = useState(msg);
   return (
@@ -27,10 +27,4 @@ export const ShowSuccessMsg = ({ msg }) => {
       ))}
     </ul>
   );
-};
-export const showWarningMsg = () => {
-  console.log('show Warning msg');
-};
-export const showErrorMsg = () => {
-  console.log('show Error msg');
 };
