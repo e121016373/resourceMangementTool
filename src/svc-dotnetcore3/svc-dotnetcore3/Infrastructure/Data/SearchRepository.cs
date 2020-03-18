@@ -18,7 +18,7 @@ namespace Web.API.Infrastructure.Data
         }
 
         //return a list of user based on discipline, skill, and location
-        //TODO fix year, dateRange, availability
+        //TODO fix dateRange, availability
         public async Task<IEnumerable<User>> GetAllUsers(Search search)
         {
             var sql = @"
@@ -36,11 +36,22 @@ namespace Web.API.Infrastructure.Data
                     AND UHS.UserId = U.Id
                     AND L.Id = U.LocationId
                     AND UWD.DisciplineId = D.Id
-                    AND S.Id = UHS.SkillId
-                    AND D.Name = @Discipline
-                    AND S.Name = @Skill
-                    AND L.Name = @Location
-            ;";
+                    AND S.Id = UHS.SkillId";
+
+            if (search.Discipline != null) {
+                sql += " AND D.Name = @Discipline";
+            }
+            if (search.Skill != null) {
+                sql += " AND S.Name = @Skill";
+            }
+            if (search.Location != null) {
+                sql += " AND L.Name = @Location";
+            }
+            if (search.YearOfExperience != null) {
+                sql += " AND LTRIM(UWD.Year) = @YearOfExperience";
+            }
+            sql += ";";
+            
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
@@ -48,6 +59,7 @@ namespace Web.API.Infrastructure.Data
                 search.Discipline,
                 search.Skill,
                 search.Location,
+                search.YearOfExperience
             });
         }
     }

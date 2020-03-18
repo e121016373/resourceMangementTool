@@ -20,5 +20,7 @@ namespace Tests.Unit
             properties.Code.Should().Be("bur");
             properties.Name.Should().Be("Burnaby");
         }
+
+
     }
 }

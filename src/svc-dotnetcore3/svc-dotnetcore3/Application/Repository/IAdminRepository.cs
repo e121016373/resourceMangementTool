@@ -11,5 +11,6 @@ namespace Web.API.Application.Repository
         Task<Admin> CheckAAdmin(string username, string password);
         Task<Admin> DeleteAAdmin(string username);
         Task<Admin> CreateAAdmin(Admin admin);
+        Task<Admin> UpdateAAdmin(string password, Admin admin);
     }
 }
