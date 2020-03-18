@@ -7,7 +7,7 @@
     [UpdatedAt] DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
     [StartDate] DATE NOT NULL DEFAULT CONVERT(date, SYSUTCDATETIME()),
     [EndDate] DATE NOT NULL DEFAULT CONVERT(date, SYSUTCDATETIME()),
-	[Hours] [int] NOT NULL
+	[Hours] nvarchar(4000) NOT NULL
  CONSTRAINT [PK_Projects] PRIMARY KEY CLUSTERED ([Id]),
  CONSTRAINT [FK_Projects_Locations] FOREIGN KEY ([LocationId]) REFERENCES [Locations]([Id]),
  CONSTRAINT [UK_Projects_Number] UNIQUE ([Number])
