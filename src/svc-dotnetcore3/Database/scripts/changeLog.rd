@@ -9,3 +9,10 @@ A random function was used to assign the statuses.
 There is no FromDate within UserHasProjects. Henceforth, this is not added. 
 All ToDate wihtin UserHasProjects have '2021-11-11'. Henceforth, this is used. 
 Here is the script that I made for populating: https://repl.it/repls/SpottedSimilarList
+
+Change 2: I have added the columns FromDateYear,FromDateMonth, FromDateDay, ToDateYear, ToDateMonth, ToDateDay, so that it is easier
+to select year, month and day for the backend. 
+The user 'turcotter' the id is 3 and the locationId is 75. I have added all the projects with the corresponding locationID
+The scripts are here: 
+https://repl.it/repls/LeftWoodenCustomer
+https://repl.it/repls/UnconsciousSpectacularOpentracker
