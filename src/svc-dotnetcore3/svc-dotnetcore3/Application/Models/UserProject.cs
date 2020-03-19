@@ -6,6 +6,6 @@
         public string Location { get; set; }
         public string FromDate { get; set; }
         public string ToDate { get; set; }
-        public int Hours { get; set; }
+        public string Hours { get; set; }
     }
 }

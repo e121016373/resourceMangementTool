@@ -12,6 +12,6 @@ namespace Web.API.Application.Models
         public DateTime UpdatedAt { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public int Hours { get; set; }
+        public string Hours { get; set; }
     }
 }

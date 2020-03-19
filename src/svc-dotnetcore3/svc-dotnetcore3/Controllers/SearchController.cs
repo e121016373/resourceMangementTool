@@ -28,5 +28,14 @@ namespace Web.API.Controllers
             var viewModel = mapper.Map<IEnumerable<User>>(response);
             return Ok(viewModel);
         }
+
+        [HttpGet]
+        [Route("/search/projects")]
+        public async Task<ActionResult<IEnumerable<Project>>> GetAllProjects([FromBody] Search search)
+        {
+            var response = await searchRepository.GetAllProjects(search);
+            var viewModel = mapper.Map<IEnumerable<Project>>(response);
+            return Ok(viewModel);
+        }
     }
 }

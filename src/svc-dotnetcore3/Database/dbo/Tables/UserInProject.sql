@@ -3,8 +3,8 @@ CREATE TABLE [dbo].[UserInProjects](
 	[ProjectId] INT NOT NULL,
 	[FromDate] DATETIME2 NOT NULL DEFAULT CONVERT(date, SYSUTCDATETIME()),
 	[ToDate] DATETIME2 NOT NULL DEFAULT CONVERT(date, SYSUTCDATETIME()),
-	[Hours] INT NOT NULL
+	[Hours] NVARCHAR(4000) NOT NULL
 CONSTRAINT [PK_UserInProjects] PRIMARY KEY ([UserId], [ProjectId]),
-CONSTRAINT [FK_UserInProjects_Users] FOREIGN KEY ([UserId]) REFERENCES [Users]([Id]),
-CONSTRAINT [FK_UserInProjects_Projects] FOREIGN KEY ([ProjectId]) REFERENCES [Projects]([Id]) 
+CONSTRAINT [FK_UserInProjects_Users] FOREIGN KEY ([UserId]) REFERENCES [Users]([Id]) ON DELETE CASCADE,
+CONSTRAINT [FK_UserInProjects_Projects] FOREIGN KEY ([ProjectId]) REFERENCES [Projects]([Id]) ON DELETE CASCADE
 )
