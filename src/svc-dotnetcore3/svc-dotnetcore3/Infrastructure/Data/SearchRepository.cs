@@ -17,7 +17,7 @@ namespace Web.API.Infrastructure.Data
             this.connectionString = !string.IsNullOrWhiteSpace(connectionString) ? connectionString : throw new ArgumentNullException(nameof(connectionString));
         }
 
-        //return a list of user based on discipline, skill, and location
+        //return a list of user based on discipline, skill, location, and year
         //TODO fix dateRange, availability
         public async Task<IEnumerable<User>> GetAllUsers(Search search)
         {
@@ -60,6 +60,38 @@ namespace Web.API.Infrastructure.Data
                 search.Skill,
                 search.Location,
                 search.YearOfExperience
+            });
+        }
+
+        // return a list of projects from search
+        public async Task<IEnumerable<Project>> GetAllProjects(Search search)
+        {
+            var sql = @"
+                SELECT DISTINCT
+                    P.Id, P.Number, P.Title, L.Name AS 'Location'
+                FROM 
+                    Projects P,
+                    Locations L
+                WHERE 
+                    P.LocationId = L.Id";
+
+            if (search.ProjectNumber != null) {
+                sql += " AND P.Number = @ProjectNumber";                
+            }
+            if (search.ProjectTitle != null) {
+                sql += " AND P.Title = @ProjectTitle";
+            }
+            if (search.Location != null) {
+                sql += " AND L.Name = @Location";
+            }
+            sql += ";";            
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            return await connection.QueryAsync<Project>(sql, new {
+                search.ProjectNumber,
+                search.ProjectTitle,
+                search.Location
             });
         }
     }
