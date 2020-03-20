@@ -27,6 +27,9 @@ namespace Web.API.Infrastructure.Data
                     on UP.ProjectId = P.Id 
 					INNER JOIN Locations L
 					on P.LocationId = L.Id
+                    INNER JOIN ProjectStatus PS
+                    on PS.status = 'Active'
+                    AND PS.Id = P.Id
 
                 where UP.UserId = 
                   (select Id from Users where Username = @Username)
