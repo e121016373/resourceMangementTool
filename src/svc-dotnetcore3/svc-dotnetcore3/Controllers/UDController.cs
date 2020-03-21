@@ -21,7 +21,7 @@ namespace Web.API.Controllers
         }
 
         [HttpGet]
-        [Route("/userdisciplines/{username}")]
+        [Route("/{username}/disciplines")]
         public async Task<ActionResult<IEnumerable<UserDiscipline>>> GetDiscipline([FromRoute]string username)
         {
             var response = await udRepository.GetDiscipline(username);

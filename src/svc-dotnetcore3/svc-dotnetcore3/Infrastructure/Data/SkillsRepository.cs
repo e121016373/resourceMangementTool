@@ -28,6 +28,21 @@ namespace Web.API.Infrastructure.Data
             connection.Open();
             return await connection.QueryAsync<Skill>(sql);
         }
+        public async Task<IEnumerable<Skill>> GetAUserSkills(string username, string discipline)
+        {
+            var sql = @"
+                SELECT Id, DisciplineId, Name
+                FROM Skills
+                where Id in (select SkillId from UserHasSkills where 
+                            UserId = (select Id from Users where Username = @Username)) and
+                DisciplineId = (select Id from Disciplines where Name = @Discipline)
+      
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            return await connection.QueryAsync<Skill>(sql, new { Username = username, Discipline = discipline});
+        }
 
         public async Task<Skill> GetASkill(string name)
         {

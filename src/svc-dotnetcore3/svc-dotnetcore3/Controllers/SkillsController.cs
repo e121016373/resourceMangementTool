@@ -28,6 +28,14 @@ namespace Web.API.Controllers
             var viewModel = mapper.Map<IEnumerable<Skill>>(response);
             return Ok(viewModel);
         }
+        [HttpGet]
+        [Route("/{username}/skills/{discipline}")]
+        public async Task<ActionResult<IEnumerable<Skill>>> GetAUserSkills([FromRoute] string username, string discipline)
+        {
+            var response = await skillsRepository.GetAUserSkills(username, discipline);
+            var viewModel = mapper.Map<IEnumerable<Skill>>(response);
+            return Ok(viewModel);
+        }
 
         [HttpGet]
         [Route("/skills/{name}", Name = "GetASkill")]

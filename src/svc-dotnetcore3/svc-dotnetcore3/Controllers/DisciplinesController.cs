@@ -37,7 +37,7 @@ namespace Web.API.Controllers
             var viewModel = mapper.Map<Discipline>(response);
             return Ok(viewModel);
         }
-        
+
         [HttpPut]
         [Route("/disciplines")]
         public async Task<ActionResult<Discipline>> UpdateADiscipline([FromBody] Discipline discipline)
