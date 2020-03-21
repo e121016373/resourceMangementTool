@@ -39,6 +39,29 @@ namespace Web.API.Infrastructure.Data
             connection.Open();
             return await connection.QueryAsync<UserProject>(sql, new { Username = username });
         }
+
+        public async Task<UserProject> GetAProject(string username, string project)
+        {
+            var sql = @"
+                select P.Title as Project, L.Name as Location, UP.FromDate, UP.ToDate, UP.Hours 
+                    from UserInProjects UP
+                    INNER JOIN Projects P
+                    on UP.ProjectId = P.Id 
+					INNER JOIN Locations L
+					on P.LocationId = L.Id
+                    INNER JOIN ProjectStatus PS
+                    on PS.status = 'Active'
+                    AND PS.Id = P.Id
+
+                where UP.UserId = 
+                  (select Id from Users where Username = @Username) and
+                  UP.ProjectId = (select Id from Projects where Title = @Project)
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            return await connection.QueryFirstOrDefault(sql, new { Username = username, Project = project });
+        }
         public async Task<UserProject> CreateProject(string username, UserProject proj)
         {
             var sql = @"
@@ -61,8 +84,9 @@ namespace Web.API.Infrastructure.Data
             });
             return proj;
         }
-        public async Task<UserProject> DeleteProject(string username, UserProject proj)
+        public async Task<UserProject> DeleteProject(string username, string project)
         {
+            var proj = await GetAProject(username, project);
             var sql = @"
                 delete from UserInProjects
                 where ProjectId = (select Id from Projects where Title = @Project)
@@ -74,7 +98,7 @@ namespace Web.API.Infrastructure.Data
             await connection.ExecuteAsync(sql, new
             {
                 Username = username,
-                Project = proj.Project
+                Project = project
             });
             return proj;
         }

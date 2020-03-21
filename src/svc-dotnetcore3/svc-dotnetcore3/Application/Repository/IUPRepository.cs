@@ -7,8 +7,9 @@ namespace Web.API.Application.Repository
     public interface IUPRepository
     {
         Task<IEnumerable<UserProject>> GetProject(string username);
+        Task<UserProject> GetAProject(string username, string project);
         Task<UserProject> CreateProject(string username, UserProject proj);
-        Task<UserProject> DeleteProject(string username, UserProject proj);
+        Task<UserProject> DeleteProject(string username, string project);
         Task<UserProject> UpdateProject(string username, UserProject proj);
     }
 }

@@ -28,6 +28,14 @@ namespace Web.API.Controllers
             var viewModel = mapper.Map<IEnumerable<UserProject>>(response);
             return Ok(viewModel);
         }
+        [HttpGet]
+        [Route("/userprojects/{username}/{project}")]
+        public async Task<ActionResult<UserProject>> GetAProject([FromRoute]string username, string project)
+        {
+            var response = await upRepository.GetAProject(username, project);
+            var viewModel = mapper.Map<UserProject>(response);
+            return Ok(viewModel);
+        }
         [HttpPost]
         [Route("/userprojects/{username}")]
         public async Task<ActionResult<UserProject>> CreateProject([FromRoute]string username, [FromBody] UserProject proj)
@@ -37,14 +45,14 @@ namespace Web.API.Controllers
             return Created("GetProject", viewModel);
         }
         [HttpDelete]
-        [Route("/userprojects/{username}")]
-        public async Task<ActionResult<UserProject>> DeleteProject([FromRoute]string username, [FromBody] UserProject proj)
+        [Route("/userprojects/{username}/{project}")]
+        public async Task<ActionResult<UserProject>> DeleteProject([FromRoute]string username, string project)
         {
-            var response = await upRepository.DeleteProject(username, proj);
+            var response = await upRepository.DeleteProject(username, project);
             var viewModel = mapper.Map<UserProject>(response);
             return Ok(viewModel);
         }
-        [HttpPatch]
+        [HttpPut]
         [Route("/userprojects/{username}")]
         public async Task<ActionResult<UserProject>> UpdateProject([FromRoute]string username, [FromBody] UserProject proj)
         {

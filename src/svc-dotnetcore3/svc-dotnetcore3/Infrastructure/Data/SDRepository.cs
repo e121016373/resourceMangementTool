@@ -71,8 +71,9 @@ namespace Web.API.Infrastructure.Data
             return usd;
         }
 
-        public async Task<IEnumerable<UserSD>> DeleteASD(UserSD usd)
-        { 
+        public async Task<IEnumerable<UserSD>> DeleteAS(String username, String discipline, String skill)
+        {
+            var user = await GetASD(username);
             var sql = @"
                 delete from UserHasSkills
                     where UserId = (select Id from Users where Username = @Username)
@@ -85,8 +86,26 @@ namespace Web.API.Infrastructure.Data
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            await connection.ExecuteAsync(sql, new { Username = usd.Username, Discipline = usd.Discipline, Skill = usd.Skill });
-            return await GetASD(usd.Username);
+            await connection.ExecuteAsync(sql, new { Username = username, Discipline = discipline, Skill = skill });
+            return user;
+        }
+
+        public async Task<IEnumerable<UserSD>> DeleteAD(string username, string discipline)
+        {
+            var user = await GetASD(username);
+            var sql = @"
+                delete from UserHasSkills
+                    where UserId = (select Id from Users where Username = @Username)
+                    AND DisciplineId = (select Id from Disciplines where Name = @Discipline)
+                delete from UserWorksDiscipline
+                    where UserId = (select Id from Users where Username = @Username)
+                    AND DisciplineId = (select Id from Disciplines where Name = @Discipline);
+             ";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            await connection.ExecuteAsync(sql, new { Username = username, Discipline = discipline});
+            return user;
         }
 
         public async Task<IEnumerable<UserSD>> UpdateASD(UserSD usd)
@@ -107,6 +126,25 @@ namespace Web.API.Infrastructure.Data
             await connection.ExecuteAsync(sql, new { Skill = usd.Skill, Discipline = usd.Discipline,
                 Username = usd.Username, Year = usd.yoe });
             return await GetASD(usd.Username);
+        }
+
+        public async Task<IEnumerable<UserSD>> PatchASD(string username, string discipline, int yoe)
+        {
+            var sql = @"
+                 update UserWorksDiscipline
+                    set Year = @Year
+                    where UserId = (select Id from Users where Username = @Username) and
+                          DisciplineId = (select Id from Disciplines where Name = @Discipline);";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            await connection.ExecuteAsync(sql, new
+            {
+                Username = username,
+                Discipline = discipline,
+                Year = yoe
+            });
+            return await GetASD(username);
         }
     }
 }

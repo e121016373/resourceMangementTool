@@ -31,10 +31,19 @@ namespace Web.API.Controllers
 
 
         [HttpDelete]
-        [Route("/personal")]
-        public async Task<ActionResult<IEnumerable<UserSD>>> DeleteASD([FromBody] UserSD usd)
+        [Route("/{username}/{discipline}/{skill}")]
+        public async Task<ActionResult<IEnumerable<UserSD>>> DeleteAS([FromRoute] string username, string discipline, string skill)
         {
-            var response = await sdRepository.DeleteASD(usd);
+            var response = await sdRepository.DeleteAS(username, discipline, skill);
+            var viewModel = mapper.Map<IEnumerable<UserSD>>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpDelete]
+        [Route("/{username}/{discipline}")]
+        public async Task<ActionResult<IEnumerable<UserSD>>> DeleteAD([FromRoute] string username, string discipline)
+        {
+            var response = await sdRepository.DeleteAD(username, discipline);
             var viewModel = mapper.Map<IEnumerable<UserSD>>(response);
             return Ok(viewModel);
         }
@@ -48,7 +57,7 @@ namespace Web.API.Controllers
             return Created("GetASD", viewModel);
         }
 
-        [HttpPatch]
+        [HttpPut]
         [Route("/personal")]
         public async Task<ActionResult<IEnumerable<UserSD>>> UpdateASD([FromBody] UserSD usd)
         {
@@ -56,5 +65,15 @@ namespace Web.API.Controllers
             var viewModel = mapper.Map<IEnumerable<UserSD>>(response);
             return Accepted("GetASD", viewModel);
         }
+
+        [HttpPatch]
+        [Route("/personal/{username}/{discipline}")]
+        public async Task<ActionResult<IEnumerable<UserSD>>> PatchASD([FromRoute] string username, [FromRoute] string discipline, [FromBody] int yoe )
+        {
+            var response = await sdRepository.PatchASD(username, discipline, yoe);
+            var viewModel = mapper.Map<IEnumerable<UserSD>>(response);
+            return Accepted("GetASD", viewModel);
+        }
+
     }
 }
