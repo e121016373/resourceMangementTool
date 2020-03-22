@@ -77,5 +77,6 @@
     <Build Include="dbo\Tables\UserHasSkills.sql" />
     <Build Include="dbo\Tables\UserInProject.sql" />
     <Build Include="dbo\Tables\UserWorksDiscipline.sql" />
+    <Build Include="dbo\Tables\ProjectStatus.sql" />
   </ItemGroup>
 </Project>
