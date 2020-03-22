@@ -218,7 +218,7 @@ export const addDiscipline = (discipline, yoe) => {
     return axios
       .post(
         url,
-        { discipline: discipline, yoe: 1 },
+        { discipline: discipline, yoe: parseInt(yoe, 10) },
         { header: headers },
       )
       .then(response => {

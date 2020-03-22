@@ -41,6 +41,7 @@ const ProfileMain = ({
     let discipline = document.getElementById('addDisciplineName')
       .value;
     let yoe = document.getElementById('addDisciplineYOE').value;
+    console.log('yoe isisisisiisis', yoe);
     addDiscipline(discipline, yoe)
       .then(() => {
         addFeedback({
