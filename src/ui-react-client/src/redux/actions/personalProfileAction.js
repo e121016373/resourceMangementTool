@@ -134,6 +134,17 @@ export const deleteDiscipline = discipline => {
       .then(response => {
         console.log('deleteDiscipline response', response);
         dispatch(deleteDisciplineAction(discipline));
+        if (discipline.discipline === currentDiscipline.discipline) {
+          console.log('they are euqal');
+          dispatch(updateSkillTableAction([]));
+          console.log('done update skill table');
+        } else {
+          console.log(
+            discipline.discipline,
+            'aand',
+            currentDiscipline.discipline,
+          );
+        }
       })
       .catch(error => {
         throw error;
@@ -240,25 +251,32 @@ export const addDisciplineAction = discipline => {
 
 export const updateSkillTable = discipline => {
   return dispatch => {
-    let url = `${SVC_ROOT}${currentUser}/skills/${discipline.discipline}`;
-    console.log('the updateSkillTable url is ', url);
-    return axios
-      .get(url, { header: headers })
-      .then(response => {
-        currentDiscipline = discipline;
+    console.log('what going on');
+    if (discipline) {
+      console.log('the discipline is sucessfualy', discipline);
+      let url = `${SVC_ROOT}${currentUser}/skills/${discipline.discipline}`;
+      console.log('the updateSkillTable url is ', url);
+      return axios
+        .get(url, { header: headers })
+        .then(response => {
+          currentDiscipline = discipline;
 
-        console.log('the add discipline response', response);
-        return dispatch(
-          updateSkillTableAction(
-            response.data.map(skill => {
-              return { skill: skill.name };
-            }),
-          ),
-        );
-      })
-      .catch(error => {
-        throw error;
-      });
+          console.log('the add discipline response', response);
+          return dispatch(
+            updateSkillTableAction(
+              response.data.map(skill => {
+                return { skill: skill.name };
+              }),
+            ),
+          );
+        })
+        .catch(error => {
+          throw error;
+        });
+    } else {
+      console.log('the discipline is ', discipline);
+      return dispatch(updateSkillTableAction([]));
+    }
   };
 };
 
