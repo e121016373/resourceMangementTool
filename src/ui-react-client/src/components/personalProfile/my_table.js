@@ -5,7 +5,13 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { render } from 'enzyme';
 
-const WTable = ({ datas, tableHead, selectRow, remove }) => {
+const WTable = ({
+  datas,
+  tableHead,
+  selectRow,
+  remove,
+  addFeedback,
+}) => {
   //   // Get current posts
   //   const indexOfLastPost = currentPage * postsPerPage;
   //   const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -24,7 +30,21 @@ const WTable = ({ datas, tableHead, selectRow, remove }) => {
         <td>
           <button
             onClick={() => {
-              remove(data);
+              remove(data)
+                .then(() => {
+                  addFeedback({
+                    type: 'success',
+                    data: '  :delete successfully',
+                    show: true,
+                  });
+                })
+                .catch(error => {
+                  addFeedback({
+                    type: 'error',
+                    data: error,
+                    show: true,
+                  });
+                });
               deleteRow(index);
             }}
             className="fas fa-trash-alt fa-1x"

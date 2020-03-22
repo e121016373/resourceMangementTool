@@ -10,6 +10,7 @@ import { deleteSkill } from '../../redux/actions/personalProfileAction';
 import { addDiscipline } from '../../redux/actions/personalProfileAction';
 import { addSkill } from '../../redux/actions/personalProfileAction';
 import { updateSkillTable } from '../../redux/actions/personalProfileAction';
+import { addFeedback } from '../../redux/actions/feedbackAction';
 
 const PersonalProfile = ({
   personalProfileUser,
@@ -19,6 +20,7 @@ const PersonalProfile = ({
   addDiscipline,
   addSkill,
   updateSkillTable,
+  addFeedback,
 }) => {
   useEffect(() => {
     if (Object.keys(personalProfileUser).length === 0) {
@@ -47,6 +49,7 @@ const PersonalProfile = ({
           addDiscipline={addDiscipline}
           addSkill={addSkill}
           updateSkillTable={updateSkillTable}
+          addFeedback={addFeedback}
         />
       </div>
     );
@@ -71,6 +74,7 @@ const mapDispatchToProps = {
   addDiscipline: addDiscipline,
   addSkill: addSkill,
   updateSkillTable: updateSkillTable,
+  addFeedback: addFeedback,
 };
 
 export default connect(

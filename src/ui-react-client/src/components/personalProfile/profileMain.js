@@ -18,6 +18,7 @@ const ProfileMain = ({
   addSkill,
   addDiscipline,
   updateSkillTable,
+  addFeedback,
 }) => {
   const [showAddDiscipline, setShowAddDiscipline] = useState(false);
   const [showAddSkill, setShowAddSkill] = useState(false);
@@ -40,12 +41,40 @@ const ProfileMain = ({
     let discipline = document.getElementById('addDisciplineName')
       .value;
     let yoe = document.getElementById('addDisciplineYOE').value;
-    addDiscipline(discipline, yoe);
+    addDiscipline(discipline, yoe)
+      .then(() => {
+        addFeedback({
+          type: 'success',
+          data: '  :add discipline successfully',
+          show: true,
+        });
+      })
+      .catch(error => {
+        addFeedback({
+          type: 'error',
+          data: '  :add unsuccessfully',
+          show: true,
+        });
+      });
     // console.log('disdflasdkfj', discipline, yoe);
   };
   const submitAddSkill = () => {
     let skill = document.getElementById('addSkillName').value;
-    addSkill(skill);
+    addSkill(skill)
+      .then(() => {
+        addFeedback({
+          type: 'success',
+          data: '  :add skill successfully',
+          show: true,
+        });
+      })
+      .catch(error => {
+        addFeedback({
+          type: 'error',
+          data: '  :add unsuccessfully',
+          show: true,
+        });
+      });
     // console.log('disdflasdkfj', skill);
   };
   // const discipline = [];
@@ -114,6 +143,7 @@ const ProfileMain = ({
               ]}
               remove={deleteDiscipline}
               selectRow={updateSkillTable}
+              addFeedback={addFeedback}
             />
             <div style={{ float: 'left' }}>
               <WButton
@@ -196,6 +226,7 @@ const ProfileMain = ({
               datas={skills}
               tableHead={['skills', 'operation']}
               remove={deleteSkill}
+              addFeedback={addFeedback}
             />
 
             {/* <table className="table">
