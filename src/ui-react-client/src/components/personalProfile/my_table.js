@@ -67,7 +67,7 @@ const WTable = ({ datas, tableHead, selectRow, remove }) => {
                       <td
                         onClick={() => {
                           if (selectRow) {
-                            selectRow(index);
+                            selectRow(data);
                           }
                           console.log(
                             'the index of the row is ',

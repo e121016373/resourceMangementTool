@@ -33,6 +33,10 @@ const executeAddSkill = (state, action) => {
   state.skills.push(action.payload);
   return { ...state };
 };
+const executeUpdateSkillTable = (state, action) => {
+  state.skills = action.payload;
+  return { ...state };
+};
 export const personalProfileReducer = (
   state = initialState.currentUserProfile,
   action,
@@ -50,6 +54,8 @@ export const personalProfileReducer = (
       return executeAddDiscipline(state, action);
     case types.ADD_SKILL:
       return executeAddSkill(state, action);
+    case types.UPDATE_SKILL_TABLE:
+      return executeUpdateSkillTable(state, action);
     default:
       return state;
   }

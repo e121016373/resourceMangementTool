@@ -237,3 +237,34 @@ export const addDisciplineAction = discipline => {
     payload: discipline,
   };
 };
+
+export const updateSkillTable = discipline => {
+  return dispatch => {
+    let url = `${SVC_ROOT}${currentUser}/skills/${discipline.discipline}`;
+    console.log('the updateSkillTable url is ', url);
+    return axios
+      .get(url, { header: headers })
+      .then(response => {
+        currentDiscipline = discipline;
+
+        console.log('the add discipline response', response);
+        return dispatch(
+          updateSkillTableAction(
+            response.data.map(skill => {
+              return { skill: skill.name };
+            }),
+          ),
+        );
+      })
+      .catch(error => {
+        throw error;
+      });
+  };
+};
+
+export const updateSkillTableAction = skills => {
+  return {
+    type: types.UPDATE_SKILL_TABLE,
+    payload: skills,
+  };
+};

@@ -17,6 +17,7 @@ const ProfileMain = ({
   deleteSkill,
   addSkill,
   addDiscipline,
+  updateSkillTable,
 }) => {
   const [showAddDiscipline, setShowAddDiscipline] = useState(false);
   const [showAddSkill, setShowAddSkill] = useState(false);
@@ -98,7 +99,11 @@ const ProfileMain = ({
         <div className="col1">
           <div
             className="card"
-            style={{ display: 'flex', 'flex-direction': 'column' }}
+            style={{
+              display: 'flex',
+              'flex-direction': 'column',
+              padding: '10px',
+            }}
           >
             <WTable
               datas={disciplines}
@@ -108,6 +113,7 @@ const ProfileMain = ({
                 'operation',
               ]}
               remove={deleteDiscipline}
+              selectRow={updateSkillTable}
             />
             <div style={{ float: 'left' }}>
               <WButton
@@ -180,7 +186,11 @@ const ProfileMain = ({
         <div className="col2">
           <div
             className="card"
-            style={{ display: 'flex', 'flex-direction': 'column' }}
+            style={{
+              display: 'flex',
+              'flex-direction': 'column',
+              padding: '10px',
+            }}
           >
             <WTable
               datas={skills}
@@ -209,7 +219,7 @@ const ProfileMain = ({
                 })}
               </tbody>
             </table> */}
-            <div>
+            {/* <div>
               <div class="pagination">
                 <a href="#">&laquo;</a>
                 <a href="#">1</a>
@@ -221,7 +231,7 @@ const ProfileMain = ({
 
                 <a href="#">&raquo;</a>
               </div>
-            </div>
+            </div> */}
             <WButton
               buttonNameOne={'add'}
               buttonNameTwo={'submit'}
