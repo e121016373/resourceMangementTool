@@ -198,10 +198,12 @@ const ProfileMain = ({
                 <AutoComplete
                   elements={AllDisciplines}
                   placeholder={'disciplines'}
+                  id={'addDisciplineName'}
                 />
                 <AutoComplete
                   elements={[]}
                   placeholder="Years of experience"
+                  id={'addDisciplineYOE'}
                 />
                 {/* <input
                   id="addDisciplineYOE"

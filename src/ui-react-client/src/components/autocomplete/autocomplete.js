@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import '../../scss/autoComplete.scss';
 import PropTypes from 'prop-types';
 
-const AutoComplete = ({ elements, placeholder }) => {
+const AutoComplete = ({ elements, placeholder, id }) => {
+  console.log('id is ', id);
   const [suggestions, setSuggestions] = useState([]);
   const [text, setText] = useState('');
   const onTextChanged = e => {
@@ -46,6 +47,7 @@ const AutoComplete = ({ elements, placeholder }) => {
   return (
     <div className="autoCompleteText">
       <input
+        id={id}
         value={text}
         onChange={onTextChanged}
         placeholder={placeholder}
