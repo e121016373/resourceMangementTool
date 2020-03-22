@@ -9,9 +9,10 @@ import personImage from '../../image/person.png';
 import WTable from './my_table';
 import { headers } from '../../config/adalConfig';
 import WButton from './button';
+import AutoComplete from '../autocomplete/autocomplete';
 const ProfileMain = ({
   personalProfileUser,
-  disciplines,
+  AllDisciplines,
   skills,
   deleteDiscipline,
   deleteSkill,
@@ -19,7 +20,9 @@ const ProfileMain = ({
   addDiscipline,
   updateSkillTable,
   addFeedback,
+  disciplines,
 }) => {
+  console.log('All disciplines', AllDisciplines);
   const [showAddDiscipline, setShowAddDiscipline] = useState(false);
   const [showAddSkill, setShowAddSkill] = useState(false);
   const addSkillButton = () => {
@@ -192,16 +195,19 @@ const ProfileMain = ({
             {/* add discipline component */}
             {showAddDiscipline ? (
               <div className="content-add">
-                <input
-                  id="addDisciplineName"
-                  style={{ width: 80 }}
-                  placeholder="Discipline"
-                ></input>
-                <input
+                <AutoComplete
+                  elements={AllDisciplines}
+                  placeholder={'disciplines'}
+                />
+                <AutoComplete
+                  elements={[]}
+                  placeholder="Years of experience"
+                />
+                {/* <input
                   id="addDisciplineYOE"
                   style={{ width: 140 }}
                   placeholder="Years of experience"
-                ></input>
+                ></input> */}
                 <button
                   onClick={submitAddDiscipline}
                   style={{ borderRadius: '5px' }}
