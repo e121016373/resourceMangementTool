@@ -100,6 +100,15 @@ namespace Web.API.Infrastructure.Data
                      (select Id from Disciplines where Disciplines.Name = @Discipline),
                      (select Id from Skills where Skills.Name = @Skill))
             ;
+                if not exists  (select * FROM UserWorksDiscipline where
+                                UserId = (select Id from Users where Username = @Username)
+                                and DisciplineId = (select Id from Disciplines where Disciplines.Name = @Discipline))
+                        insert into  UserWorksDiscipline
+                                (UserId, DisciplineId, Year)
+                                                 values
+                                ((select Id from Users where Username = @Username),
+                                (select Id from Disciplines where Name = @Discipline),
+                                         @Year);
 
 ";
 
@@ -110,6 +119,7 @@ namespace Web.API.Infrastructure.Data
                 Username = usd.Username,
                 Discipline = usd.Discipline,
                 Skill = usd.Skill,
+                Year = usd.yoe
 
             });
             return usd;
