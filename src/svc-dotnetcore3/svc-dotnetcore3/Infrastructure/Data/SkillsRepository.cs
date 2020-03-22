@@ -34,7 +34,8 @@ namespace Web.API.Infrastructure.Data
                 SELECT Id, DisciplineId, Name
                 FROM Skills
                 where Id in (select SkillId from UserHasSkills where 
-                            UserId = (select Id from Users where Username = @Username)) and
+                            UserId = (select Id from Users where Username = @Username) and
+                            DisciplineId = (select Id from Disciplines where Name = @Discipline)) and
                 DisciplineId = (select Id from Disciplines where Name = @Discipline)
       
             ;";
