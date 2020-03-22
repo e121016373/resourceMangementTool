@@ -21,12 +21,20 @@ namespace Web.API.Controllers
         }
 
         [HttpGet]
-        [Route("/userdisciplines/{username}")]
+        [Route("/{username}/disciplines", Name = "GetDiscipline")]
         public async Task<ActionResult<IEnumerable<UserDiscipline>>> GetDiscipline([FromRoute]string username)
         {
             var response = await udRepository.GetDiscipline(username);
             var viewModel = mapper.Map<IEnumerable<UserDiscipline>>(response);
             return Ok(viewModel);
+        }
+        [HttpPost]
+        [Route("/{username}/disciplines")]
+        public async Task<ActionResult<UserDiscipline>> CreateDiscipline([FromRoute]string username, [FromBody] UserDiscipline ud)
+        {
+            var response = await udRepository.CreateDiscipline(username, ud);
+            var viewModel = mapper.Map<UserDiscipline>(response);
+            return Created("GetDiscipline",viewModel);
         }
     }
 }

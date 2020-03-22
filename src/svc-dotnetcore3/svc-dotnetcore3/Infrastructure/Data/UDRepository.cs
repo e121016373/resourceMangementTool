@@ -35,5 +35,22 @@ namespace Web.API.Infrastructure.Data
             return await connection.QueryAsync<UserDiscipline>(sql, new { Username = username });
         }
 
+        public async Task<UserDiscipline> CreateDiscipline(string username, UserDiscipline ud)
+        {
+            var sql = @"
+                insert into  UserWorksDiscipline
+                    (UserId, DisciplineId, Year)
+                values
+                   ((select Id from Users where Username = @Username),
+                    (select Id from Disciplines where Name = @Discipline),
+                    @Year)
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            await connection.ExecuteAsync(sql, new { Username = username, Discipline  = ud.Discipline, Year = ud.YOE });
+            return ud; 
+        }
+
     }
 }

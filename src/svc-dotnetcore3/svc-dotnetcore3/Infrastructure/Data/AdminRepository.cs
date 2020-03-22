@@ -95,5 +95,20 @@ namespace Web.API.Infrastructure.Data
             await connection.ExecuteAsync(sql, new { username });
             return admin;
         }
+        public async Task<Admin> UpdateAAdmin(string password, Admin admin)
+        {
+            var sql = @"
+                update Admin
+                set Password = @nPassword
+                where Username = @Username and Password = @Password
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            await connection.ExecuteAsync(sql, new { nPassword = password,
+            Username = admin.Username, Password = admin.Password});
+            admin.Password = password;
+            return admin;
+        }
     }
 }

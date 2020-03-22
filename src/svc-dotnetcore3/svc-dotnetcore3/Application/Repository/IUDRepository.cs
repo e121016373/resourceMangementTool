@@ -7,5 +7,6 @@ namespace Web.API.Application.Repository
     public interface IUDRepository
     {
         Task<IEnumerable<UserDiscipline>> GetDiscipline(string username);
+        Task<UserDiscipline> CreateDiscipline(string username, UserDiscipline ud);
     }
 }

@@ -21,7 +21,7 @@ namespace Web.API.Controllers
         }
 
         [HttpGet]
-        [Route("/personal/{username}")]
+        [Route("/personal/{username}", Name = "GetASD")]
         public async Task<ActionResult<IEnumerable<UserSD>>> GetASD([FromRoute]string username)
         {
             var response = await sdRepository.GetASD(username);
@@ -29,12 +29,39 @@ namespace Web.API.Controllers
             return Ok(viewModel);
         }
 
+        [HttpGet]
+        [Route("/{username}/skill/{skill}")]
+        public async Task<ActionResult<UserSD>> GetAS([FromRoute]string username, [FromRoute]string skill)
+        {
+            var response = await sdRepository.GetAS(username, skill);
+            var viewModel = mapper.Map<UserSD>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpGet]
+        [Route("/{username}/discipline/{discipline}")]
+        public async Task<ActionResult<IEnumerable<UserSD>>> GetAD([FromRoute]string username, [FromRoute] string discipline)
+        {
+            var response = await sdRepository.GetAD(username, discipline);
+            var viewModel = mapper.Map<IEnumerable<UserSD>>(response);
+            return Ok(viewModel);
+        }
+
 
         [HttpDelete]
-        [Route("/personal")]
-        public async Task<ActionResult<IEnumerable<UserSD>>> DeleteASD([FromBody] UserSD usd)
+        [Route("/{username}/{discipline}/{skill}")]
+        public async Task<ActionResult<UserSD>> DeleteAS([FromRoute] string username, string discipline, string skill)
         {
-            var response = await sdRepository.DeleteASD(usd);
+            var response = await sdRepository.DeleteAS(username, discipline, skill);
+            var viewModel = mapper.Map<UserSD>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpDelete]
+        [Route("/{username}/disciplines/{discipline}")]
+        public async Task<ActionResult<IEnumerable<UserSD>>> DeleteAD([FromRoute] string username, string discipline)
+        {
+            var response = await sdRepository.DeleteAD(username, discipline);
             var viewModel = mapper.Map<IEnumerable<UserSD>>(response);
             return Ok(viewModel);
         }
@@ -48,7 +75,7 @@ namespace Web.API.Controllers
             return Created("GetASD", viewModel);
         }
 
-        [HttpPatch]
+        [HttpPut]
         [Route("/personal")]
         public async Task<ActionResult<IEnumerable<UserSD>>> UpdateASD([FromBody] UserSD usd)
         {
@@ -56,5 +83,15 @@ namespace Web.API.Controllers
             var viewModel = mapper.Map<IEnumerable<UserSD>>(response);
             return Accepted("GetASD", viewModel);
         }
+
+        [HttpPatch]
+        [Route("/personal/{username}/{discipline}")]
+        public async Task<ActionResult<IEnumerable<UserSD>>> PatchASD([FromRoute] string username, [FromRoute] string discipline, [FromBody] int yoe )
+        {
+            var response = await sdRepository.PatchASD(username, discipline, yoe);
+            var viewModel = mapper.Map<IEnumerable<UserSD>>(response);
+            return Accepted("GetASD", viewModel);
+        }
+
     }
 }

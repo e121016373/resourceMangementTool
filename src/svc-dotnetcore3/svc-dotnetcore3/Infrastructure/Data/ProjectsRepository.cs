@@ -21,9 +21,12 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 select
-                    Id, Number, Title, LocationId, CreatedAt, UpdatedAt, StartDate, EndDate, Hours
+                    P.Id, P.Number, P.Title, P.LocationId, P.CreatedAt, 
+                    P.UpdatedAt, P.StartDate, P.EndDate, P.Hours, PS.status
                 from
-                    Projects
+                    Projects P
+                INNER JOIN ProjectStatus PS
+                on PS.Id = P.Id 
             ;";
 
             using var connection = new SqlConnection(connectionString);
@@ -35,9 +38,12 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 select top(25)
-                    Id, Number, Title, LocationId, CreatedAt, UpdatedAt, StartDate, EndDate, Hours
+                    P.Id, P.Number, P.Title, P.LocationId, P.CreatedAt,
+                    P.UpdatedAt, P.StartDate, P.EndDate, P.Hours, PS.status
                 from
-                    Projects
+                    Projects P
+                INNER JOIN ProjectStatus PS
+                on PS.Id = P.Id
                 order by
                     UpdatedAt desc
             ;";
@@ -50,12 +56,15 @@ namespace Web.API.Infrastructure.Data
         public async Task<Project> GetAProject(string projectNumber)
         {
             var sql = @"
-                select 
-                    Id, Number, Title, LocationId, CreatedAt, UpdatedAt, StartDate, EndDate, Hours
+                select
+                    P.Id, P.Number, P.Title, P.LocationId, P.CreatedAt, 
+                    P.UpdatedAt, P.StartDate, P.EndDate, P.Hours, PS.status
                 from
-                    Projects
+                    Projects P
+                INNER JOIN ProjectStatus PS
+                on PS.Id = P.Id 
                 where
-                    Number = @Number
+                    P.Number = @Number
             ;";
 
             using var connection = new SqlConnection(connectionString);
@@ -71,6 +80,10 @@ namespace Web.API.Infrastructure.Data
                 values 
                     (@Number, @Title, @LocationId, @StartDate, @EndDate, @Hours);
                 select cast(scope_identity() as int);
+                insert into ProjectStatus
+                    (FromDate, ToDate, status)
+                values 
+                    (@StartDate, @EndDate, @Status)
             ;";
 
             using var connection = new SqlConnection(connectionString);
@@ -81,7 +94,8 @@ namespace Web.API.Infrastructure.Data
                 project.LocationId,
                 project.StartDate,
                 project.EndDate,
-                project.Hours
+                project.Hours,
+                project.Status
             });
             project.Id = id;
             return project;
@@ -95,12 +109,18 @@ namespace Web.API.Infrastructure.Data
                 set 
                     Number = @Number,
                     Title = @Title,
-                    LocationId = @LocationId
-                    StartDate = @StartDate
-                    EndDate = @EndDate
+                    LocationId = @LocationId,
+                    StartDate = @StartDate,
+                    EndDate = @EndDate,
                     Hours = @Hours
                 where 
-                    Id = @Id
+                    Id = @Id;
+                update ProjectStatus
+                set
+                    FromDate = @StartDate,
+                    ToDate = @EndDate,
+                    status = @Status
+                where Id = @Id
             ;";
 
             using var connection = new SqlConnection(connectionString);
@@ -113,16 +133,20 @@ namespace Web.API.Infrastructure.Data
                 project.LocationId,
                 project.StartDate,
                 project.EndDate,
-                project.Hours
+                project.Hours,
+                project.Status
             });
-            return result == 1 ? project : null;
+            return project;
         }
 
         public async Task<Project> DeleteAProject(string number)
         {
             var project = await GetAProject(number);
             var sql = @"
+                delete from ProjectStatus
+                    where Id = (select Id from Projects where Number =  @Number);
                 delete from Projects where Number = @Number
+                
             ;";
 
             using var connection = new SqlConnection(connectionString);

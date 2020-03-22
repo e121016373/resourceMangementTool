@@ -5,10 +5,22 @@ import { loadPersonalProfile } from '../../redux/actions/personalProfileAction';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
+import { deleteDiscipline } from '../../redux/actions/personalProfileAction';
+import { deleteSkill } from '../../redux/actions/personalProfileAction';
+import { addDiscipline } from '../../redux/actions/personalProfileAction';
+import { addSkill } from '../../redux/actions/personalProfileAction';
+import { updateSkillTable } from '../../redux/actions/personalProfileAction';
+import { addFeedback } from '../../redux/actions/feedbackAction';
 
 const PersonalProfile = ({
   personalProfileUser,
   loadPersonalProfile,
+  deleteDiscipline,
+  deleteSkill,
+  addDiscipline,
+  addSkill,
+  updateSkillTable,
+  addFeedback,
 }) => {
   useEffect(() => {
     if (Object.keys(personalProfileUser).length === 0) {
@@ -22,14 +34,22 @@ const PersonalProfile = ({
     if (Object.keys(personalProfileUser).length === 0) {
       return <div>loading</div>;
     }
+    // console.log('sss', personalProfileUser);
     return (
       <div>
         <Sidebar
           personalProfileUser={personalProfileUser.userProfile}
         />
         <ProfileMain
-          skills={personalProfileUser.skills}
+          personalProfileUser={personalProfileUser.userProfile}
           disciplines={personalProfileUser.disciplines}
+          skills={personalProfileUser.skills}
+          deleteDiscipline={deleteDiscipline}
+          deleteSkill={deleteSkill}
+          addDiscipline={addDiscipline}
+          addSkill={addSkill}
+          updateSkillTable={updateSkillTable}
+          addFeedback={addFeedback}
         />
       </div>
     );
@@ -49,6 +69,12 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   loadPersonalProfile: loadPersonalProfile,
+  deleteDiscipline: deleteDiscipline,
+  deleteSkill: deleteSkill,
+  addDiscipline: addDiscipline,
+  addSkill: addSkill,
+  updateSkillTable: updateSkillTable,
+  addFeedback: addFeedback,
 };
 
 export default connect(

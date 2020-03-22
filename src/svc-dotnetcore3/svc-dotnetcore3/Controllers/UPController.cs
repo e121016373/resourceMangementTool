@@ -28,5 +28,37 @@ namespace Web.API.Controllers
             var viewModel = mapper.Map<IEnumerable<UserProject>>(response);
             return Ok(viewModel);
         }
+        [HttpGet]
+        [Route("/userprojects/{username}/{project}")]
+        public async Task<ActionResult<UserProject>> GetAProject([FromRoute]string username, string project)
+        {
+            var response = await upRepository.GetAProject(username, project);
+            var viewModel = mapper.Map<UserProject>(response);
+            return Ok(viewModel);
+        }
+        [HttpPost]
+        [Route("/userprojects/{username}")]
+        public async Task<ActionResult<UserProject>> CreateProject([FromRoute]string username, [FromBody] UserProject proj)
+        {
+            var response = await upRepository.CreateProject(username, proj);
+            var viewModel = mapper.Map<UserProject>(response);
+            return Created("GetProject", viewModel);
+        }
+        [HttpDelete]
+        [Route("/userprojects/{username}/{project}")]
+        public async Task<ActionResult<UserProject>> DeleteProject([FromRoute]string username, string project)
+        {
+            var response = await upRepository.DeleteProject(username, project);
+            var viewModel = mapper.Map<UserProject>(response);
+            return Ok(viewModel);
+        }
+        [HttpPut]
+        [Route("/userprojects/{username}")]
+        public async Task<ActionResult<UserProject>> UpdateProject([FromRoute]string username, [FromBody] UserProject proj)
+        {
+            var response = await upRepository.UpdateProject(username, proj);
+            var viewModel = mapper.Map<UserProject>(response);
+            return Accepted(viewModel);
+        }
     }
 }

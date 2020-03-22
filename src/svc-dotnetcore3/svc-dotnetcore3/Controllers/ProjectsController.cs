@@ -56,13 +56,13 @@ namespace Web.API.Controllers
             return Created("GetAProject", viewModel);
         }
 
-        [HttpPut]
+        [HttpPatch]
         [Route("/projects")]
         public async Task<ActionResult<Project>> UpdateAProject([FromBody] Project project)
         {
             var response = await projectsRepository.UpdateAProject(project);
             var viewModel = mapper.Map<Project>(response);
-            return Ok(viewModel);
+            return Accepted(viewModel);
         }
 
         [HttpDelete]

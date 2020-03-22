@@ -8,6 +8,8 @@ namespace Web.API.Application.Repository
     {
         // GET
         Task<IEnumerable<Skill>> GetAllSkills();
+        Task<IEnumerable<Skill>> GetAUserSkills(string username,  string discipline);
+        Task<IEnumerable<Skill>> GetADiscSkills(string discipline);
         Task<Skill> GetASkill(string name);
 
         // POST

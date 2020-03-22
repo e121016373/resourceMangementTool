@@ -10,7 +10,9 @@ import { loadPersonalProfile } from '../../redux/actions/personalProfileAction';
 import { connect } from 'react-redux';
 
 const Header = ({ personalProfileUser, loadPersonalProfile }) => {
-  const activeStyle = { color: '#B39CD0' };
+  const activeStyle = {
+    // color: '#B39CD0',
+  };
 
   useEffect(() => {
     if (Object.keys(personalProfileUser).length === 0) {
@@ -30,96 +32,131 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
     if (userType === 'Resource Manager') {
       return (
         <li>
-          <NavLink
-            className="item"
-            to="/projects"
-            activeStyle={activeStyle}
-          >
-            <i
-              style={{
-                display: 'block',
-              }}
-              class="fas fa-calendar-minus fa-lg"
-            ></i>
-            Projects
-          </NavLink>
+          <div>
+            <NavLink
+              className="item"
+              to="/projects"
+              activeStyle={activeStyle}
+            >
+              <div onClick={e => moveBar(e)}>
+                <i
+                  style={{
+                    display: 'block',
+                  }}
+                  class="fas fa-calendar-minus fa-lg"
+                ></i>
+                Projects
+              </div>
+            </NavLink>
+          </div>
         </li>
       );
     }
     return <div></div>;
   };
   console.log('the user type is ', userType);
+  let originalBarPosition;
+  const moveBar = e => {
+    // let offsets = e.getBoundingClientRect();
+    // let top = offsets.top;
+    // let left = offsets.left;
+    let bar = document.getElementById('bar');
+    if (originalBarPosition === undefined) {
+      originalBarPosition = document
+        .getElementById('bar')
+        .getBoundingClientRect().x;
+    }
+    let difference =
+      e.target.getBoundingClientRect().x - originalBarPosition - 4;
+    console.log('the difference is ', bar.style.transform);
+    bar.style.transform = 'translate(' + difference + 'px)';
+    bar.style.width =
+      e.target.getBoundingClientRect().width + 8 + 'px';
+    console.log('the width  ', bar.style.width);
+  };
   return (
-    <div className="Hnavbar">
-      <div>
-        <NavLink to="/">
-          <img src={AEICON}></img>
-        </NavLink>
-      </div>
-      <div>
-        <ul>
-          <li style={{ 'margin-left': '0px' }}>
-            <NavLink
-              className="item"
-              to="/"
-              activeStyle={activeStyle}
-              exact
+    <div>
+      <div className="Hnavbar">
+        <div>
+          <NavLink to="/">
+            <img src={AEICON}></img>
+          </NavLink>
+        </div>
+        <div>
+          <ul>
+            <li style={{ 'margin-left': '0px' }}>
+              <NavLink
+                className="item"
+                to="/"
+                activeStyle={activeStyle}
+                exact
+              >
+                <div onClick={e => moveBar(e)}>
+                  <i
+                    style={{
+                      display: 'block',
+                    }}
+                    class="fas fa-home fa-lg"
+                  ></i>
+                  Home
+                </div>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                className="item"
+                to="/search"
+                activeStyle={activeStyle}
+              >
+                <div id="search" onClick={e => moveBar(e)}>
+                  <i
+                    style={{
+                      display: 'block',
+                    }}
+                    class="fas fa-search fa-lg"
+                  ></i>
+                  Search
+                </div>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                className="item"
+                to="/personalProfile"
+                activeStyle={activeStyle}
+              >
+                <div onClick={e => moveBar(e)}>
+                  <i
+                    style={{
+                      display: 'block',
+                    }}
+                    className="far fa-user fa-lg"
+                  ></i>
+                  Profile
+                </div>
+              </NavLink>
+            </li>
+            {renderProject()}
+          </ul>
+          <div id="bar" className="bar"></div>
+        </div>
+        <div className="logout" onClick={() => authContext.logOut()}>
+          <i
+            style={{
+              display: 'block',
+              color: 'white',
+            }}
+            className="fas fa-sign-out-alt fa-lg"
+          >
+            <h6
+              style={{ 'font-size': '15px', 'font-weight': 'bold' }}
             >
-              <i
-                style={{
-                  display: 'block',
-                }}
-                class="fas fa-home fa-lg"
-              ></i>
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className="item"
-              to="/search"
-              activeStyle={activeStyle}
-            >
-              <i
-                style={{
-                  display: 'block',
-                }}
-                class="fas fa-search fa-lg"
-              ></i>
-              Search
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className="item"
-              to="/personalProfile"
-              activeStyle={activeStyle}
-            >
-              <i
-                style={{
-                  display: 'block',
-                }}
-                className="far fa-user fa-lg"
-              ></i>
-              Profile
-            </NavLink>
-          </li>
-          {renderProject()}
-        </ul>
+              Log out
+            </h6>
+          </i>
+        </div>
       </div>
-      <div className="logout" onClick={() => authContext.logOut()}>
-        <i
-          style={{
-            display: 'block',
-            color: 'white',
-          }}
-          className="fas fa-sign-out-alt fa-lg"
-        >
-          <h6 style={{ 'font-size': '15px', 'font-weight': 'bold' }}>
-            Log out
-          </h6>
-        </i>
-      </div>
+      <div className="space-occupy"></div>
     </div>
   );
 };
