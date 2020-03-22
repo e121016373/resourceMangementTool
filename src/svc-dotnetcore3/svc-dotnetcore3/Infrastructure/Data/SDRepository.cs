@@ -115,18 +115,19 @@ namespace Web.API.Infrastructure.Data
             return usd;
         }
 
-        public async Task<UserSD> DeleteAS(string username, string skill)
+        public async Task<UserSD> DeleteAS(string username, string discipline, string skill)
         {
             var user = await GetAS(username, skill);
             var sql = @"
                 delete from UserHasSkills
                     where UserId = (select Id from Users where Username = @Username)
-                    AND SkillId = (select Id from Skills where Name = @Skill);
+                    AND SkillId = (select Id from Skills where Name = @Skill)
+                    AND DisciplineId = (select Id from Disciplines where Name = @Discipline);
              ";
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            await connection.ExecuteAsync(sql, new { Username = username, Skill = skill });
+            await connection.ExecuteAsync(sql, new { Username = username, Skill = skill, Discipline = discipline });
             return user;
         }
 

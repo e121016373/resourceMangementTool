@@ -49,10 +49,10 @@ namespace Web.API.Controllers
 
 
         [HttpDelete]
-        [Route("/{username}/skills/{skill}")]
-        public async Task<ActionResult<UserSD>> DeleteAS([FromRoute] string username,  string skill)
+        [Route("/{username}/{discipline}/{skill}")]
+        public async Task<ActionResult<UserSD>> DeleteAS([FromRoute] string username, string discipline, string skill)
         {
-            var response = await sdRepository.DeleteAS(username, skill);
+            var response = await sdRepository.DeleteAS(username, discipline, skill);
             var viewModel = mapper.Map<UserSD>(response);
             return Ok(viewModel);
         }
