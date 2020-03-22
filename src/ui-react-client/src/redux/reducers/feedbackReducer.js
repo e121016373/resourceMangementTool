@@ -2,7 +2,7 @@ import * as types from '../actions/actionTypes';
 import initialState from './_initialState';
 
 const executeAddFeedback = (state, action) => {
-  let newState = state.push(action.feedback);
+  state.push(action.feedback);
   return [...state];
 };
 const executeDeleteFeedback = (state, action) => {

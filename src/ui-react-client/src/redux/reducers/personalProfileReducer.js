@@ -10,6 +10,29 @@ const execteLoadDiscipline = (state, action) => {
 const execteEditLocation = (state, action) => {
   return { ...state, userProfile: action.payload };
 };
+const executeDeleteDiscipline = (state, action) => {
+  state.disciplines = state.disciplines.filter(discipline => {
+    return discipline.discipline !== action.payload.discipline;
+  });
+  return { ...state };
+};
+const executeDeleteSkill = (state, action) => {
+  state.skills = state.skills.filter(skill => {
+    return skill !== action.payload;
+  });
+  return { ...state };
+  // return state.skills.filter(skill => {
+  //   return skill !== action.skill;
+  // });
+};
+const executeAddDiscipline = (state, action) => {
+  state.disciplines.push(action.payload);
+  return { ...state };
+};
+const executeAddSkill = (state, action) => {
+  state.skills.push(action.payload);
+  return { ...state };
+};
 export const personalProfileReducer = (
   state = initialState.currentUserProfile,
   action,
@@ -19,6 +42,14 @@ export const personalProfileReducer = (
       return executeLoadPersonalProfileUser(state, action);
     case types.EDIT_LOCATION:
       return execteEditLocation(state, action);
+    case types.DELETE_DISCIPLINE:
+      return executeDeleteDiscipline(state, action);
+    case types.DELETE_SKILL:
+      return executeDeleteSkill(state, action);
+    case types.ADD_DISCIPLINE:
+      return executeAddDiscipline(state, action);
+    case types.ADD_SKILL:
+      return executeAddSkill(state, action);
     default:
       return state;
   }

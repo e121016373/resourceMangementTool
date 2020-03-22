@@ -2,65 +2,88 @@ import React, { Component, useState } from 'react';
 import { data } from './data/DoughnutConfig';
 import { Doughnut } from 'react-chartjs-2';
 import Posts from './post';
-import Table from './table';
+// import Table from './table';
 import * as msg from '../feedbackMsg/feedbackMsg';
 import { Modal } from './modal';
 import personImage from '../../image/person.png';
-
-const ProfileMain = ({ personalProfileUser, disSkill }) => {
-  const addSkill = () => {
-    this.setState({
-      ...this.state,
-      showAddSkill: !this.state.showAddSkill,
-    });
+import WTable from './my_table';
+import { headers } from '../../config/adalConfig';
+import WButton from './button';
+const ProfileMain = ({
+  personalProfileUser,
+  disciplines,
+  skills,
+  deleteDiscipline,
+  deleteSkill,
+  addSkill,
+  addDiscipline,
+}) => {
+  const [showAddDiscipline, setShowAddDiscipline] = useState(false);
+  const [showAddSkill, setShowAddSkill] = useState(false);
+  const addSkillButton = () => {
+    setShowAddSkill(true);
   };
-  const addDiscipline = () => {
-    this.setState({
-      ...this.state,
-      showAddDiscipline: !this.state.showAddDiscipline,
-    });
-  };
+  const addDisciplineButton = () => {
+    console.log('show adddiscipline'.showAddDiscipline);
 
-  const parseDisSkill = () => {
-    let parsed = {};
-    disSkill.map(temp => {
-      if (!Object.keys(parsed).includes(temp.discipline)) {
-        parsed[temp.discipline] = {};
-        parsed[temp.discipline]['Years of experience'] = temp.yoe;
-        parsed[temp.discipline]['Skills'] = [];
-      }
-      parsed[temp.discipline]['Skills'].push(temp.skill);
-    });
-    parsed = Object.entries(parsed);
-    console.log(parsed);
-    return parsed;
+    setShowAddDiscipline(true);
+    console.log('show adddiscipline'.showAddDiscipline);
   };
-  const parsedDisSkill = parseDisSkill();
+  const cancelAddSkill = () => {
+    setShowAddSkill(false);
+  };
+  const cancelAddDiscipline = () => {
+    setShowAddDiscipline(false);
+  };
+  const submitAddDiscipline = () => {
+    let discipline = document.getElementById('addDisciplineName')
+      .value;
+    let yoe = document.getElementById('addDisciplineYOE').value;
+    addDiscipline(discipline, yoe);
+    // console.log('disdflasdkfj', discipline, yoe);
+  };
+  const submitAddSkill = () => {
+    let skill = document.getElementById('addSkillName').value;
+    addSkill(skill);
+    // console.log('disdflasdkfj', skill);
+  };
+  // const discipline = [];
+  // const parseDisSkill = () => {
+  //   console.log('ssss', disSkill);
+  //   let parsed = {};
+  //   disSkill.map(temp => {
+  //     if (!Object.keys(parsed).includes(temp.discipline)) {
+  //       parsed[temp.discipline] = {};
+  //       parsed[temp.discipline]['Years of experience'] = temp.yoe;
+  //       parsed[temp.discipline]['Skills'] = [];
+  //     }
+  //     parsed[temp.discipline]['Skills'].push(temp.skill);
+  //   });
+  //   parsed = Object.entries(parsed);
+  //   parsed.map(temp => {
+  //     let dis = {};
+  //     dis['discipline'] = temp[0];
+  //     dis['Years of experience'] = temp[1]['Years of experience'];
+  //     discipline.push(dis);
+  //   });
+  //   console.log('the displins are ', discipline);
+  //   return parsed;
+  // };
+  // const parsedDisSkill = parseDisSkill();
 
-  const [skills, setSkills] = useState(
-    parsedDisSkill[0][1]['Skills'],
-  );
+  // const parseDiscipline = () => {};
 
   // let skills = parsedDisSkill[0][1]['Skills'];
-  const updateSkills = index => {
-    setSkills(parsedDisSkill[index][1]['Skills']);
-    console.log(skills);
-  };
+  // const updateSkills = index => {
+  //   console.log(disSkill);
+  //   setSkills(parsedDisSkill[index][1]['Skills']);
+  //   console.log(skills);
+  // };
 
   return (
     <div className="profileMain">
-      <Modal />
-      {/* <msg.ShowSuccessMsg
-        msg={[
-          { type: 'success', data: 'good job0', show: true },
-          {
-            type: 'error',
-            data: 'there is an error1',
-            show: true,
-          },
-          { type: 'success', data: 'good job2', show: true },
-        ]}
-      /> */}
+      {/* <Modal /> */}
+
       <div
         style={{
           display: 'flex',
@@ -68,35 +91,49 @@ const ProfileMain = ({ personalProfileUser, disSkill }) => {
           width: '100vw',
           height: '100vh',
           margin: 0,
+          position: 'fixed',
         }}
         className="card"
       >
         <div className="col1">
-          <div className="card">
-            <div className="chart">
-              <Doughnut data={data} />
-            </div>
-          </div>
           <div
             className="card"
             style={{ display: 'flex', 'flex-direction': 'column' }}
           >
-            <table className="table">
+            <WTable
+              datas={disciplines}
+              tableHead={[
+                'Discipline',
+                'Years of experience',
+                'operation',
+              ]}
+              remove={deleteDiscipline}
+            />
+            <div style={{ float: 'left' }}>
+              <WButton
+                buttonNameOne={'add'}
+                buttonNameTwo={'submit'}
+                id={'addDiscipline'}
+                onClickButtonOne={addDisciplineButton}
+                onClickButtonTwo={cancelAddDiscipline}
+              />
+            </div>
+            {/* <table className="table">
               <tbody>
                 <tr>
                   <th scope="col">Discipline</th>
                   <th scope="col">Years of experience</th>
                   <th scope="col">peration</th>
                 </tr>
-                {parsedDisSkill.map((discipline, index) => {
+                {disciplines.map((discipline, index) => {
                   return (
                     <tr
-                      onClick={() => {
-                        updateSkills(index);
-                      }}
+                    // onClick={() => {
+                    //   updateSkills(index);
+                    // }}
                     >
-                      <td>{discipline[0]}</td>
-                      <td>{discipline[1]['Years of experience']}</td>
+                      <td>{discipline['discipline']}</td>
+                      <td>{discipline['Years of experience']}</td>
                       <td>
                         <button
                           // onClick={this.delete(index)}
@@ -107,26 +144,33 @@ const ProfileMain = ({ personalProfileUser, disSkill }) => {
                   );
                 })}
               </tbody>
-            </table>
-            <div className="button-add">
+            </table> */}
+            {/* <div className="button-add">
               <i
                 // onClick={addDiscipline}
                 class="far fa-plus-square fa-2x"
               ></i>
-            </div>
+            </div> */}
 
             {/* add discipline component */}
-            {false ? (
+            {showAddDiscipline ? (
               <div className="content-add">
                 <input
+                  id="addDisciplineName"
                   style={{ width: 80 }}
                   placeholder="Discipline"
                 ></input>
                 <input
+                  id="addDisciplineYOE"
                   style={{ width: 140 }}
                   placeholder="Years of experience"
                 ></input>
-                <button>submit</button>
+                <button
+                  onClick={submitAddDiscipline}
+                  style={{ borderRadius: '5px' }}
+                >
+                  submit
+                </button>
               </div>
             ) : null}
           </div>
@@ -138,7 +182,13 @@ const ProfileMain = ({ personalProfileUser, disSkill }) => {
             className="card"
             style={{ display: 'flex', 'flex-direction': 'column' }}
           >
-            <table className="table">
+            <WTable
+              datas={skills}
+              tableHead={['skills', 'operation']}
+              remove={deleteSkill}
+            />
+
+            {/* <table className="table">
               <tbody>
                 <tr>
                   <th scope="col">Skills</th>
@@ -158,7 +208,7 @@ const ProfileMain = ({ personalProfileUser, disSkill }) => {
                   );
                 })}
               </tbody>
-            </table>
+            </table> */}
             <div>
               <div class="pagination">
                 <a href="#">&laquo;</a>
@@ -172,31 +222,37 @@ const ProfileMain = ({ personalProfileUser, disSkill }) => {
                 <a href="#">&raquo;</a>
               </div>
             </div>
-            <div className="button-add">
-              <i
-                style={{ cursor: 'pointer' }}
-                onClick={addSkill}
-                class="far fa-plus-square fa-2x"
-              ></i>
-            </div>
+            <WButton
+              buttonNameOne={'add'}
+              buttonNameTwo={'submit'}
+              id={'addSkill'}
+              onClickButtonOne={addSkillButton}
+              onClickButtonTwo={cancelAddSkill}
+            />
 
             {/* add skill component */}
-            {false ? (
+            {showAddSkill ? (
               <div className="content-add">
                 <input
+                  id="addSkillName"
                   style={{ width: 70 }}
                   placeholder="skill"
                 ></input>
 
-                <button>submit</button>
+                <button
+                  onClick={submitAddSkill}
+                  style={{ borderRadius: '5px' }}
+                >
+                  submit
+                </button>
               </div>
             ) : null}
           </div>
 
           {/* pagination table */}
           {/* <div>
-          <Table />
-        </div> */}
+            <Table />
+          </div> */}
         </div>
       </div>
     </div>

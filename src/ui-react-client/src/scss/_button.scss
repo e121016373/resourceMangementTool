@@ -37,7 +37,7 @@
 .btn-orange {
   @extend %btn;
   background-color: $warning-color;
-  color: black;
+  color: white;
   &:hover {
     background-color: darken($warning-color, 10%);
   }
@@ -56,5 +56,39 @@
   color: white;
   &:hover {
     background-color: darken($purple-color, 1%);
+  }
+}
+.swipe-button {
+  height: 23px;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  .content {
+    display: flex;
+    flex-direction: column;
+    transition: transform 300ms ease-in-out;
+    transform: translateY(0px);
+    align-items: center;
+    .btn-red {
+      padding: 0px 10px;
+      text-align: center;
+      align-content: center;
+      background-color: $warning-color;
+      margin: 0;
+    }
+    .btn-green {
+      padding: 0px 10px;
+      text-align: center;
+      align-content: center;
+      margin: 0;
+    }
+    .btn-blue {
+      padding: 0px 10px;
+      text-align: center;
+      align-content: center;
+      margin: 0;
+    }
   }
 }

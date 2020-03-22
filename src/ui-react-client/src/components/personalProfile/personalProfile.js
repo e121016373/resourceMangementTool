@@ -5,10 +5,18 @@ import { loadPersonalProfile } from '../../redux/actions/personalProfileAction';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
+import { deleteDiscipline } from '../../redux/actions/personalProfileAction';
+import { deleteSkill } from '../../redux/actions/personalProfileAction';
+import { addDiscipline } from '../../redux/actions/personalProfileAction';
+import { addSkill } from '../../redux/actions/personalProfileAction';
 
 const PersonalProfile = ({
   personalProfileUser,
   loadPersonalProfile,
+  deleteDiscipline,
+  deleteSkill,
+  addDiscipline,
+  addSkill,
 }) => {
   useEffect(() => {
     if (Object.keys(personalProfileUser).length === 0) {
@@ -30,7 +38,12 @@ const PersonalProfile = ({
         />
         <ProfileMain
           personalProfileUser={personalProfileUser.userProfile}
-          disSkill={personalProfileUser.disSkill}
+          disciplines={personalProfileUser.disciplines}
+          skills={personalProfileUser.skills}
+          deleteDiscipline={deleteDiscipline}
+          deleteSkill={deleteSkill}
+          addDiscipline={addDiscipline}
+          addSkill={addSkill}
         />
       </div>
     );
@@ -50,6 +63,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   loadPersonalProfile: loadPersonalProfile,
+  deleteDiscipline: deleteDiscipline,
+  deleteSkill: deleteSkill,
+  addDiscipline: addDiscipline,
+  addSkill: addSkill,
 };
 
 export default connect(
