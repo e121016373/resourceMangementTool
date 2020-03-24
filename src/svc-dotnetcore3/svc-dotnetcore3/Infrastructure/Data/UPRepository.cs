@@ -21,15 +21,15 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<UserProject>> GetProject(string username)
         {
             var sql = @"
-                select P.Title as Project, L.Name as Location, UP.FromDate, UP.ToDate, UP.Hours 
-                    from UserInProjects UP
+                select DISTINCT P.Title as Project, L.Name as Location, UP.FromDate,  
+                        UP.ToDate, P.UpdatedAt, PS.status as Status 
+                    from UserInProjects3 UP
                     INNER JOIN Projects P
                     on UP.ProjectId = P.Id 
 					INNER JOIN Locations L
 					on P.LocationId = L.Id
-                    INNER JOIN ProjectStatus PS
-                    on PS.status = 'Active'
-                    AND PS.Id = P.Id
+                    INNER JOIN ProjectStatus2 PS
+                    on PS.Id = P.Id
 
                 where UP.UserId = 
                   (select Id from Users where Username = @Username)
@@ -80,7 +80,7 @@ namespace Web.API.Infrastructure.Data
                 Project = proj.Project,
                 FromDate = proj.FromDate,
                 ToDate = proj.ToDate,
-                Hours = proj.Hours
+                Hours = proj.Status
             });
             return proj;
         }
@@ -121,7 +121,7 @@ namespace Web.API.Infrastructure.Data
                 Project = proj.Project,
                 FromDate = proj.FromDate,
                 ToDate = proj.ToDate,
-                Hours = proj.Hours
+                Hours = proj.Status
             });
             return proj;
 
