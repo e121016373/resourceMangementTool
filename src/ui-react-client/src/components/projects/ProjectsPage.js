@@ -2,7 +2,11 @@ import React, {useEffect} from 'react';
 import '../../css/collapseStyle.css';
 import rd3 from 'react-d3-library';
 import ProjectInfoPage from "./ProjectInfoPage";
+import CreateProject from './createNewProject';
+
 import {BootstrapTable} from 'react-bootstrap-table';
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
 // import {connect} from 'react-redux';
 // import PropTypes from 'prop-types';
@@ -72,6 +76,8 @@ let users = [user1, user2, user3]
 
 export class ProjectsPage extends React.Component {
 
+
+
     constructor() {
         super();
         this.state = {
@@ -136,33 +142,41 @@ export class ProjectsPage extends React.Component {
             allProjectRows = allProjectRows.concat(perProjectRows);
         });
 
+
         return (
-            <div className="container-project">
-                <div className="d1"/>
-                <div className="d2">
-                    <h1 >PROJECTS</h1>
-                    <hr/>
-                    <table className="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Location</th>
-                            <th scope="col">StartDate</th>
-                            <th scope="col">EndDate</th>
-                            <th scope="col">Utilization</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            {allProjectRows}
-                        </tbody>
-                    </table>
+            <div>
+                <div style={{
+                    display:'flex',
+                    'background-color': '#0f6674',
+                }} className="container-projectheadFlex">
+                    <div style={{
+                        'background-color': "#FFDBC8",
+                        'padding-top': '10px',
+                        'padding-bottom': '10px',
+                        'padding-left': '30px',
+                        'padding-right': '30px',
+                    }} className='createButton'>
+                        <CreateProject />
+                    </div>
                 </div>
-                <div class="d1"/>
+                <hr/>
+                <table className="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Location</th>
+                        <th scope="col">StartDate</th>
+                        <th scope="col">EndDate</th>
+                        <th scope="col">Utilization</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {allProjectRows}
+                    </tbody>
+                </table>
             </div>
-
-
         );
     }
 }

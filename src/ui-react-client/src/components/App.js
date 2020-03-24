@@ -76,7 +76,6 @@ const App = ({ personalProfileUser, loadPersonalProfile }) => {
           path="/projects/:project"
           component={ProjectInfoPage}
         /> */}
-
         <Route path="/locations" component={LocationsPage} />
         <Route
           exact
