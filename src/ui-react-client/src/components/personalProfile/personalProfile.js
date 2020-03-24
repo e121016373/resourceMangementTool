@@ -56,6 +56,7 @@ const PersonalProfile = ({
           personalProfileUser={personalProfileUser.userProfile}
           disciplines={personalProfileUser.disciplines}
           skills={personalProfileUser.skills}
+          projects={personalProfileUser.projects}
           deleteDiscipline={deleteDiscipline}
           deleteSkill={deleteSkill}
           addDiscipline={addDiscipline}
@@ -63,6 +64,7 @@ const PersonalProfile = ({
           updateSkillTable={updateSkillTable}
           addFeedback={addFeedback}
           currentState={currentState}
+          currentDiscipline={personalProfileUser.currentDiscipline}
           AllDisciplines={disciplines.map(discipline => {
             return discipline.name;
           })}

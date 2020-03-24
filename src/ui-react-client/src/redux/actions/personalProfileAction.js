@@ -11,7 +11,13 @@ const currentUser = authContext
 const baseURL = `${SVC_ROOT}users/${currentUser}`;
 let currentDiscipline = '';
 
-export const loadUserProfile = (userProfile, disciplines, skills) => {
+export const loadUserProfile = (
+  userProfile,
+  disciplines,
+  skills,
+  projects,
+  currentDiscipline,
+) => {
   if (!disciplines) disciplines = [];
   if (!skills) skills = [];
   if (disciplines[0]) {
@@ -22,6 +28,8 @@ export const loadUserProfile = (userProfile, disciplines, skills) => {
     userProfile: userProfile,
     disciplines: disciplines,
     skills: skills,
+    projects: projects,
+    currentDiscipline: disciplines[0],
   };
   console.log('the total is ', profile);
   return { type: types.LOAD_PERSONALPROFILE, payload: profile };
@@ -66,6 +74,43 @@ export const loadPersonalProfile = () => {
                 )
                 .then(skills => {
                   console.log(disciplines, skills);
+
+                  //load the project of the user
+
+                  // let projectURL = ""
+                  // axios.get(url,{headers}).then(
+
+                  // ).catch()
+                  let tempProjects = [
+                    {
+                      project: 'LLLLLLLLLLLL',
+                      location: 'Toronto',
+                      fromDate: '03/08/2020',
+                      toDate: '11/11/2021',
+                      active: 'true',
+                      updatedAt: '03/09/2020',
+                      hours: 30,
+                    },
+                    {
+                      project: 'Aliquam qui ',
+                      location: 'Saskatoon',
+                      fromDate: '03/08/2020',
+                      toDate: '11/11/2021',
+                      active: 'true',
+                      updatedAt: '03/09/2020',
+                      hours: 30,
+                    },
+                    {
+                      project: 'Architecto sint ',
+                      location: 'Fort McMurray',
+                      fromDate: '03/08/2020',
+                      toDate: '11/11/2021',
+                      active: 'false',
+                      updatedAt: '03/09/2020',
+                      hours: 35,
+                    },
+                  ];
+
                   dispatch(
                     loadUserProfile(
                       response.data,
@@ -73,6 +118,18 @@ export const loadPersonalProfile = () => {
                       skills.data.map(skill => {
                         return { skill: skill.name };
                       }),
+                      tempProjects.map(project => {
+                        let tempproject = {
+                          project: project.project,
+                          location: project.location,
+                          fromDate: project.fromDate,
+                          toDate: project.toDate,
+                          updatedAt: project.updatedAt,
+                          active: project.active,
+                        };
+                        return tempproject;
+                      }),
+                      disciplines.data[0].discipline,
                     ),
                   );
                 })
@@ -116,7 +173,6 @@ export const editLocation = profile => {
       .patch(url, { header: headers }, { data: profile })
       .then(response => {
         dispatch(editLocationAction(response));
-        return response;
       })
       .catch(error => {
         throw error;
@@ -256,6 +312,7 @@ export const updateSkillTable = discipline => {
             response.data.map(skill => {
               return { skill: skill.name };
             }),
+            discipline,
           ),
         );
       })
@@ -265,9 +322,9 @@ export const updateSkillTable = discipline => {
   };
 };
 
-export const updateSkillTableAction = skills => {
+export const updateSkillTableAction = (skills, discipline) => {
   return {
     type: types.UPDATE_SKILL_TABLE,
-    payload: skills,
+    payload: { skills, discipline },
   };
 };

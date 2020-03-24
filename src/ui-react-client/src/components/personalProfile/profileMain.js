@@ -22,6 +22,8 @@ const ProfileMain = ({
   addFeedback,
   disciplines,
   currentState,
+  projects,
+  currentDiscipline,
 }) => {
   // console.log('All disciplines', AllDisciplines);
   const [showAddDiscipline, setShowAddDiscipline] = useState(false);
@@ -133,7 +135,12 @@ const ProfileMain = ({
             }}
             className="card"
           >
-            <div className="col1">
+            <div
+              style={{
+                width: '50vw',
+              }}
+              className="col1"
+            >
               <div
                 className="card"
                 style={{
@@ -152,6 +159,7 @@ const ProfileMain = ({
                   remove={deleteDiscipline}
                   selectRow={updateSkillTable}
                   addFeedback={addFeedback}
+                  tableName={'Discipline'}
                 />
                 <div style={{ float: 'left' }}>
                   <WButton
@@ -233,6 +241,8 @@ const ProfileMain = ({
                   display: 'flex',
                   'flex-direction': 'column',
                   padding: '10px',
+                  'margin-left': 0,
+                  width: '30vw',
                 }}
               >
                 <WTable
@@ -240,6 +250,9 @@ const ProfileMain = ({
                   tableHead={['skills', 'operation']}
                   remove={deleteSkill}
                   addFeedback={addFeedback}
+                  tableName={
+                    'Skills: ' + currentDiscipline.discipline
+                  }
                 />
 
                 {/* <table className="table">
@@ -312,8 +325,49 @@ const ProfileMain = ({
         </div>
       );
     } else if (currentState === 'project') {
-      return <div>project</div>;
-    } else if (currentState === 'availability') {
+      return (
+        <div className="profileMain">
+          <div
+            style={{
+              display: 'flex',
+              'flex-direction': 'row',
+              width: '100vw',
+              height: '100vh',
+              margin: 0,
+              position: 'fixed',
+              padding: '20px',
+            }}
+            className="card"
+          >
+            <div className="col1">
+              <div
+                className="card"
+                style={{
+                  display: 'flex',
+                  'flex-direction': 'column',
+                  padding: '10px',
+                  width: '75vw',
+                }}
+              >
+                <WTable
+                  datas={projects}
+                  tableName={'Project'}
+                  tableHead={[
+                    'name',
+                    'location',
+                    'start Date',
+                    'end Date',
+                    'update Time',
+                    'active',
+                  ]}
+                  width={'100%'}
+                ></WTable>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    } else if (currentState === 'availabilty') {
       return <div>Availability</div>;
     }
   };

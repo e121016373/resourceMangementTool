@@ -34,7 +34,9 @@ const executeAddSkill = (state, action) => {
   return { ...state };
 };
 const executeUpdateSkillTable = (state, action) => {
-  state.skills = action.payload;
+  state.skills = action.payload.skills;
+  console.log('ssssssssssssssssssssssssssssss', action);
+  state.currentDiscipline = action.payload.discipline;
   return { ...state };
 };
 export const personalProfileReducer = (

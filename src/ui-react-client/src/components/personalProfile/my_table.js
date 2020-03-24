@@ -6,11 +6,13 @@ import PropTypes from 'prop-types';
 import { render } from 'enzyme';
 
 const WTable = ({
+  tableName,
   datas,
   tableHead,
   selectRow,
   remove,
   addFeedback,
+  width,
 }) => {
   //   // Get current posts
   //   const indexOfLastPost = currentPage * postsPerPage;
@@ -68,7 +70,24 @@ const WTable = ({
 
   return (
     <div>
-      <table className="table">
+      <div
+        style={{
+          'border-bottom': '2px solid #ccc',
+          margin: '0',
+          width: '100%',
+        }}
+        className="row"
+      >
+        <div className="header">
+          <h4>{tableName}</h4>
+        </div>
+      </div>
+      <table
+        style={{
+          width: '100%',
+        }}
+        className="table"
+      >
         <tbody>
           <tr>
             {tableHead.map((name, index) => {
