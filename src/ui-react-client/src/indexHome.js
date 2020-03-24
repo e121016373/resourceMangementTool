@@ -7,7 +7,7 @@ import { runWithAdal } from 'react-adal';
 import { authContext, headers } from './config/adalConfig';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './css/ProjectsTableStyle.css';
+import './scss/ProjectsTableStyle.scss';
 
 const store = configureStore();
 const DO_NOT_LOGIN = false;
