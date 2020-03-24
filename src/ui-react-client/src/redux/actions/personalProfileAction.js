@@ -77,61 +77,39 @@ export const loadPersonalProfile = () => {
 
                   //load the project of the user
 
-                  // let projectURL = ""
-                  // axios.get(url,{headers}).then(
+                  let projectURL = `${SVC_ROOT}userprojects/${currentUser}`;
+                  axios
+                    .get(projectURL, { headers })
+                    .then(projectResponse => {
+                      let tempProjects = projectResponse.data;
 
-                  // ).catch()
-                  let tempProjects = [
-                    {
-                      project: 'LLLLLLLLLLLL',
-                      location: 'Toronto',
-                      fromDate: '03/08/2020',
-                      toDate: '11/11/2021',
-                      active: 'true',
-                      updatedAt: '03/09/2020',
-                      hours: 30,
-                    },
-                    {
-                      project: 'Aliquam qui ',
-                      location: 'Saskatoon',
-                      fromDate: '03/08/2020',
-                      toDate: '11/11/2021',
-                      active: 'true',
-                      updatedAt: '03/09/2020',
-                      hours: 30,
-                    },
-                    {
-                      project: 'Architecto sint ',
-                      location: 'Fort McMurray',
-                      fromDate: '03/08/2020',
-                      toDate: '11/11/2021',
-                      active: 'false',
-                      updatedAt: '03/09/2020',
-                      hours: 35,
-                    },
-                  ];
-
-                  dispatch(
-                    loadUserProfile(
-                      response.data,
-                      disciplines.data,
-                      skills.data.map(skill => {
-                        return { skill: skill.name };
-                      }),
-                      tempProjects.map(project => {
-                        let tempproject = {
-                          project: project.project,
-                          location: project.location,
-                          fromDate: project.fromDate,
-                          toDate: project.toDate,
-                          updatedAt: project.updatedAt,
-                          active: project.active,
-                        };
-                        return tempproject;
-                      }),
-                      disciplines.data[0].discipline,
-                    ),
-                  );
+                      dispatch(
+                        loadUserProfile(
+                          response.data,
+                          disciplines.data,
+                          skills.data.map(skill => {
+                            return { skill: skill.name };
+                          }),
+                          tempProjects.map(project => {
+                            let tempproject = {
+                              project: project.project,
+                              location: project.location,
+                              fromDate: project.fromDate.split(
+                                'T',
+                              )[0],
+                              toDate: project.toDate.split('T')[0],
+                              updatedAt: project.updatedAt.split(
+                                'T',
+                              )[0],
+                              active: project.status,
+                            };
+                            return tempproject;
+                          }),
+                          disciplines.data[0].discipline,
+                        ),
+                      );
+                    })
+                    .catch();
                 })
                 .catch(error => {
                   throw error;

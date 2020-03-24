@@ -346,7 +346,7 @@ const ProfileMain = ({
                   display: 'flex',
                   'flex-direction': 'column',
                   padding: '10px',
-                  width: '75vw',
+                  width: '74vw',
                 }}
               >
                 <WTable
