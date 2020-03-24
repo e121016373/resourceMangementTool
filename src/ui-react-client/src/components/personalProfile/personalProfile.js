@@ -38,6 +38,8 @@ const PersonalProfile = ({
     }
   }, [personalProfileUser]);
 
+  const [currentState, setCurrentState] = useState('discipline');
+  console.log('personalProfile', currentState);
   const renderPersonalProfile = () => {
     if (Object.keys(personalProfileUser).length === 0) {
       return <div>loading</div>;
@@ -47,6 +49,8 @@ const PersonalProfile = ({
       <div>
         <Sidebar
           personalProfileUser={personalProfileUser.userProfile}
+          setCurrentState={setCurrentState}
+          currentState={currentState}
         />
         <ProfileMain
           personalProfileUser={personalProfileUser.userProfile}
@@ -58,6 +62,7 @@ const PersonalProfile = ({
           addSkill={addSkill}
           updateSkillTable={updateSkillTable}
           addFeedback={addFeedback}
+          currentState={currentState}
           AllDisciplines={disciplines.map(discipline => {
             return discipline.name;
           })}

@@ -21,8 +21,9 @@ const ProfileMain = ({
   updateSkillTable,
   addFeedback,
   disciplines,
+  currentState,
 }) => {
-  console.log('All disciplines', AllDisciplines);
+  // console.log('All disciplines', AllDisciplines);
   const [showAddDiscipline, setShowAddDiscipline] = useState(false);
   const [showAddSkill, setShowAddSkill] = useState(false);
   const addSkillButton = () => {
@@ -114,198 +115,209 @@ const ProfileMain = ({
   //   console.log(skills);
   // };
 
-  return (
-    <div className="profileMain">
-      {/* <Modal /> */}
+  const renderMain = () => {
+    console.log('PROFILE main currentState', currentState);
+    if (currentState === 'discipline') {
+      return (
+        <div className="profileMain">
+          {/* <Modal /> */}
 
-      <div
-        style={{
-          display: 'flex',
-          'flex-direction': 'row',
-          width: '100vw',
-          height: '100vh',
-          margin: 0,
-          position: 'fixed',
-        }}
-        className="card"
-      >
-        <div className="col1">
           <div
-            className="card"
             style={{
               display: 'flex',
-              'flex-direction': 'column',
-              padding: '10px',
+              'flex-direction': 'row',
+              width: '100vw',
+              height: '100vh',
+              margin: 0,
+              position: 'fixed',
             }}
+            className="card"
           >
-            <WTable
-              datas={disciplines}
-              tableHead={[
-                'Discipline',
-                'Years of experience',
-                'operation',
-              ]}
-              remove={deleteDiscipline}
-              selectRow={updateSkillTable}
-              addFeedback={addFeedback}
-            />
-            <div style={{ float: 'left' }}>
-              <WButton
-                buttonNameOne={'add'}
-                buttonNameTwo={'submit'}
-                id={'addDiscipline'}
-                onClickButtonOne={addDisciplineButton}
-                onClickButtonTwo={cancelAddDiscipline}
-              />
-            </div>
-            {/* <table className="table">
-              <tbody>
-                <tr>
-                  <th scope="col">Discipline</th>
-                  <th scope="col">Years of experience</th>
-                  <th scope="col">peration</th>
-                </tr>
-                {disciplines.map((discipline, index) => {
-                  return (
-                    <tr
-                    // onClick={() => {
-                    //   updateSkills(index);
-                    // }}
+            <div className="col1">
+              <div
+                className="card"
+                style={{
+                  display: 'flex',
+                  'flex-direction': 'column',
+                  padding: '10px',
+                }}
+              >
+                <WTable
+                  datas={disciplines}
+                  tableHead={[
+                    'Discipline',
+                    'Years of experience',
+                    'operation',
+                  ]}
+                  remove={deleteDiscipline}
+                  selectRow={updateSkillTable}
+                  addFeedback={addFeedback}
+                />
+                <div style={{ float: 'left' }}>
+                  <WButton
+                    buttonNameOne={'add'}
+                    buttonNameTwo={'submit'}
+                    id={'addDiscipline'}
+                    onClickButtonOne={addDisciplineButton}
+                    onClickButtonTwo={cancelAddDiscipline}
+                  />
+                </div>
+                {/* <table className="table">
+                <tbody>
+                  <tr>
+                    <th scope="col">Discipline</th>
+                    <th scope="col">Years of experience</th>
+                    <th scope="col">peration</th>
+                  </tr>
+                  {disciplines.map((discipline, index) => {
+                    return (
+                      <tr
+                      // onClick={() => {
+                      //   updateSkills(index);
+                      // }}
+                      >
+                        <td>{discipline['discipline']}</td>
+                        <td>{discipline['Years of experience']}</td>
+                        <td>
+                          <button
+                            // onClick={this.delete(index)}
+                            className="fas fa-trash-alt fa-1x"
+                          ></button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table> */}
+                {/* <div className="button-add">
+                <i
+                  // onClick={addDiscipline}
+                  class="far fa-plus-square fa-2x"
+                ></i>
+              </div> */}
+
+                {/* add discipline component */}
+                {showAddDiscipline ? (
+                  <div className="content-add">
+                    <AutoComplete
+                      elements={AllDisciplines}
+                      placeholder={'disciplines'}
+                      id={'addDisciplineName'}
+                    />
+                    <AutoComplete
+                      elements={[]}
+                      placeholder="Years of experience"
+                      id={'addDisciplineYOE'}
+                    />
+                    {/* <input
+                    id="addDisciplineYOE"
+                    style={{ width: 140 }}
+                    placeholder="Years of experience"
+                  ></input> */}
+                    <button
+                      onClick={submitAddDiscipline}
+                      style={{ borderRadius: '5px' }}
                     >
-                      <td>{discipline['discipline']}</td>
-                      <td>{discipline['Years of experience']}</td>
-                      <td>
-                        <button
-                          // onClick={this.delete(index)}
-                          className="fas fa-trash-alt fa-1x"
-                        ></button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table> */}
-            {/* <div className="button-add">
-              <i
-                // onClick={addDiscipline}
-                class="far fa-plus-square fa-2x"
-              ></i>
-            </div> */}
-
-            {/* add discipline component */}
-            {showAddDiscipline ? (
-              <div className="content-add">
-                <AutoComplete
-                  elements={AllDisciplines}
-                  placeholder={'disciplines'}
-                  id={'addDisciplineName'}
-                />
-                <AutoComplete
-                  elements={[]}
-                  placeholder="Years of experience"
-                  id={'addDisciplineYOE'}
-                />
-                {/* <input
-                  id="addDisciplineYOE"
-                  style={{ width: 140 }}
-                  placeholder="Years of experience"
-                ></input> */}
-                <button
-                  onClick={submitAddDiscipline}
-                  style={{ borderRadius: '5px' }}
-                >
-                  submit
-                </button>
+                      submit
+                    </button>
+                  </div>
+                ) : null}
               </div>
-            ) : null}
+            </div>
+
+            {/* column 2 */}
+            <div className="col2">
+              <div
+                className="card"
+                style={{
+                  display: 'flex',
+                  'flex-direction': 'column',
+                  padding: '10px',
+                }}
+              >
+                <WTable
+                  datas={skills}
+                  tableHead={['skills', 'operation']}
+                  remove={deleteSkill}
+                  addFeedback={addFeedback}
+                />
+
+                {/* <table className="table">
+                <tbody>
+                  <tr>
+                    <th scope="col">Skills</th>
+                    <th scope="col">operation</th>
+                  </tr>
+                  {skills.map((skill, index) => {
+                    return (
+                      <tr>
+                        <td>{skill}</td>
+                        <td>
+                          <button
+                            // onClick={this.delete(index)}
+                            className="fas fa-trash-alt fa-1x"
+                          ></button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table> */}
+                {/* <div>
+                <div class="pagination">
+                  <a href="#">&laquo;</a>
+                  <a href="#">1</a>
+                  <a href="#" class="active">
+                    2
+                  </a>
+                  <a href="#">3</a>
+                  <a href="#">4</a>
+  
+                  <a href="#">&raquo;</a>
+                </div>
+              </div> */}
+                <WButton
+                  buttonNameOne={'add'}
+                  buttonNameTwo={'submit'}
+                  id={'addSkill'}
+                  onClickButtonOne={addSkillButton}
+                  onClickButtonTwo={cancelAddSkill}
+                />
+
+                {/* add skill component */}
+                {showAddSkill ? (
+                  <div className="content-add">
+                    <input
+                      id="addSkillName"
+                      style={{ width: 70 }}
+                      placeholder="skill"
+                    ></input>
+
+                    <button
+                      onClick={submitAddSkill}
+                      style={{ borderRadius: '5px' }}
+                    >
+                      submit
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+
+              {/* pagination table */}
+              {/* <div>
+              <Table />
+            </div> */}
+            </div>
           </div>
         </div>
+      );
+    } else if (currentState === 'project') {
+      return <div>project</div>;
+    } else if (currentState === 'availability') {
+      return <div>Availability</div>;
+    }
+  };
 
-        {/* column 2 */}
-        <div className="col2">
-          <div
-            className="card"
-            style={{
-              display: 'flex',
-              'flex-direction': 'column',
-              padding: '10px',
-            }}
-          >
-            <WTable
-              datas={skills}
-              tableHead={['skills', 'operation']}
-              remove={deleteSkill}
-              addFeedback={addFeedback}
-            />
-
-            {/* <table className="table">
-              <tbody>
-                <tr>
-                  <th scope="col">Skills</th>
-                  <th scope="col">operation</th>
-                </tr>
-                {skills.map((skill, index) => {
-                  return (
-                    <tr>
-                      <td>{skill}</td>
-                      <td>
-                        <button
-                          // onClick={this.delete(index)}
-                          className="fas fa-trash-alt fa-1x"
-                        ></button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table> */}
-            {/* <div>
-              <div class="pagination">
-                <a href="#">&laquo;</a>
-                <a href="#">1</a>
-                <a href="#" class="active">
-                  2
-                </a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-
-                <a href="#">&raquo;</a>
-              </div>
-            </div> */}
-            <WButton
-              buttonNameOne={'add'}
-              buttonNameTwo={'submit'}
-              id={'addSkill'}
-              onClickButtonOne={addSkillButton}
-              onClickButtonTwo={cancelAddSkill}
-            />
-
-            {/* add skill component */}
-            {showAddSkill ? (
-              <div className="content-add">
-                <input
-                  id="addSkillName"
-                  style={{ width: 70 }}
-                  placeholder="skill"
-                ></input>
-
-                <button
-                  onClick={submitAddSkill}
-                  style={{ borderRadius: '5px' }}
-                >
-                  submit
-                </button>
-              </div>
-            ) : null}
-          </div>
-
-          {/* pagination table */}
-          {/* <div>
-            <Table />
-          </div> */}
-        </div>
-      </div>
-    </div>
-  );
+  return <div>{renderMain()}</div>;
 };
 export default ProfileMain;

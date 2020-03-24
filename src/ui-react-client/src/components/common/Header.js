@@ -54,21 +54,26 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
     }
     return <div></div>;
   };
-  console.log('the user type is ', userType);
-  let originalBarPosition;
+  let originalBarPosition = 90;
   const moveBar = e => {
     // let offsets = e.getBoundingClientRect();
     // let top = offsets.top;
     // let left = offsets.left;
     let bar = document.getElementById('bar');
     if (originalBarPosition === undefined) {
+      console.log("it's undefined");
       originalBarPosition = document
         .getElementById('bar')
         .getBoundingClientRect().x;
     }
+    console.log('the originalBarPosition is ', originalBarPosition);
     let difference =
       e.target.getBoundingClientRect().x - originalBarPosition - 4;
-    console.log('the difference is ', bar.style.transform);
+    console.log('the difference is ', difference);
+    console.log(
+      'current position is ',
+      e.target.getBoundingClientRect().x,
+    );
     bar.style.transform = 'translate(' + difference + 'px)';
     bar.style.width =
       e.target.getBoundingClientRect().width + 8 + 'px';

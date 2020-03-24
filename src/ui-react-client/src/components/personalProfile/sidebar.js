@@ -9,6 +9,8 @@ export const Sidebar = ({
   personalProfileUser,
   editLocation,
   addFeedback,
+  setCurrentState,
+  currentState,
 }) => {
   const edit = () => {
     let location = document.getElementById('location');
@@ -44,6 +46,26 @@ export const Sidebar = ({
     //   content.style.transform = 'translateY(0px)';
     // }
   };
+  let originalBarPosition;
+  const moveBar = e => {
+    // let offsets = e.getBoundingClientRect();
+    // let top = offsets.top;
+    // let left = offsets.left;
+    let bar = document.getElementById('bar');
+    if (originalBarPosition === undefined) {
+      originalBarPosition = document
+        .getElementById('bar')
+        .getBoundingClientRect().x;
+    }
+    let difference =
+      e.target.getBoundingClientRect().x - originalBarPosition - 4;
+    console.log('the difference is ', bar.style.transform);
+    bar.style.transform = 'translate(' + difference + 'px)';
+    bar.style.width =
+      e.target.getBoundingClientRect().width + 8 + 'px';
+    console.log('the width  ', bar.style.width);
+  };
+  console.log('sidebar currentState', currentState);
   return (
     <div>
       <div className="sidebar">
@@ -87,6 +109,28 @@ export const Sidebar = ({
           </div>
 
           {/* <Modal /> */}
+        </div>
+        <div style={{ 'margin-top': '20px' }}></div>
+        <div className="content">
+          <div
+            className="item"
+            onClick={() => setCurrentState('discipline')}
+          >
+            <i class="fas fa-user-graduate mr-4 fa-lg"></i>
+            disciplines
+          </div>
+          <div
+            className="item"
+            onClick={() => setCurrentState('project')}
+          >
+            <i class="fas fa-calendar-minus mr-4 fa-lg"></i>Project
+          </div>
+          <div
+            className="item"
+            onClick={() => setCurrentState('availability')}
+          >
+            <i class="far fa-clock mr-4 fa-lg"></i>availability
+          </div>
         </div>
       </div>
     </div>
