@@ -22,7 +22,7 @@ namespace Web.API.Infrastructure.Data
             var sql = @"
                 select
                     P.Id, P.Number, P.Title, P.LocationId, P.CreatedAt, 
-                    P.UpdatedAt, P.StartDate, P.EndDate, P.Hours, PS.status
+                    P.UpdatedAt, PS.FromDate, PS.ToDate, PS.Hours, PS.status
                 from
                     Projects P
                 INNER JOIN ProjectStatus PS
@@ -39,7 +39,7 @@ namespace Web.API.Infrastructure.Data
             var sql = @"
                 select top(25)
                     P.Id, P.Number, P.Title, P.LocationId, P.CreatedAt,
-                    P.UpdatedAt, P.StartDate, P.EndDate, P.Hours, PS.status
+                    P.UpdatedAt, PS.FromDate, PS.ToDate, PS.Hours, PS.status
                 from
                     Projects P
                 INNER JOIN ProjectStatus PS
@@ -58,7 +58,7 @@ namespace Web.API.Infrastructure.Data
             var sql = @"
                 select
                     P.Id, P.Number, P.Title, P.LocationId, P.CreatedAt, 
-                    P.UpdatedAt, P.StartDate, P.EndDate, P.Hours, PS.status
+                    P.UpdatedAt, PS.FromDate, PS.ToDate, PS.Hours, PS.status
                 from
                     Projects P
                 INNER JOIN ProjectStatus PS
@@ -76,14 +76,14 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 insert into Projects 
-                    (Number, Title, LocationId, StartDate, EndDate, Hours)
+                    (Number, Title, LocationId)
                 values 
-                    (@Number, @Title, @LocationId, @StartDate, @EndDate, @Hours);
+                    (@Number, @Title, @LocationId);
                 select cast(scope_identity() as int);
                 insert into ProjectStatus
-                    (FromDate, ToDate, status)
+                    (Id, FromDate, ToDate, Status, hours)
                 values 
-                    (@StartDate, @EndDate, @Status)
+                    (scope_identity(), @FromDate, @ToDate, @Status, @Hours)
             ;";
 
             using var connection = new SqlConnection(connectionString);
@@ -92,8 +92,8 @@ namespace Web.API.Infrastructure.Data
                 project.Number,
                 project.Title,
                 project.LocationId,
-                project.StartDate,
-                project.EndDate,
+                project.FromDate,
+                project.ToDate,
                 project.Hours,
                 project.Status
             });
@@ -110,16 +110,15 @@ namespace Web.API.Infrastructure.Data
                     Number = @Number,
                     Title = @Title,
                     LocationId = @LocationId,
-                    StartDate = @StartDate,
-                    EndDate = @EndDate,
-                    Hours = @Hours
+                    UpdatedAt = SYSUTCDATETIME()
                 where 
                     Id = @Id;
                 update ProjectStatus
                 set
-                    FromDate = @StartDate,
-                    ToDate = @EndDate,
-                    status = @Status
+                    FromDate = @FromDate,
+                    ToDate = @ToDate,
+                    Status = @Status,
+                    Hours = @Hours
                 where Id = @Id
             ;";
 
@@ -131,8 +130,8 @@ namespace Web.API.Infrastructure.Data
                 project.Number,
                 project.Title,
                 project.LocationId,
-                project.StartDate,
-                project.EndDate,
+                project.FromDate,
+                project.ToDate,
                 project.Hours,
                 project.Status
             });

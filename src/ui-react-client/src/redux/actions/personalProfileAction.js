@@ -134,6 +134,9 @@ export const deleteDiscipline = discipline => {
       .then(response => {
         console.log('deleteDiscipline response', response);
         dispatch(deleteDisciplineAction(discipline));
+        if (discipline.discipline === currentDiscipline.discipline) {
+          dispatch(updateSkillTableAction([]));
+        }
       })
       .catch(error => {
         throw error;

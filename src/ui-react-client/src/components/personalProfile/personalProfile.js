@@ -11,21 +11,29 @@ import { addDiscipline } from '../../redux/actions/personalProfileAction';
 import { addSkill } from '../../redux/actions/personalProfileAction';
 import { updateSkillTable } from '../../redux/actions/personalProfileAction';
 import { addFeedback } from '../../redux/actions/feedbackAction';
+import { loadDisciplines } from '../../redux/actions/disciplinesActions';
 
 const PersonalProfile = ({
   personalProfileUser,
   loadPersonalProfile,
+  loadDisciplines,
   deleteDiscipline,
   deleteSkill,
   addDiscipline,
   addSkill,
   updateSkillTable,
   addFeedback,
+  disciplines,
 }) => {
   useEffect(() => {
     if (Object.keys(personalProfileUser).length === 0) {
       loadPersonalProfile().catch(error => {
         alert('Loading personalProfile failed' + error);
+      });
+    }
+    if (Object.keys(disciplines).length === 0) {
+      loadDisciplines().catch(error => {
+        alert('Loading disciplines failed' + error);
       });
     }
   }, [personalProfileUser]);
@@ -50,6 +58,9 @@ const PersonalProfile = ({
           addSkill={addSkill}
           updateSkillTable={updateSkillTable}
           addFeedback={addFeedback}
+          AllDisciplines={disciplines.map(discipline => {
+            return discipline.name;
+          })}
         />
       </div>
     );
@@ -60,11 +71,13 @@ const PersonalProfile = ({
 
 PersonalProfile.propTypes = {
   personalProfileUser: PropTypes.object.isRequired,
+  disciplines: PropTypes.array.isRequired,
   loadPersonalProfile: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   personalProfileUser: state.currentUserProfile,
+  disciplines: state.disciplines,
 });
 
 const mapDispatchToProps = {
@@ -75,6 +88,7 @@ const mapDispatchToProps = {
   addSkill: addSkill,
   updateSkillTable: updateSkillTable,
   addFeedback: addFeedback,
+  loadDisciplines: loadDisciplines,
 };
 
 export default connect(
