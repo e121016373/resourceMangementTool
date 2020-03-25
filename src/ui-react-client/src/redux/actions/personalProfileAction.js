@@ -17,6 +17,7 @@ export const loadUserProfile = (
   skills,
   projects,
   currentDiscipline,
+  skillsOfDiscipline,
 ) => {
   if (!disciplines) disciplines = [];
   if (!skills) skills = [];
@@ -30,6 +31,7 @@ export const loadUserProfile = (
     skills: skills,
     projects: projects,
     currentDiscipline: disciplines[0],
+    skillsOfDiscipline: skillsOfDiscipline,
   };
   console.log('the total is ', profile);
   return { type: types.LOAD_PERSONALPROFILE, payload: profile };
@@ -83,31 +85,47 @@ export const loadPersonalProfile = () => {
                     .then(projectResponse => {
                       let tempProjects = projectResponse.data;
 
-                      dispatch(
-                        loadUserProfile(
-                          response.data,
-                          disciplines.data,
-                          skills.data.map(skill => {
-                            return { skill: skill.name };
-                          }),
-                          tempProjects.map(project => {
-                            let tempproject = {
-                              project: project.project,
-                              location: project.location,
-                              fromDate: project.fromDate.split(
-                                'T',
-                              )[0],
-                              toDate: project.toDate.split('T')[0],
-                              updatedAt: project.updatedAt.split(
-                                'T',
-                              )[0],
-                              active: project.status,
-                            };
-                            return tempproject;
-                          }),
-                          disciplines.data[0].discipline,
-                        ),
-                      );
+                      //auto skills of the discipline
+                      let URL = `${SVC_ROOT}skills/d/${disciplines.data[0].discipline}`;
+                      axios
+                        .get(URL, { headers })
+                        .then(skillDisciplinesR => {
+                          console.log(
+                            'skillDisciplineR',
+                            skillDisciplinesR,
+                          );
+                          dispatch(
+                            loadUserProfile(
+                              response.data,
+                              disciplines.data,
+                              skills.data.map(skill => {
+                                return { skill: skill.name };
+                              }),
+                              tempProjects.map(project => {
+                                let tempproject = {
+                                  project: project.project,
+                                  location: project.location,
+                                  fromDate: project.fromDate.split(
+                                    'T',
+                                  )[0],
+                                  toDate: project.toDate.split(
+                                    'T',
+                                  )[0],
+                                  updatedAt: project.updatedAt.split(
+                                    'T',
+                                  )[0],
+                                  active: project.status,
+                                };
+                                return tempproject;
+                              }),
+                              disciplines.data[0].discipline,
+                              skillDisciplinesR.data.map(skill => {
+                                return skill.name;
+                              }),
+                            ),
+                          );
+                        })
+                        .catch();
                     })
                     .catch();
                 })
@@ -283,16 +301,26 @@ export const updateSkillTable = discipline => {
       .get(url, { header: headers })
       .then(response => {
         currentDiscipline = discipline;
-
-        console.log('the add discipline response', response);
-        return dispatch(
-          updateSkillTableAction(
-            response.data.map(skill => {
-              return { skill: skill.name };
-            }),
-            discipline,
-          ),
-        );
+        //console.log('the add discipline response', response);
+        let URL = `${SVC_ROOT}skills/d/${discipline.discipline}`;
+        //console.log('url siisisis', URL);
+        axios
+          .get(URL, { headers })
+          .then(skillDisciplinesR => {
+            console.log('sldfja', skillDisciplinesR);
+            return dispatch(
+              updateSkillTableAction(
+                response.data.map(skill => {
+                  return { skill: skill.name };
+                }),
+                discipline,
+                skillDisciplinesR.data.map(skill => {
+                  return skill.name;
+                }),
+              ),
+            );
+          })
+          .catch();
       })
       .catch(error => {
         throw error;
@@ -300,9 +328,13 @@ export const updateSkillTable = discipline => {
   };
 };
 
-export const updateSkillTableAction = (skills, discipline) => {
+export const updateSkillTableAction = (
+  skills,
+  discipline,
+  skillsOfDiscipline,
+) => {
   return {
     type: types.UPDATE_SKILL_TABLE,
-    payload: { skills, discipline },
+    payload: { skills, discipline, skillsOfDiscipline },
   };
 };

@@ -24,6 +24,7 @@ const ProfileMain = ({
   currentState,
   projects,
   currentDiscipline,
+  skillsOfDiscipline,
 }) => {
   // console.log('All disciplines', AllDisciplines);
   const [showAddDiscipline, setShowAddDiscipline] = useState(false);
@@ -217,11 +218,6 @@ const ProfileMain = ({
                       placeholder="Years of experience"
                       id={'addDisciplineYOE'}
                     />
-                    {/* <input
-                    id="addDisciplineYOE"
-                    style={{ width: 140 }}
-                    placeholder="Years of experience"
-                  ></input> */}
                     <button
                       onClick={submitAddDiscipline}
                       style={{ borderRadius: '5px' }}
@@ -251,44 +247,12 @@ const ProfileMain = ({
                   remove={deleteSkill}
                   addFeedback={addFeedback}
                   tableName={
-                    'Skills: ' + currentDiscipline.discipline
+                    'Skills: ' +
+                    (currentDiscipline
+                      ? currentDiscipline.discipline
+                      : '')
                   }
                 />
-
-                {/* <table className="table">
-                <tbody>
-                  <tr>
-                    <th scope="col">Skills</th>
-                    <th scope="col">operation</th>
-                  </tr>
-                  {skills.map((skill, index) => {
-                    return (
-                      <tr>
-                        <td>{skill}</td>
-                        <td>
-                          <button
-                            // onClick={this.delete(index)}
-                            className="fas fa-trash-alt fa-1x"
-                          ></button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table> */}
-                {/* <div>
-                <div class="pagination">
-                  <a href="#">&laquo;</a>
-                  <a href="#">1</a>
-                  <a href="#" class="active">
-                    2
-                  </a>
-                  <a href="#">3</a>
-                  <a href="#">4</a>
-  
-                  <a href="#">&raquo;</a>
-                </div>
-              </div> */}
                 <WButton
                   buttonNameOne={'add'}
                   buttonNameTwo={'submit'}
@@ -300,11 +264,11 @@ const ProfileMain = ({
                 {/* add skill component */}
                 {showAddSkill ? (
                   <div className="content-add">
-                    <input
-                      id="addSkillName"
-                      style={{ width: 70 }}
-                      placeholder="skill"
-                    ></input>
+                    <AutoComplete
+                      elements={skillsOfDiscipline}
+                      placeholder={'skill'}
+                      id={'addSkillName'}
+                    />
 
                     <button
                       onClick={submitAddSkill}
@@ -353,12 +317,12 @@ const ProfileMain = ({
                   datas={projects}
                   tableName={'Project'}
                   tableHead={[
-                    'name',
-                    'location',
-                    'start Date',
-                    'end Date',
-                    'update Time',
-                    'active',
+                    'Name',
+                    'Location',
+                    'Start Date',
+                    'End Date',
+                    'Update Time',
+                    'Status',
                   ]}
                   width={'100%'}
                 ></WTable>
@@ -367,7 +331,7 @@ const ProfileMain = ({
           </div>
         </div>
       );
-    } else if (currentState === 'availabilty') {
+    } else if (currentState === 'availability') {
       return <div>Availability</div>;
     }
   };

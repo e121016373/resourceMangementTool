@@ -22,7 +22,35 @@
   left: 18%;
   width: 82%;
   display: flex;
+  .content-add {
+    margin: 5px;
+    border-style: solid;
+    float: left;
+    display: flex;
+    border-width: 1px;
+    border-radius: 5px;
+    border-color: #e4e6eb;
+    input {
+      height: 30px;
+      font-size: 17px;
+      width: auto;
+    }
 
+    input::placeholder {
+      font-size: 15px;
+    }
+    button {
+      background-color: #fcba03; /* Green */
+      border: none;
+      color: white;
+      font-size: 20px;
+      margin: 10px 6px;
+      cursor: pointer;
+      &:hover {
+        background-color: #dea404;
+      }
+    }
+  }
   .col1 {
     .chart {
       width: 400px;
@@ -50,41 +78,6 @@
         border: none;
       }
     }
-    .button-add {
-      margin: 10px;
-      float: left;
-      width: 40px;
-      height: 30px;
-    }
-    .content-add {
-      margin: 5px;
-      border-style: solid;
-      float: left;
-      display: flex;
-      border-width: 1px;
-      border-radius: 5px;
-      border-color: #e4e6eb;
-      input {
-        height: 30px;
-        font-size: 17px;
-        width: auto;
-      }
-
-      input::placeholder {
-        font-size: 15px;
-      }
-      button {
-        background-color: #fcba03; /* Green */
-        border: none;
-        color: white;
-        font-size: 20px;
-        margin: 10px 6px;
-        cursor: pointer;
-        &:hover {
-          background-color: #dea404;
-        }
-      }
-    }
   }
   .col2 {
     width: 400px;
@@ -109,37 +102,6 @@
       float: left;
       width: 40px;
       height: 30px;
-    }
-    .content-add {
-      width: 200px;
-      margin: 5px;
-      border-style: solid;
-      float: left;
-      display: flex;
-      border-width: 1px;
-      border-radius: 5px;
-      border-color: #e4e6eb;
-      input {
-        height: 30px;
-        margin: 10px;
-        font-size: 17px;
-      }
-
-      input::placeholder {
-        font-size: 15px;
-      }
-      button {
-        float: right;
-        background-color: #fcba03; /* Green */
-        border: none;
-        color: white;
-        font-size: 20px;
-        margin: 10px 6px;
-        cursor: pointer;
-        &:hover {
-          background-color: #dea404;
-        }
-      }
     }
   }
 }

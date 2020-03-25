@@ -38,7 +38,7 @@ const PersonalProfile = ({
     }
   }, [personalProfileUser]);
 
-  const [currentState, setCurrentState] = useState('discipline');
+  const [currentState, setCurrentState] = useState('availability');
   console.log('personalProfile', currentState);
   const renderPersonalProfile = () => {
     if (Object.keys(personalProfileUser).length === 0) {
@@ -68,6 +68,7 @@ const PersonalProfile = ({
           AllDisciplines={disciplines.map(discipline => {
             return discipline.name;
           })}
+          skillsOfDiscipline={personalProfileUser.skillsOfDiscipline}
         />
       </div>
     );
