@@ -69,6 +69,7 @@ const PersonalProfile = ({
             return discipline.name;
           })}
           skillsOfDiscipline={personalProfileUser.skillsOfDiscipline}
+          util={personalProfileUser.util}
         />
       </div>
     );

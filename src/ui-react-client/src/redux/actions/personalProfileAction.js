@@ -18,6 +18,7 @@ export const loadUserProfile = (
   projects,
   currentDiscipline,
   skillsOfDiscipline,
+  util,
 ) => {
   if (!disciplines) disciplines = [];
   if (!skills) skills = [];
@@ -32,6 +33,7 @@ export const loadUserProfile = (
     projects: projects,
     currentDiscipline: disciplines[0],
     skillsOfDiscipline: skillsOfDiscipline,
+    util: util,
   };
   console.log('the total is ', profile);
   return { type: types.LOAD_PERSONALPROFILE, payload: profile };
@@ -59,7 +61,7 @@ export const loadPersonalProfile = () => {
       .then(response => {
         console.log('the personal profile response ', response);
 
-        //discipline and skill request
+        //load disciplines
         axios
           .get(`${SVC_ROOT}${currentUser}/disciplines`, {
             headers,
@@ -67,6 +69,7 @@ export const loadPersonalProfile = () => {
           .then(disciplines => {
             console.log('the discipline is ', disciplines.data);
             if (disciplines.data[0]) {
+              //load current skills
               axios
                 .get(
                   `${SVC_ROOT}${currentUser}/skills/${disciplines.data[0].discipline}`,
@@ -87,6 +90,7 @@ export const loadPersonalProfile = () => {
 
                       //auto skills of the discipline
                       let URL = `${SVC_ROOT}skills/d/${disciplines.data[0].discipline}`;
+                      console.log('skills of the discipline ', URL);
                       axios
                         .get(URL, { headers })
                         .then(skillDisciplinesR => {
@@ -94,36 +98,48 @@ export const loadPersonalProfile = () => {
                             'skillDisciplineR',
                             skillDisciplinesR,
                           );
-                          dispatch(
-                            loadUserProfile(
-                              response.data,
-                              disciplines.data,
-                              skills.data.map(skill => {
-                                return { skill: skill.name };
-                              }),
-                              tempProjects.map(project => {
-                                let tempproject = {
-                                  project: project.project,
-                                  location: project.location,
-                                  fromDate: project.fromDate.split(
-                                    'T',
-                                  )[0],
-                                  toDate: project.toDate.split(
-                                    'T',
-                                  )[0],
-                                  updatedAt: project.updatedAt.split(
-                                    'T',
-                                  )[0],
-                                  active: project.status,
-                                };
-                                return tempproject;
-                              }),
-                              disciplines.data[0].discipline,
-                              skillDisciplinesR.data.map(skill => {
-                                return skill.name;
-                              }),
-                            ),
-                          );
+
+                          //load utitl
+                          let URL = `${SVC_ROOT}/util/user/${currentUser}`;
+                          console.log('util URL is ', URL);
+                          axios
+                            .get(URL, { headers })
+                            .then(utilResponse => {
+                              dispatch(
+                                loadUserProfile(
+                                  response.data,
+                                  disciplines.data,
+                                  skills.data.map(skill => {
+                                    return { skill: skill.name };
+                                  }),
+                                  tempProjects.map(project => {
+                                    let tempproject = {
+                                      project: project.project,
+                                      location: project.location,
+                                      fromDate: project.fromDate.split(
+                                        'T',
+                                      )[0],
+                                      toDate: project.toDate.split(
+                                        'T',
+                                      )[0],
+                                      updatedAt: project.updatedAt.split(
+                                        'T',
+                                      )[0],
+                                      active: project.status,
+                                    };
+                                    return tempproject;
+                                  }),
+                                  disciplines.data[0].discipline,
+                                  skillDisciplinesR.data.map(
+                                    skill => {
+                                      return skill.name;
+                                    },
+                                  ),
+                                  utilResponse.data,
+                                ),
+                              );
+                            })
+                            .catch();
                         })
                         .catch();
                     })
@@ -133,7 +149,45 @@ export const loadPersonalProfile = () => {
                   throw error;
                 });
             }
+            let projectURL = `${SVC_ROOT}userprojects/${currentUser}`;
+            axios
+              .get(projectURL, { headers })
+              .then(projectResponse => {
+                let tempProjects = projectResponse.data;
 
+                //load utitl
+                let URL = `${SVC_ROOT}/util/user/${currentUser}`;
+                console.log('util URL is ', URL);
+                axios
+                  .get(URL, { headers })
+                  .then(utilResponse => {
+                    dispatch(
+                      loadUserProfile(
+                        response.data,
+                        disciplines.data,
+                        [],
+                        tempProjects.map(project => {
+                          let tempproject = {
+                            project: project.project,
+                            location: project.location,
+                            fromDate: project.fromDate.split('T')[0],
+                            toDate: project.toDate.split('T')[0],
+                            updatedAt: project.updatedAt.split(
+                              'T',
+                            )[0],
+                            active: project.status,
+                          };
+                          return tempproject;
+                        }),
+                        {},
+                        [],
+                        utilResponse.data,
+                      ),
+                    );
+                  })
+                  .catch();
+              })
+              .catch();
             //dispath when there is no disciplines
             dispatch(
               loadUserProfile(response.data, disciplines.data, []),
@@ -307,7 +361,6 @@ export const updateSkillTable = discipline => {
         axios
           .get(URL, { headers })
           .then(skillDisciplinesR => {
-            console.log('sldfja', skillDisciplinesR);
             return dispatch(
               updateSkillTableAction(
                 response.data.map(skill => {

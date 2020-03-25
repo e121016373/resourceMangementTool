@@ -1,6 +1,5 @@
 import React, { Component, useState } from 'react';
-import { data } from './data/DoughnutConfig';
-import { Doughnut } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import Posts from './post';
 // import Table from './table';
 import * as msg from '../feedbackMsg/feedbackMsg';
@@ -25,6 +24,7 @@ const ProfileMain = ({
   projects,
   currentDiscipline,
   skillsOfDiscipline,
+  util,
 }) => {
   // console.log('All disciplines', AllDisciplines);
   const [showAddDiscipline, setShowAddDiscipline] = useState(false);
@@ -85,38 +85,101 @@ const ProfileMain = ({
       });
     // console.log('disdflasdkfj', skill);
   };
-  // const discipline = [];
-  // const parseDisSkill = () => {
-  //   console.log('ssss', disSkill);
-  //   let parsed = {};
-  //   disSkill.map(temp => {
-  //     if (!Object.keys(parsed).includes(temp.discipline)) {
-  //       parsed[temp.discipline] = {};
-  //       parsed[temp.discipline]['Years of experience'] = temp.yoe;
-  //       parsed[temp.discipline]['Skills'] = [];
-  //     }
-  //     parsed[temp.discipline]['Skills'].push(temp.skill);
-  //   });
-  //   parsed = Object.entries(parsed);
-  //   parsed.map(temp => {
-  //     let dis = {};
-  //     dis['discipline'] = temp[0];
-  //     dis['Years of experience'] = temp[1]['Years of experience'];
-  //     discipline.push(dis);
-  //   });
-  //   console.log('the displins are ', discipline);
-  //   return parsed;
-  // };
-  // const parsedDisSkill = parseDisSkill();
-
-  // const parseDiscipline = () => {};
-
-  // let skills = parsedDisSkill[0][1]['Skills'];
-  // const updateSkills = index => {
-  //   console.log(disSkill);
-  //   setSkills(parsedDisSkill[index][1]['Skills']);
-  //   console.log(skills);
-  // };
+  const getColor = value => {
+    if (value <= 0.8) return 'rgba(99, 212, 129,0.5)';
+    else if (value > 0.8 && value <= 1.2)
+      return 'rgba(230, 226, 28,0.5)';
+    else return 'rgba(255,99,132,0.5)';
+  };
+  const getColorOnHover = value => {
+    if (value <= 0.8) return 'rgba(99, 212, 129)';
+    else if (value > 0.8 && value <= 1.2) return 'rgba(230, 226, 28)';
+    else return 'rgba(255,99,132)';
+  };
+  const renderUtil = number => {
+    if (util) {
+      const data = {
+        labels: [
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'August',
+          'September',
+          'October',
+          'November',
+          'December',
+        ],
+        datasets: [
+          {
+            label: `util: ${util[number].year}`,
+            backgroundColor: [
+              `${getColor(`${util[number].jan}`)}`,
+              `${getColor(`${util[number].feb}`)}`,
+              `${getColor(`${util[number].mar}`)}`,
+              `${getColor(`${util[number].apr}`)}`,
+              `${getColor(`${util[number].may}`)}`,
+              `${getColor(`${util[number].jun}`)}`,
+              `${getColor(`${util[number].jul}`)}`,
+              `${getColor(`${util[number].aug}`)}`,
+              `${getColor(`${util[number].sep}`)}`,
+              `${getColor(`${util[number].oct}`)}`,
+              `${getColor(`${util[number].nov}`)}`,
+              `${getColor(`${util[number].dec}`)}`,
+            ],
+            borderColor: 'rgba(255,99,132,1)',
+            // borderWidth: 1,
+            hoverBackgroundColor: [
+              `${getColorOnHover(`${util[number].jan}`)}`,
+              `${getColorOnHover(`${util[number].feb}`)}`,
+              `${getColorOnHover(`${util[number].mar}`)}`,
+              `${getColorOnHover(`${util[number].apr}`)}`,
+              `${getColorOnHover(`${util[number].may}`)}`,
+              `${getColorOnHover(`${util[number].jun}`)}`,
+              `${getColorOnHover(`${util[number].jul}`)}`,
+              `${getColorOnHover(`${util[number].aug}`)}`,
+              `${getColorOnHover(`${util[number].sep}`)}`,
+              `${getColorOnHover(`${util[number].oct}`)}`,
+              `${getColorOnHover(`${util[number].nov}`)}`,
+              `${getColorOnHover(`${util[number].dec}`)}`,
+            ],
+            hoverBorderColor: 'rgba(255,99,132,1)',
+            data: [
+              `${util[number].jan}`,
+              `${util[number].feb}`,
+              `${util[number].mar}`,
+              `${util[number].apr}`,
+              `${util[number].may}`,
+              `${util[number].jun}`,
+              `${util[number].jul}`,
+              `${util[number].aug}`,
+              `${util[number].sep}`,
+              `${util[number].oct}`,
+              `${util[number].nov}`,
+              `${util[number].dec}`,
+            ],
+          },
+        ],
+      };
+      return (
+        <>
+          <Bar
+            data={data}
+            width={400}
+            height={250}
+            options={{
+              maintainAspectRatio: false,
+            }}
+          />
+        </>
+      );
+    } else {
+      console.log('the tueil is ', util);
+    }
+  };
 
   const renderMain = () => {
     console.log('PROFILE main currentState', currentState);
@@ -332,7 +395,49 @@ const ProfileMain = ({
         </div>
       );
     } else if (currentState === 'availability') {
-      return <div>Availability</div>;
+      return (
+        <div>
+          <div className="profileMain">
+            <div
+              style={{
+                display: 'flex',
+                'flex-direction': 'row',
+                width: '100vw',
+                height: '100vh',
+                margin: 0,
+                position: 'fixed',
+                padding: '20px',
+              }}
+              className="card"
+            >
+              <div className="col1">
+                <div
+                  className="card"
+                  style={{
+                    display: 'flex',
+                    'flex-direction': 'column',
+                    padding: '10px',
+                    width: '74vw',
+                  }}
+                >
+                  {renderUtil(0)}
+                </div>
+                <div
+                  className="card"
+                  style={{
+                    display: 'flex',
+                    'flex-direction': 'column',
+                    padding: '10px',
+                    width: '74vw',
+                  }}
+                >
+                  {renderUtil(1)}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
     }
   };
 
