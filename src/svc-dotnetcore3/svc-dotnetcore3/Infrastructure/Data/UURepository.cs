@@ -33,9 +33,12 @@ namespace Web.API.Infrastructure.Data
                                 cast(sum(oct)/176.0 as float)as oct,
                                 cast(sum(nov)/176.0 as float)as nov,
                                 cast(sum(dec)/176.0 as float)as dec
-                from UserInProjects3 where UserId = (Select Id from Users where
+                from UserInProjects3
+                INNER JOIN ProjectStatus2 PS
+                on PS.status = 'Active'
+                where UserId = (Select Id from Users where
                 Username = @Username)
-                group by year;
+                group by year
             ;";
 
             using var connection = new SqlConnection(connectionString);
