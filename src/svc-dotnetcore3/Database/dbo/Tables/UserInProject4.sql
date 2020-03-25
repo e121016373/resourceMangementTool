@@ -1,0 +1,23 @@
+CREATE TABLE [dbo].[UserInProjects4](
+	[UserId] INT NOT NULL,
+	[ProjectId] INT NOT NULL,
+	[FromDate] DATETIME NOT NULL DEFAULT SYSUTCDATETIME() ,
+	[ToDate] DATETIME NOT NULL DEFAULT SYSUTCDATETIME(),
+	[Year] INT NOT NULL,
+	[Jan] INT NOT NULL,
+	[Feb] INT NOT NULL,
+	[Mar] INT NOT NULL,
+	[Apr] INT NOT NULL,
+	[May] INT NOT NULL,
+	[Jun] INT NOT NULL,
+	[Jul] INT NOT NULL,
+	[Aug] INT NOT NULL,
+	[Sep] INT NOT NULL,
+	[Oct] INT NOT NULL,
+	[Nov] INT NOT NULL,
+	[Dec] INT NOT NULL
+
+CONSTRAINT [PK_UserInProjects4] PRIMARY KEY ([UserId], [ProjectId],[Year]),
+CONSTRAINT [FK_UserInProjects_Users4] FOREIGN KEY ([UserId]) REFERENCES [Users]([Id]),
+CONSTRAINT [FK_UserInProjects_Projects4] FOREIGN KEY ([ProjectId]) REFERENCES [Projects]([Id]) 
+)
