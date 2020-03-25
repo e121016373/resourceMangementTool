@@ -44,6 +44,7 @@
       color: grey;
     }
     .location {
+      margin-top: 2px;
       display: flex;
       flex-direction: row;
       justify-content: center;
@@ -51,12 +52,18 @@
       input {
         background-color: #dce1ec;
         border: none;
-        width: 73px;
-        padding: 0;
+        width: 85px;
+        padding: 5px;
         margin: 0;
-        margin-left: 5px;
+        margin-left: 3px;
         color: grey;
-        outline: none;
+        height: 30px;
+
+        &:focus {
+          //outline-style: solid;
+          outline-color: #65b3e0;
+          outline-width: 3px;
+        }
       }
     }
     .button {

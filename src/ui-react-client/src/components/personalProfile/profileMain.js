@@ -234,39 +234,6 @@ const ProfileMain = ({
                     onClickButtonTwo={cancelAddDiscipline}
                   />
                 </div>
-                {/* <table className="table">
-                <tbody>
-                  <tr>
-                    <th scope="col">Discipline</th>
-                    <th scope="col">Years of experience</th>
-                    <th scope="col">peration</th>
-                  </tr>
-                  {disciplines.map((discipline, index) => {
-                    return (
-                      <tr
-                      // onClick={() => {
-                      //   updateSkills(index);
-                      // }}
-                      >
-                        <td>{discipline['discipline']}</td>
-                        <td>{discipline['Years of experience']}</td>
-                        <td>
-                          <button
-                            // onClick={this.delete(index)}
-                            className="fas fa-trash-alt fa-1x"
-                          ></button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table> */}
-                {/* <div className="button-add">
-                <i
-                  // onClick={addDiscipline}
-                  class="far fa-plus-square fa-2x"
-                ></i>
-              </div> */}
 
                 {/* add discipline component */}
                 {showAddDiscipline ? (

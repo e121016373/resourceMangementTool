@@ -38,7 +38,7 @@ const PersonalProfile = ({
     }
   }, [personalProfileUser]);
 
-  const [currentState, setCurrentState] = useState('availability');
+  const [currentState, setCurrentState] = useState('disciplines');
   console.log('personalProfile', currentState);
   const renderPersonalProfile = () => {
     if (Object.keys(personalProfileUser).length === 0) {

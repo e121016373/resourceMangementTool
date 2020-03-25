@@ -30,6 +30,17 @@
     border-width: 1px;
     border-radius: 5px;
     border-color: #e4e6eb;
+    overflow: hidden;
+    height: 0;
+    animation: transform 300ms ease-in-out forwards;
+    @keyframes transform {
+      from {
+        height: 0px;
+      }
+      to {
+        height: 50px;
+      }
+    }
     input {
       height: 30px;
       font-size: 17px;

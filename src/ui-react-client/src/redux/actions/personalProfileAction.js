@@ -100,7 +100,7 @@ export const loadPersonalProfile = () => {
                           );
 
                           //load utitl
-                          let URL = `${SVC_ROOT}/util/user/${currentUser}`;
+                          let URL = `${SVC_ROOT}util/user/${currentUser}`;
                           console.log('util URL is ', URL);
                           axios
                             .get(URL, { headers })
@@ -192,18 +192,6 @@ export const loadPersonalProfile = () => {
             dispatch(
               loadUserProfile(response.data, disciplines.data, []),
             );
-            // console.log('the personal skill', disSkillResponse);
-            // let disciplines = [
-            //   { discipline: 'Service', 'Years of experience': '1' },
-            //   { discipline: 'Delivery', 'Years of experience': '2' },
-            //   { discipline: 'MC', 'Years of experience': '3' },
-            // ];
-            // let skills = [
-            //   { skill: 'Class Environmental Assessments' },
-            //   { skill: 'conditon assessments' },
-            //   { skill: 'commissioning' },
-            //   { skill: 'conceptual Design' },
-            // ];
           })
           .catch(error => {
             throw error;
