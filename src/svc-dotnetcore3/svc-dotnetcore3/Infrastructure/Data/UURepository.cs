@@ -21,33 +21,100 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<UserUtil>> GetUserUtil(string username)
         {
             var sql = @"
-                declare @table table(ProjectId int, year int, jan int, feb int, mar int, apr int,
-                may int, jun int, jul int, aug int, sep int, oct int, nov int,
-                dec int);
+                declare @table table (year int,  month int, hours int);
                 insert into @table
-                select DISTINCT UP.ProjectId, UP.year, UP.jan, UP.feb, UP.mar, UP.apr, UP.may, UP.jun, UP.jul,
-                UP.aug, UP.sep ,UP.oct, UP.nov, UP.dec
-                from UserInProjects3 UP
-                INNER JOIN
-                ProjectStatus2 PS
-                on PS.Id = UP.ProjectId
-                and PS.Status = 'Active'
-                where UserId = (select Id from Users where Username = @Username)
+                 select UP.year, UP.month, coalesce(UP.hours, 0) as hours
+                    from UserHours UP
+                    INNER JOIN
+                    ProjectStatus2 PS
+                    on PS.Id = UP.ProjectId
+                 and PS.Status = 'Active'
+                 where UP.UserId = (select Id from Users where Username = @Username) and
+				    (UP.Year = YEAR(GETDATE()) or UP.Year = YEAR(GETDATE()) + 1);
+					if ((select year from @table where year  = YEAR(GETDATE())) = null)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 1, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 2, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 3, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 4, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 5, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 6, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 7, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 8, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 9, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 10, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 11, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 12, 0);
+				 if ((select year from @table where year  = YEAR(GETDATE())+1) = null)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 1, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 2, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 3, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 4, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 5, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 6, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 7, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 8, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 9, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 10, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 11, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 12, 0);
 
-                select year, cast(sum(jan)/176.0 as float) as jan,
-                             cast(sum(feb)/176.0 as float) as feb,
-                             cast(sum(mar)/176.0 as float)as mar,
-                             cast(sum(apr)/176.0 as float) as apr,
-                             cast(sum(may)/176.0 as float)as may,
-                             cast(sum(jun)/176.0 as float) as jun,
-                             cast(sum(jul)/176.0 as float) as jul,
-                             cast(sum(aug)/176.0 as float)as aug, 
-                             cast(sum(sep)/176.0 as float)as sep,
-                             cast(sum(oct)/176.0 as float)as oct,
-                             cast(sum(nov)/176.0 as float)as nov,
-                             cast(sum(dec)/176.0 as float)as dec
-                from @table
-                group by year
+                Select year, ISNULL([1]/176.0, 0) as jan, ISNULL([2]/176.0, 0) as feb, ISNULL([3]/176.0, 0) as mar, ISNULL([4]/176.0, 0) as apr,
+                ISNULL([5]/176.0, 0) as may, ISNULL([6]/176.0, 0) as jun, ISNULL([7]/176.0, 0) as jul, ISNULL([8]/176.0, 0) as aug, ISNULL([9]/176.0, 0) as sep,
+                ISNULL([10]/176.0, 0) as oct, ISNULL([11]/176.0, 0) as nov, ISNULL([12]/176.0, 0) as dec
+                FROM
+                (select year, month, coalesce(hours, 0) as hours from @table) AS SourceTable
+                PIVOT (
+	            sum(hours)
+	            for month in ([1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12])
+                ) AS PivotTable order by year;
             ;";
 
             using var connection = new SqlConnection(connectionString);
