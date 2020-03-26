@@ -21,33 +21,26 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<UserUtil>> GetUserUtil(string username)
         {
             var sql = @"
-                declare @table table(ProjectId int, year int, jan int, feb int, mar int, apr int,
-                may int, jun int, jul int, aug int, sep int, oct int, nov int,
-                dec int);
+                declare @table table (year int,  month int, hours int);
                 insert into @table
-                select DISTINCT UP.ProjectId, UP.year, UP.jan, UP.feb, UP.mar, UP.apr, UP.may, UP.jun, UP.jul,
-                UP.aug, UP.sep ,UP.oct, UP.nov, UP.dec
-                from UserInProjects3 UP
-                INNER JOIN
-                ProjectStatus2 PS
-                on PS.Id = UP.ProjectId
-                and PS.Status = 'Active'
-                where UserId = (select Id from Users where Username = @Username)
+                 select UP.year, UP.month, coalesce(UP.hours, 0) as hours
+                    from UserHours UP
+                    INNER JOIN
+                    ProjectStatus2 PS
+                    on PS.Id = UP.ProjectId
+                 and PS.Status = 'Active'
+                 where UP.UserId = (select Id from Users where Username = @Username) and
+				    (UP.Year = YEAR(GETDATE()) or UP.Year = YEAR(GETDATE()) + 1);
 
-                select year, cast(sum(jan)/176.0 as float) as jan,
-                             cast(sum(feb)/176.0 as float) as feb,
-                             cast(sum(mar)/176.0 as float)as mar,
-                             cast(sum(apr)/176.0 as float) as apr,
-                             cast(sum(may)/176.0 as float)as may,
-                             cast(sum(jun)/176.0 as float) as jun,
-                             cast(sum(jul)/176.0 as float) as jul,
-                             cast(sum(aug)/176.0 as float)as aug, 
-                             cast(sum(sep)/176.0 as float)as sep,
-                             cast(sum(oct)/176.0 as float)as oct,
-                             cast(sum(nov)/176.0 as float)as nov,
-                             cast(sum(dec)/176.0 as float)as dec
-                from @table
-                group by year
+                Select year, [1]/176.0 as jan, [2]/176.0 as feb, [3]/176.0 as mar, [4]/176.0 as apr,
+                [5]/176.0 as may, [6]/176.0 as jun, [7]/176.0 as jul, [8]/176.0 as aug, [9]/176.0 as sep,
+                [10]/176.0 as oct, [11]/176.0 as nov, [12]/176.0 as dec
+                FROM
+                (select year, month, coalesce(hours, 0) as hours from @table) AS SourceTable
+                PIVOT (
+	            sum(hours)
+	            for month in ([1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12])
+                ) AS PivotTable;
             ;";
 
             using var connection = new SqlConnection(connectionString);
