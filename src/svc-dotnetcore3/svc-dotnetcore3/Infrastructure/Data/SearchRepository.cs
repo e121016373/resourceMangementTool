@@ -47,8 +47,17 @@ namespace Web.API.Infrastructure.Data
             if (search.Location != null) {
                 sql += " AND L.Name = @Location";
             }
-            if (search.YearOfExperience != null) {
-                sql += " AND LTRIM(UWD.Year) = @YearOfExperience";
+            if ((search.YOE != 0) && (search.Discipline != null)) {
+                sql += " AND ";
+                if (search.YOE == 1)
+                    sql += "(UWD.Year >= 1 and UWD.Year <=3 )";
+                else if (search.YOE == 2)
+                    sql += "(UWD.Year >=3 and UWD.Year <=5)";
+                else if (search.YOE == 3)
+                    sql += "(UWD.Year >=5 and UWD.Year <= 10)";
+                else
+                    sql += "(UWD.Year >=10)";
+                // sql += " AND LTRIM(UWD.Year) = @YearOfExperience";
             }
             if (search.FromDate != null && search.ToDate != null && search.Availability != 0) {
                 int month_diff = ((search.ToDate.Year - search.FromDate.Year) * 12) + search.ToDate.Month - search.FromDate.Month;
@@ -81,7 +90,6 @@ namespace Web.API.Infrastructure.Data
                 search.Discipline,
                 search.Skill,
                 search.Location,
-                search.YearOfExperience,
                 search.FromDate,
                 search.ToDate,
                 search.Availability
