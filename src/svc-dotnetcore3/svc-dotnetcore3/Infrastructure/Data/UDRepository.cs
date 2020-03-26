@@ -38,12 +38,20 @@ namespace Web.API.Infrastructure.Data
         public async Task<UserDiscipline> CreateDiscipline(string username, UserDiscipline ud)
         {
             var sql = @"
+                declare @num int;
+                set @year = '3-5 years';
+                set @Username = 'turcotter';
+                set @num = (select count(distinct DisciplineId) from UserWorksDiscipline where UserId = 
+                (select Id from Users where Username = @Username));
+
+				if @num < 5
                 insert into  UserWorksDiscipline
                     (UserId, DisciplineId, Year)
                 values
                    ((select Id from Users where Username = @Username),
                     (select Id from Disciplines where Name = @Discipline),
                     RTRIM(LTRIM(@Year)))
+ ;
             ;";
 
             using var connection = new SqlConnection(connectionString);
