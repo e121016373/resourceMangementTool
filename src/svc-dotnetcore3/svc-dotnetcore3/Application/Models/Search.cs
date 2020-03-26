@@ -6,7 +6,7 @@ namespace Web.API.Application.Models
     {
         // user search
         public string Discipline { get; set; }
-        public int YOE { get; set; }
+        public string YOE { get; set; }
         public string Skill { get; set; }
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }

@@ -47,17 +47,17 @@ namespace Web.API.Infrastructure.Data
             if (search.Location != null) {
                 sql += " AND L.Name = @Location";
             }
-            if ((search.YOE != 0) && (search.Discipline != null)) {
-                sql += " AND ";
-                if (search.YOE == 1)
-                    sql += "(UWD.Year >= 1 and UWD.Year <=3 )";
-                else if (search.YOE == 2)
-                    sql += "(UWD.Year >=3 and UWD.Year <=5)";
-                else if (search.YOE == 3)
-                    sql += "(UWD.Year >=5 and UWD.Year <= 10)";
-                else
-                    sql += "(UWD.Year >=10)";
-                // sql += " AND LTRIM(UWD.Year) = @YearOfExperience";
+            if ((search.YOE != null) && (search.Discipline != null)) {
+                // sql += " AND ";
+                // if (search.YOE == 1)
+                //     sql += "(UWD.Year >= 1 and UWD.Year <=3 )";
+                // else if (search.YOE == 2)
+                //     sql += "(UWD.Year >=3 and UWD.Year <=5)";
+                // else if (search.YOE == 3)
+                //     sql += "(UWD.Year >=5 and UWD.Year <= 10)";
+                // else
+                //     sql += "(UWD.Year >=10)";
+                sql += " AND LTRIM(UWD.Year) = @YOE";
             }
             if (search.FromDate != null && search.ToDate != null && search.Availability != 0) {
                 int month_diff = ((search.ToDate.Year - search.FromDate.Year) * 12) + search.ToDate.Month - search.FromDate.Month;
@@ -69,7 +69,7 @@ namespace Web.API.Infrastructure.Data
                         GROUP BY UH.UserId, UH.Year, UH.Month
                         HAVING CONVERT(FLOAT, 1-SUM(UH.Hours/176.0)) >= CONVERT(FLOAT, @Availability/100.0)";
                 
-                sql += " AND ((UH.Year = " + year.ToString() + "AND UH.Month =" + month.ToString() + ")";
+                sql += " AND ((UH.Year = " + year + "AND UH.Month =" + month + ")";
                 month++;
                 for (int i = 0; i < month_diff; i++) {
                     if (month >= 13) {
@@ -90,6 +90,7 @@ namespace Web.API.Infrastructure.Data
                 search.Discipline,
                 search.Skill,
                 search.Location,
+                search.YOE,
                 search.FromDate,
                 search.ToDate,
                 search.Availability
