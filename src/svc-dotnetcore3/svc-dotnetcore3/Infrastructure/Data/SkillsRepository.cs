@@ -96,7 +96,7 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 INSERT INTO Skills ([Name], [DisciplineId])
-                VALUES (@Id, @Name, @DisciplineId);
+                VALUES (@Name, @DisciplineId);
                 select cast(scope_identity() as int);
             ;";
 
