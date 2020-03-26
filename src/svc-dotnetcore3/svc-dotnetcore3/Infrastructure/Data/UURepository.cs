@@ -31,16 +31,91 @@ namespace Web.API.Infrastructure.Data
                  and PS.Status = 'Active'
                  where UP.UserId = (select Id from Users where Username = @Username) and
 				    (UP.Year = YEAR(GETDATE()) or UP.Year = YEAR(GETDATE()) + 1);
+					if ((select year from @table where year  = YEAR(GETDATE())) = null)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 1, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 2, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 3, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 4, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 5, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 6, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 7, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 8, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 9, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 10, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 11, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE()), 12, 0);
+				 if ((select year from @table where year  = YEAR(GETDATE())+1) = null)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 1, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 2, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 3, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 4, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 5, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 6, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 7, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 8, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 9, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 10, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 11, 0)
+							insert into @table
+						    (year, month, hours)
+					        values(YEAR(GETDATE())+ 1, 12, 0);
+							select * from @table
 
-                Select year, [1]/176.0 as jan, [2]/176.0 as feb, [3]/176.0 as mar, [4]/176.0 as apr,
-                [5]/176.0 as may, [6]/176.0 as jun, [7]/176.0 as jul, [8]/176.0 as aug, [9]/176.0 as sep,
-                [10]/176.0 as oct, [11]/176.0 as nov, [12]/176.0 as dec
+                Select year, ISNULL([1]/176.0, 0) as jan, ISNULL([2]/176.0, 0) as feb, ISNULL([3]/176.0, 0) as mar, ISNULL([4]/176.0, 0) as apr,
+                ISNULL([5]/176.0, 0) as may, ISNULL([6]/176.0, 0) as jun, ISNULL([7]/176.0, 0) as jul, ISNULL([8]/176.0, 0) as aug, ISNULL([9]/176.0, 0) as sep,
+                ISNULL([10]/176.0, 0) as oct, ISNULL([11]/176.0, 0) as nov, ISNULL([12]/176.0, 0) as dec
                 FROM
                 (select year, month, coalesce(hours, 0) as hours from @table) AS SourceTable
                 PIVOT (
 	            sum(hours)
 	            for month in ([1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12])
-                ) AS PivotTable;
+                ) AS PivotTable order by year;
             ;";
 
             using var connection = new SqlConnection(connectionString);
