@@ -105,7 +105,6 @@ namespace Web.API.Infrastructure.Data
 							insert into @table
 						    (year, month, hours)
 					        values(YEAR(GETDATE())+ 1, 12, 0);
-							select * from @table
 
                 Select year, ISNULL([1]/176.0, 0) as jan, ISNULL([2]/176.0, 0) as feb, ISNULL([3]/176.0, 0) as mar, ISNULL([4]/176.0, 0) as apr,
                 ISNULL([5]/176.0, 0) as may, ISNULL([6]/176.0, 0) as jun, ISNULL([7]/176.0, 0) as jul, ISNULL([8]/176.0, 0) as aug, ISNULL([9]/176.0, 0) as sep,
