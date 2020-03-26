@@ -1,10 +1,13 @@
 import {BootstrapTable, TableHeaderColumn} from "react-bootstrap-table";
 import "../../css/admin.css"
 import "bootstrap/dist/css/bootstrap.min.css";
-import { loadLocations } from "../../redux/actions/locationsActions"
-import { connect } from 'react-redux';
-import React, { useEffect } from 'react';
+import {deleteALocation, loadLocations} from "../../redux/actions/locationsActions"
+import {connect, useDispatch} from 'react-redux';
+import React, {useEffect, useState} from 'react';
 import Button from "react-bootstrap/Button";
+import ButtonToolbar from "react-bootstrap/ButtonToolbar";
+import LocationModal from "./LocationModal";
+
 
 
 const LocationTable = ({
@@ -18,11 +21,62 @@ const LocationTable = ({
             });
         }
     }, [locations, loadLocations]);
+    const [modalShow, setModalShow] = React.useState(false);
+    const [locToBeDel, setLocName] = useState ({
+        code:'',
+    });
+    const dispatch = useDispatch();
+
+
+    function onRowSelect(row, isSelected, e) {
+
+        const val = row.code;
+        setLocName(prevState => {
+            return {...prevState, code:val}
+        });
+
+    }
+
+    function onSelectAll(isSelected, rows) {
+        if (isSelected) {
+            alert('The selection only work on key which less than 3');
+            return locations.map(p => p.id).filter(id => id < 3);
+        }
+    }
+
+    function handleDelete(e) {
+        e.preventDefault();
+
+        if(locToBeDel.code) {
+            dispatch(deleteALocation(locToBeDel));
+        }
+    }
+
+    const selectRowProp = {
+        mode: 'checkbox',
+        clickToSelect: true,
+        onSelect: onRowSelect,
+        onSelectAll: onSelectAll
+    };
+
+
 
     return (
         <div>
-            <Button>Add Location</Button>
-            <BootstrapTable data={ locations } search = {true} pagination = {true} striped hover condensed>
+            <ButtonToolbar>
+                <Button variant="primary" onClick={() => setModalShow(true)}>
+                    Add Location
+                </Button>
+
+                <LocationModal
+                    show={modalShow}
+                    onHide={() => setModalShow(false)}
+                />
+                <div className="divider"/>
+                <Button variant="danger" onClick={handleDelete}>Remove Location</Button>
+            </ButtonToolbar>
+
+            <BootstrapTable data={ locations } search = {true} pagination = {true} selectRow ={selectRowProp} striped hover condensed>
                 <TableHeaderColumn width="150" dataField='id' isKey>Location id</TableHeaderColumn>
                 <TableHeaderColumn width="150" dataField='code'> Location Code</TableHeaderColumn>
                 <TableHeaderColumn width="150" dataField='name' >Location Name</TableHeaderColumn>
