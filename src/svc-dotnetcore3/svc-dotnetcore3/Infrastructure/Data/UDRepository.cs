@@ -21,7 +21,7 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<UserDiscipline>> GetDiscipline(string username)
         {
             var sql = @"
-                select D.Name as Discipline, UWD.Year as YOE
+                select D.Name as Discipline, RTRIM(LTRIM(UWD.Year)) as YOE
                     from UserWorksDiscipline UWD
                     INNER JOIN Disciplines D
                     on UWD.DisciplineId = D.Id
@@ -43,7 +43,7 @@ namespace Web.API.Infrastructure.Data
                 values
                    ((select Id from Users where Username = @Username),
                     (select Id from Disciplines where Name = @Discipline),
-                    @Year)
+                    RTRIM(LTRIM(@Year)))
             ;";
 
             using var connection = new SqlConnection(connectionString);

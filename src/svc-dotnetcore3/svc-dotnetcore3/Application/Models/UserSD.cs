@@ -5,6 +5,6 @@
         public string Username { get; set; }
         public string Skill { get; set; }
         public string Discipline { get; set; }
-        public int yoe { get; set; }
+        public string yoe { get; set; }
     }
 }

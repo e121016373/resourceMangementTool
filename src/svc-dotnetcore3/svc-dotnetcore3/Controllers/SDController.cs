@@ -85,8 +85,8 @@ namespace Web.API.Controllers
         }
 
         [HttpPatch]
-        [Route("/personal/{username}/{discipline}")]
-        public async Task<ActionResult<IEnumerable<UserSD>>> PatchASD([FromRoute] string username, [FromRoute] string discipline, [FromBody] int yoe )
+        [Route("/personal/{username}/{discipline}/{yoe}")]
+        public async Task<ActionResult<IEnumerable<UserSD>>> PatchASD([FromRoute] string username, [FromRoute] string discipline, [FromRoute] string yoe )
         {
             var response = await sdRepository.PatchASD(username, discipline, yoe);
             var viewModel = mapper.Map<IEnumerable<UserSD>>(response);

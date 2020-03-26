@@ -20,7 +20,7 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<UserSD>> GetASD(string username)
         {
             var sql = @"
-                select Username, S.Name as Skill, D.Name as Discipline, ISNULL(UWD.Year, 0) as YOE
+                select Username, S.Name as Skill, D.Name as Discipline, ISNULL(RTRIM(LTRIM(UWD.Year)), '0') as YOE
                 from Users
                 INNER JOIN UserHasSkills USD
                  on USD.UserId = Users.Id
@@ -43,7 +43,7 @@ namespace Web.API.Infrastructure.Data
         public async Task<UserSD> GetAS(string username, string skill)
         {
             var sql = @"
-                select Username, S.Name as Skill, D.Name as Discipline, ISNULL(UWD.Year, 0) as YOE
+                select Username, S.Name as Skill, D.Name as Discipline, ISNULL(RTRIM(LTRIM(UWD.Year)), '0') as YOE
                 from Users
                 INNER JOIN UserHasSkills USD
                  on USD.UserId = Users.Id
@@ -68,7 +68,7 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<UserSD>> GetAD(string username, string discipline)
         {
             var sql = @"
-                select Username, S.Name as Skill, D.Name as Discipline, ISNULL(UWD.Year, 0) as YOE
+                select Username, S.Name as Skill, D.Name as Discipline, ISNULL(RTRIM(LTRIM(UWD.Year)), '0') as YOE
                 from Users
                 INNER JOIN UserHasSkills USD
                  on USD.UserId = Users.Id
@@ -108,7 +108,7 @@ namespace Web.API.Infrastructure.Data
                                                  values
                                 ((select Id from Users where Username = @Username),
                                 (select Id from Disciplines where Name = @Discipline),
-                                         @Year);
+                                         RTRIM(LTRIM(@Year)));
 
 ";
 
@@ -169,7 +169,7 @@ namespace Web.API.Infrastructure.Data
             ;
                  update UserWorksDiscipline
                     set DisciplineId = (select Id from Disciplines where Name = @Discipline),
-                        Year = @Year
+                        Year = RTRIM(LTRIM(@Year))
                     where UserId = (select Id from Users where Username = @Username);";
 
             using var connection = new SqlConnection(connectionString);
@@ -179,11 +179,11 @@ namespace Web.API.Infrastructure.Data
             return await GetASD(usd.Username);
         }
 
-        public async Task<IEnumerable<UserSD>> PatchASD(string username, string discipline, int yoe)
+        public async Task<IEnumerable<UserSD>> PatchASD(string username, string discipline, string yoe)
         {
             var sql = @"
                  update UserWorksDiscipline
-                    set Year = @Year
+                    set Year = RTRIM(LTRIM(@Year))
                     where UserId = (select Id from Users where Username = @Username) and
                           DisciplineId = (select Id from Disciplines where Name = @Discipline);";
 

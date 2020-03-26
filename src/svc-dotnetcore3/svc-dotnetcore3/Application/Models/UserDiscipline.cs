@@ -3,6 +3,6 @@
     public class UserDiscipline
     {
         public string Discipline { get; set; }
-        public int YOE { get; set; }
+        public string YOE { get; set; }
     }
 }
