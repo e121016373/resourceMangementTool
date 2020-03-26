@@ -17,7 +17,7 @@ namespace Web.API.Infrastructure.Data
             this.connectionString = !string.IsNullOrWhiteSpace(connectionString) ? connectionString : throw new ArgumentNullException(nameof(connectionString));
         }
 
-        
+
         public async Task<IEnumerable<UserUtil>> GetUserUtil(string username)
         {
             var sql = @"
@@ -53,6 +53,20 @@ namespace Web.API.Infrastructure.Data
             using var connection = new SqlConnection(connectionString);
             connection.Open();
             return await connection.QueryAsync<UserUtil>(sql, new { Username = username });
+        }
+
+        public async Task<IEnumerable<UserUtil>> GetProjectData(string project)
+        {
+            var sql = @"
+                select DISTINCT UP.year, UP.jan, UP.feb, UP.mar, UP.apr, UP.may,
+                UP.jun, UP.jul, UP.aug, UP.sep ,UP.oct, UP.nov, UP.dec
+                from ProjectStatus2 UP
+                where Id = (select Id from Projects where Title = @Project)
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            return await connection.QueryAsync<UserUtil>(sql, new { Project = project });
         }
 
     }

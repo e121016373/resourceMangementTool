@@ -22,7 +22,7 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 select DISTINCT P.Title as Project, L.Name as Location, UP.FromDate,  
-                        UP.ToDate, P.UpdatedAt, PS.status as Status 
+                    UP.ToDate, P.UpdatedAt, PS.status as Status 
                     from UserInProjects3 UP
                     INNER JOIN Projects P
                     on UP.ProjectId = P.Id 
@@ -30,6 +30,7 @@ namespace Web.API.Infrastructure.Data
 					on P.LocationId = L.Id
                     INNER JOIN ProjectStatus2 PS
                     on PS.Id = P.Id
+                    and PS.status = 'Active'
 
                 where UP.UserId = 
                   (select Id from Users where Username = @Username)

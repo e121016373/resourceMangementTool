@@ -7,5 +7,6 @@ namespace Web.API.Application.Repository
     public interface IUURepository
     {
         Task<IEnumerable<UserUtil>> GetUserUtil(string username);
+        Task<IEnumerable<UserUtil>> GetProjectData(string project);
     }
 }
