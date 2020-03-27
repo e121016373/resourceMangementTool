@@ -66,8 +66,8 @@ namespace Web.API.Infrastructure.Data
         public async Task<UserProject> CreateProject(string username, UserProject proj)
         {
             var sql = @"
-                insert into UserInProjects
-                (UserId, ProjectId, FromDate, ToDate, Hours)
+                insert into UserHours
+                (UserId, ProjectId, Year, Month, Hours)
                 values ((select Id from Users where Username = @Username),
                 (select Id from Projects where Title = @Project),
                 @FromDate, @ToDate, @Hours)
