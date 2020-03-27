@@ -9,7 +9,7 @@ import AdminPage from './admin/AdminPage';
 import Loading from './loading/loading';
 import ProjectInfoPage from './projects/ProjectInfoPage';
 import UserInfoPage from './projects/UserInfoPage';
-import { ProjectsPage } from './projects/ProjectsPage';
+import ProjectsPage from './projects/ProjectsPage';
 import PersonalProfile from './personalProfile/personalProfile';
 import Search from './search/search';
 import '../scss/sidebar.scss';
