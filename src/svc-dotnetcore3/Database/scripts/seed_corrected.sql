@@ -2883,3 +2883,5 @@ INSERT INTO UserHours (UserId, ProjectId, [Year], [Month], [Hours]) VALUES (10, 
 INSERT INTO UserHours (UserId, ProjectId, [Year], [Month], [Hours]) VALUES (10, 18, 2022, 5, 14)
 INSERT INTO UserHours (UserId, ProjectId, [Year], [Month], [Hours]) VALUES (10, 18, 2022, 6, 20)
 INSERT INTO UserHours (UserId, ProjectId, [Year], [Month], [Hours]) VALUES (10, 18, 2022, 7, 30)
+
+INSERT INTO Admin (Username, Password) VALUES ('turtle', '319')
