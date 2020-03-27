@@ -95,18 +95,19 @@ namespace Web.API.Infrastructure.Data
         public async Task<Skill> AddASkill(Skill skill)
         {
             var sql = @"
-                INSERT INTO Skills ([Id],[Name], [DisciplineId])
-                VALUES (@Id, @Name, @DisciplineId);
+                INSERT INTO Skills ([Name], [DisciplineId])
+                VALUES (@Name, @DisciplineId);
+                select cast(scope_identity() as int);
             ;";
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-           await connection.ExecuteAsync(sql, new
+            var id = await connection.QuerySingleAsync<int>(sql, new
             {
-                skill.Id,
                 skill.DisciplineId,
                 skill.Name
             });
+            skill.Id = id;
             return skill;
         }
 

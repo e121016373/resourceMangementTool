@@ -4,6 +4,7 @@ import Pagination from './Pagination';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { render } from 'enzyme';
+import { doc } from 'prettier';
 
 const WTable = ({
   tableName,
@@ -13,16 +14,8 @@ const WTable = ({
   remove,
   addFeedback,
   width,
+  checkBox,
 }) => {
-  //   // Get current posts
-  //   const indexOfLastPost = currentPage * postsPerPage;
-  //   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  //   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-
-  //   // Change page
-  //   const paginate = pageNumber => setCurrentPage(pageNumber);
-  //   // console.log('the posts are', posts);
-
   if (!datas) datas = [];
   if (!tableHead) tableHead = [];
 
@@ -64,10 +57,52 @@ const WTable = ({
     console.log('delete is clicked');
   };
 
-  // const renderTable =()=>{
-  //   if(datas1.length )
-  // }
+  const renderCheckBox = () => {
+    if (checkBox) {
+      return (
+        <td>
+          <div style={{ width: '22px', height: '22px' }}>
+            <label className="checkBoxContainer">
+              <input type="checkbox"></input>
+              <span className="checkMark"></span>
+            </label>
+          </div>
+        </td>
+      );
+    }
+  };
 
+  const renderProgressBar = number => {
+    let value = number.split('%')[0];
+
+    if (value > 20) {
+      return (
+        <div className="progress">
+          <p className="counter">{number}</p>
+          <div
+            style={{
+              'max-width': `${value}%`,
+              background: '#4caf50',
+            }}
+            className="bar"
+          ></div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="progress">
+          <p className="counter">{number}</p>
+          <div
+            style={{
+              'max-width': `${value}%`,
+              background: '#ff9800',
+            }}
+            className="bar"
+          ></div>
+        </div>
+      );
+    }
+  };
   return (
     <div>
       <div
@@ -102,23 +137,31 @@ const WTable = ({
               <>
                 <tr>
                   {Object.values(data).map((item, index) => {
-                    return (
-                      <td
-                        onClick={() => {
-                          if (selectRow) {
-                            selectRow(data);
-                          }
-                          console.log(
-                            'the index of the row is ',
-                            index,
-                          );
-                        }}
-                      >
-                        {item}
-                      </td>
-                    );
+                    if (
+                      typeof item == 'string' &&
+                      item.includes('%')
+                    ) {
+                      return <td>{renderProgressBar(item)}</td>;
+                    } else {
+                      return (
+                        <td
+                          onClick={() => {
+                            if (selectRow) {
+                              selectRow(data);
+                            }
+                            console.log(
+                              'the index of the row is ',
+                              index,
+                            );
+                          }}
+                        >
+                          {item}
+                        </td>
+                      );
+                    }
                   })}
                   {renderRemove(data, index)}
+                  {renderCheckBox()}
                 </tr>
               </>
             );

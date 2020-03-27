@@ -21,25 +21,33 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<ProjectUtil>> GetProjectUtil(string project, int year)
         {
             var sql = @"
-                declare @pid int;
+                declare @table table (UserId int,  month int, hours int);
+				declare @pid int;
                 set @pid = (select Id from Projects where Title = @Project);
-                select U.Username,
-                cast(jan/cast((select jan from ProjectStatus2 where Id = @pid and Year = @yr)as float) as float) as jan,
-                cast(feb/cast((select feb from ProjectStatus2 where Id = @pid and Year = @yr)as float) as float) as feb,
-                cast(mar/cast((select mar from ProjectStatus2 where Id = @pid and Year = @yr)as float) as float) as mar,
-                cast(apr/cast((select apr from ProjectStatus2 where Id = @pid and Year = @yr)as float) as float) as apr,
-                cast(may/cast((select may from ProjectStatus2 where Id = @pid and Year = @yr)as float) as float) as may,
-                cast(jun/cast((select jun from ProjectStatus2 where Id = @pid and Year = @yr)as float) as float) as jun,
-                cast(jul/cast((select jul from ProjectStatus2 where Id = @pid and Year = @yr)as float) as float) as jul,
-                cast(aug/cast((select aug from ProjectStatus2 where Id = @pid and Year = @yr)as float) as float) as aug,
-                cast(sep/cast((select sep from ProjectStatus2 where Id = @pid and Year = @yr)as float) as float) as sep,
-                cast(oct/cast((select oct from ProjectStatus2 where Id = @pid and Year = @yr)as float) as float) as oct,
-                cast(nov/cast((select nov from ProjectStatus2 where Id = @pid and Year = @yr)as float) as float) as nov,
-                cast(dec/cast((select dec from ProjectStatus2 where Id = @pid and Year = @yr)as float) as float) as dec
-                from UserInProjects3
-                INNER JOIN
-                Users U on U.Id = UserInProjects3.UserId
-                where ProjectId = @pid and Year = @yr
+                insert into @table
+                 select UP.UserId,  UP.month, coalesce(UP.hours, 0) as hours
+                    from UserHours UP
+                 where UP.ProjectId  = @pid and
+				    Year = @yr;
+					Select Username,   
+					ISNULL([1]/cast((select jan from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as jan,
+					ISNULL([2]/cast((select feb from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as feb,
+					ISNULL([3]/cast((select mar from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as mar,
+					ISNULL([4]/cast((select apr from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as apr,
+					ISNULL([5]/cast((select may from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as may,
+					ISNULL([6]/cast((select jun from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as jun,
+					ISNULL([7]/cast((select jul from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as jul,
+					ISNULL([8]/cast((select aug from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as aug,
+					ISNULL([9]/cast((select sep from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as sep,
+					ISNULL([10]/cast((select oct from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as oct,
+					ISNULL([11]/cast((select nov from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as nov,
+					ISNULL([12]/cast((select dec from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as dec
+				FROM
+                (select U.Username as Username,  month, coalesce(hours, 0) as hours from @table T  INNER JOIN Users U on U.Id = T.UserId) AS SourceTable 
+                PIVOT (
+	            sum(hours)
+	            for month in ([1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12])
+                ) AS PivotTable
             ;";
 
             using var connection = new SqlConnection(connectionString);

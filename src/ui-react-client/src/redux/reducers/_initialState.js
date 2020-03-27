@@ -8,5 +8,6 @@ export default {
   disciplines: [],
   skills: [],
   feedbacks: [],
+  search: [],
   // userDisciplines: [],
 };
