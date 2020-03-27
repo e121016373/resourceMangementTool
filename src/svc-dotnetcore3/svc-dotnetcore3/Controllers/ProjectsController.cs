@@ -56,7 +56,7 @@ namespace Web.API.Controllers
             return Created("GetAProject", viewModel);
         }
 
-        [HttpPatch]
+        [HttpPut]
         [Route("/projects")]
         public async Task<ActionResult<Project>> UpdateAProject([FromBody] Project project)
         {
