@@ -2,7 +2,7 @@
 {
     public class Hour
     {
-        public int Month { get; set; }
+        public string Month { get; set; }
         public int Hours { get; set; }
     }
 }
