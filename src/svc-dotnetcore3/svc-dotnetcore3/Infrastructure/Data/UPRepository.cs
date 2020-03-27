@@ -21,14 +21,14 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<UserProject>> GetProject(string username)
         {
             var sql = @"
-                select DISTINCT P.Title as Project, L.Name as Location, UP.FromDate,  
-                    UP.ToDate, P.UpdatedAt, PS.status as Status 
-                    from UserInProjects3 UP
+                select DISTINCT P.Title as Project, L.Name as Location, PS.FromDate,  
+                    PS.ToDate, P.UpdatedAt, PS.status as Status 
+                    from UserHours UP
                     INNER JOIN Projects P
                     on UP.ProjectId = P.Id 
 					INNER JOIN Locations L
 					on P.LocationId = L.Id
-                    INNER JOIN ProjectStatus2 PS
+                    INNER JOIN ProjectStatus PS
                     on PS.Id = P.Id
                     and PS.status = 'Active'
 

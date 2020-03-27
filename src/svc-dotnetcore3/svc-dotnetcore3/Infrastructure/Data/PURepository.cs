@@ -30,18 +30,18 @@ namespace Web.API.Infrastructure.Data
                  where UP.ProjectId  = @pid and
 				    Year = @yr;
 					Select Username,   
-					ISNULL([1]/cast((select jan from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as jan,
-					ISNULL([2]/cast((select feb from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as feb,
-					ISNULL([3]/cast((select mar from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as mar,
-					ISNULL([4]/cast((select apr from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as apr,
-					ISNULL([5]/cast((select may from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as may,
-					ISNULL([6]/cast((select jun from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as jun,
-					ISNULL([7]/cast((select jul from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as jul,
-					ISNULL([8]/cast((select aug from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as aug,
-					ISNULL([9]/cast((select sep from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as sep,
-					ISNULL([10]/cast((select oct from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as oct,
-					ISNULL([11]/cast((select nov from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as nov,
-					ISNULL([12]/cast((select dec from ProjectStatus2 where Id = @pid and Year = @yr)as float), 0) as dec
+					ISNULL([1]/cast((select jan from ProjectStatus where Id = @pid and Year = @yr)as float), 0) as jan,
+					ISNULL([2]/cast((select feb from ProjectStatus where Id = @pid and Year = @yr)as float), 0) as feb,
+					ISNULL([3]/cast((select mar from ProjectStatus where Id = @pid and Year = @yr)as float), 0) as mar,
+					ISNULL([4]/cast((select apr from ProjectStatus where Id = @pid and Year = @yr)as float), 0) as apr,
+					ISNULL([5]/cast((select may from ProjectStatus where Id = @pid and Year = @yr)as float), 0) as may,
+					ISNULL([6]/cast((select jun from ProjectStatus where Id = @pid and Year = @yr)as float), 0) as jun,
+					ISNULL([7]/cast((select jul from ProjectStatus where Id = @pid and Year = @yr)as float), 0) as jul,
+					ISNULL([8]/cast((select aug from ProjectStatus where Id = @pid and Year = @yr)as float), 0) as aug,
+					ISNULL([9]/cast((select sep from ProjectStatus where Id = @pid and Year = @yr)as float), 0) as sep,
+					ISNULL([10]/cast((select oct from ProjectStatus where Id = @pid and Year = @yr)as float), 0) as oct,
+					ISNULL([11]/cast((select nov from ProjectStatus where Id = @pid and Year = @yr)as float), 0) as nov,
+					ISNULL([12]/cast((select dec from ProjectStatus where Id = @pid and Year = @yr)as float), 0) as dec
 				FROM
                 (select U.Username as Username,  month, coalesce(hours, 0) as hours from @table T  INNER JOIN Users U on U.Id = T.UserId) AS SourceTable 
                 PIVOT (

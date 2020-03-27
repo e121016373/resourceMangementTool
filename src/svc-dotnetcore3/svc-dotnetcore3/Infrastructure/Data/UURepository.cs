@@ -26,7 +26,7 @@ namespace Web.API.Infrastructure.Data
                  select UP.year, UP.month, coalesce(UP.hours, 0) as hours
                     from UserHours UP
                     INNER JOIN
-                    ProjectStatus2 PS
+                    ProjectStatus PS
                     on PS.Id = UP.ProjectId
                  and PS.Status = 'Active'
                  where UP.UserId = (select Id from Users where Username = @Username) and
@@ -127,7 +127,7 @@ namespace Web.API.Infrastructure.Data
             var sql = @"
                 select DISTINCT UP.year, UP.jan, UP.feb, UP.mar, UP.apr, UP.may,
                 UP.jun, UP.jul, UP.aug, UP.sep ,UP.oct, UP.nov, UP.dec
-                from ProjectStatus2 UP
+                from ProjectStatus UP
                 where Id = (select Id from Projects where Title = @Project)
             ;";
 
