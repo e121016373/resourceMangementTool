@@ -28,7 +28,7 @@ namespace Web.API.Infrastructure.Data
                     on UP.ProjectId = P.Id 
 					INNER JOIN Locations L
 					on P.LocationId = L.Id
-                    INNER JOIN ProjectStatus2 PS
+                    INNER JOIN ProjectStatus PS
                     on PS.Id = P.Id
                     and PS.status = 'Active'
 

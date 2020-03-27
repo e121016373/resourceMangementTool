@@ -39,8 +39,6 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 declare @num int;
-                set @year = '3-5 years';
-                set @Username = 'turcotter';
                 set @num = (select count(distinct DisciplineId) from UserWorksDiscipline where UserId = 
                 (select Id from Users where Username = @Username));
 
