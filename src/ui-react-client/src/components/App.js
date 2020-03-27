@@ -23,22 +23,6 @@ import { loadPersonalProfile } from '../redux/actions/personalProfileAction';
 import { connect } from 'react-redux';
 import ShowFeedbackMsg from './feedbackMsg/feedbackMsg';
 
-// const PrivateRoute = ({ component: Component, ...rest }) => (
-//   <Route
-//     {...rest}
-//     render={props =>
-//       userType === 'Resource Manager' ? (
-//         <Component {...props} />
-//       ) : (
-//         <Redirect
-//           to={{
-//             pathname: '/',
-//           }}
-//         />
-//       )
-//     }
-//   />
-// );
 const App = ({ personalProfileUser, loadPersonalProfile }) => {
   useEffect(() => {
     if (Object.keys(personalProfileUser).length === 0) {

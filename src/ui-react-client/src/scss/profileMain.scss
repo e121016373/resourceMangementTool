@@ -23,7 +23,7 @@
   width: 82%;
   display: flex;
   .content-add {
-    margin: 5px;
+    margin: 15px;
     border-style: solid;
     float: left;
     display: flex;
@@ -31,9 +31,9 @@
     border-radius: 5px;
     border-color: #e4e6eb;
     overflow: hidden;
-    height: 0;
-    animation: transform 300ms ease-in-out forwards;
-    @keyframes transform {
+    //width: 1;
+    animation: add 300ms ease-in-out forwards;
+    @keyframes add {
       from {
         height: 0px;
       }

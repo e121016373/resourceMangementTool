@@ -107,7 +107,7 @@ const WTable = ({
     <div>
       <div
         style={{
-          'border-bottom': '2px solid #ccc',
+          borderBottom: '2px solid #ccc',
           margin: '0',
           width: '100%',
         }}
@@ -126,25 +126,29 @@ const WTable = ({
         <tbody>
           <tr>
             {tableHead.map((name, index) => {
-              return <th scope="col">{name}</th>;
+              return (
+                <th key={index} scope="col">
+                  {name}
+                </th>
+              );
             })}
           </tr>
           {datas.map((data, index) => {
-            {
-              /* console.log('print data', data); */
-            }
             return (
               <>
-                <tr>
+                <tr key={index}>
                   {Object.values(data).map((item, index) => {
                     if (
                       typeof item == 'string' &&
                       item.includes('%')
                     ) {
-                      return <td>{renderProgressBar(item)}</td>;
+                      return (
+                        <td key={index}>{renderProgressBar(item)}</td>
+                      );
                     } else {
                       return (
                         <td
+                          key={index}
                           onClick={() => {
                             if (selectRow) {
                               selectRow(data);

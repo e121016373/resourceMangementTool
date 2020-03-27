@@ -85,7 +85,7 @@ const Search = ({
       <div
         style={{
           display: 'flex',
-          'flex-direction': 'row',
+          flexDirection: 'row',
           width: '100vw',
           height: '100vh',
           margin: 0,
@@ -105,16 +105,16 @@ const Search = ({
             className="card"
             style={{
               display: 'flex',
-              'flex-direction': 'column',
+              flexDirection: 'column',
               margin: 0,
-              'margin-top': '30px',
+              marginTop: '30px',
               padding: '20px',
-              'padding-top': '5px',
+              paddingTop: '5px',
             }}
           >
             <div
               style={{
-                'border-bottom': '2px solid #ccc',
+                borderBottom: '2px solid #ccc',
                 margin: '0',
               }}
               className="row"
@@ -123,96 +123,98 @@ const Search = ({
                 <h3>Search</h3>
               </div>
             </div>
+            <div className="line"></div>
             <table>
-              <div className="line"></div>
-              <tr>
-                <td>
-                  <div className="title">
-                    <i class="fas fa-user-graduate mr-4 fa-lg"></i>
-                    Discipline
-                  </div>
-                </td>
-                <td>
-                  <AutoComplete elements={parseDisciplines()} />
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div className="title">
-                    <i class="fas fa-user-clock mr-3 fa-lg"></i>
-                    experience
-                  </div>
-                </td>
-                <td>
-                  <select className="searchBox">
-                    <option value="0">1-3 years</option>
-                    <option value="1">3-5 years</option>
-                    <option value="2">5-10 years</option>
-                    <option value="3">10+ years</option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div className="title">
-                    <i class="fas fa-book mr-4 fa-lg"></i>
-                    Skills
-                  </div>
-                </td>
-                <td>
-                  <AutoComplete elements={parseSkills()} />
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div className="title">
-                    <i class="fas fa-calendar-day mr-4 fa-lg"></i>
-                    Date
-                  </div>
-                </td>
-                <td>
-                  <input
-                    placeholder="MM/DD/YYYY"
-                    type="date"
-                    className="searchBox"
-                  ></input>
-                  To
-                  <input
-                    placeholder="MM/DD/YYYY"
-                    type="date"
-                    className="searchBox"
-                  ></input>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div className="title">
-                    <i class="fas fa-street-view mr-4 fa-lg"></i>
-                    Location
-                  </div>
-                </td>
-                <td>
-                  <AutoComplete elements={parseLocations()} />
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div className="title">
-                    <i class="fas fa-calendar-check mr-4 fa-lg"></i>
-                    Availability
-                  </div>
-                </td>
-                <td>
-                  <input type="text" className="searchBox"></input>
-                </td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td>
+                    <div className="title">
+                      <i className="fas fa-user-graduate mr-4 fa-lg"></i>
+                      Discipline
+                    </div>
+                  </td>
+                  <td>
+                    <AutoComplete elements={parseDisciplines()} />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div className="title">
+                      <i className="fas fa-user-clock mr-3 fa-lg"></i>
+                      experience
+                    </div>
+                  </td>
+                  <td>
+                    <select className="searchBox">
+                      <option value="0">1-3 years</option>
+                      <option value="1">3-5 years</option>
+                      <option value="2">5-10 years</option>
+                      <option value="3">10+ years</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div className="title">
+                      <i className="fas fa-book mr-4 fa-lg"></i>
+                      Skills
+                    </div>
+                  </td>
+                  <td>
+                    <AutoComplete elements={parseSkills()} />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div className="title">
+                      <i className="fas fa-calendar-day mr-4 fa-lg"></i>
+                      Date
+                    </div>
+                  </td>
+                  <td>
+                    <input
+                      placeholder="MM/DD/YYYY"
+                      type="date"
+                      className="searchBox"
+                    ></input>
+                    To
+                    <input
+                      placeholder="MM/DD/YYYY"
+                      type="date"
+                      className="searchBox"
+                    ></input>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div className="title">
+                      <i className="fas fa-street-view mr-4 fa-lg"></i>
+                      Location
+                    </div>
+                  </td>
+                  <td>
+                    <AutoComplete elements={parseLocations()} />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div className="title">
+                      <i className="fas fa-calendar-check mr-4 fa-lg"></i>
+                      Availability
+                    </div>
+                  </td>
+                  <td>
+                    <input type="text" className="searchBox"></input>
+                  </td>
+                </tr>
+              </tbody>
             </table>
 
             <div>
               <div
                 style={{
                   width: '7vw',
-                  'margin-top': '20px',
+                  marginTop: '20px',
                 }}
                 className="btn-green"
                 onClick={search}
@@ -231,11 +233,12 @@ const Search = ({
             className="card"
             style={{
               display: 'flex',
-              'flex-direction': 'column',
+              flexDirection: 'column',
               margin: 0,
-              'margin-top': '10px',
+              marginTop: '10px',
               padding: '20px',
-              'padding-top': '5px',
+              paddingTop: '5px',
+              height: '70vh',
             }}
           >
             <WTable
@@ -248,7 +251,8 @@ const Search = ({
               <div
                 style={{
                   width: '10vw',
-                  'margin-top': '20px',
+
+                  marginBottom: '20px',
                 }}
                 className="btn-green"
                 onClick={addPeople}

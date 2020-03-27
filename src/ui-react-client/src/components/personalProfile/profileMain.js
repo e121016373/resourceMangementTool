@@ -191,7 +191,7 @@ const ProfileMain = ({
           <div
             style={{
               display: 'flex',
-              'flex-direction': 'row',
+              flexDirection: 'row',
               width: '100vw',
               height: '100vh',
               margin: 0,
@@ -209,7 +209,7 @@ const ProfileMain = ({
                 className="card"
                 style={{
                   display: 'flex',
-                  'flex-direction': 'column',
+                  flexDirection: 'column',
                   padding: '10px',
                 }}
               >
@@ -265,9 +265,9 @@ const ProfileMain = ({
                 className="card"
                 style={{
                   display: 'flex',
-                  'flex-direction': 'column',
+                  flexDirection: 'column',
                   padding: '10px',
-                  'margin-left': 0,
+                  marginLeft: 0,
                   width: '30vw',
                 }}
               >
@@ -324,7 +324,7 @@ const ProfileMain = ({
           <div
             style={{
               display: 'flex',
-              'flex-direction': 'row',
+              flexDirection: 'row',
               width: '100vw',
               height: '100vh',
               margin: 0,
@@ -338,7 +338,7 @@ const ProfileMain = ({
                 className="card"
                 style={{
                   display: 'flex',
-                  'flex-direction': 'column',
+                  flexDirection: 'column',
                   padding: '10px',
                   width: '74vw',
                 }}
@@ -368,7 +368,7 @@ const ProfileMain = ({
             <div
               style={{
                 display: 'flex',
-                'flex-direction': 'row',
+                flexDirection: 'row',
                 width: '100vw',
                 height: '100vh',
                 margin: 0,
@@ -382,7 +382,7 @@ const ProfileMain = ({
                   className="card"
                   style={{
                     display: 'flex',
-                    'flex-direction': 'column',
+                    flexDirection: 'column',
                     padding: '10px',
                     width: '74vw',
                   }}
@@ -393,7 +393,7 @@ const ProfileMain = ({
                   className="card"
                   style={{
                     display: 'flex',
-                    'flex-direction': 'column',
+                    flexDirection: 'column',
                     padding: '10px',
                     width: '74vw',
                   }}

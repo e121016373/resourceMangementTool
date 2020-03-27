@@ -43,7 +43,7 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
                   style={{
                     display: 'block',
                   }}
-                  class="fas fa-calendar-minus fa-lg"
+                  className="fas fa-calendar-minus fa-lg"
                 ></i>
                 Projects
               </div>
@@ -89,7 +89,7 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
         </div>
         <div>
           <ul>
-            <li style={{ 'margin-left': '0px' }}>
+            <li style={{ marginLeft: '0px' }}>
               <NavLink
                 className="item"
                 to="/"
@@ -101,7 +101,7 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
                     style={{
                       display: 'block',
                     }}
-                    class="fas fa-home fa-lg"
+                    className="fas fa-home fa-lg"
                   ></i>
                   Home
                 </div>
@@ -118,7 +118,7 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
                     style={{
                       display: 'block',
                     }}
-                    class="fas fa-search fa-lg"
+                    className="fas fa-search fa-lg"
                   ></i>
                   Search
                 </div>
@@ -153,9 +153,7 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
             }}
             className="fas fa-sign-out-alt fa-lg"
           >
-            <h6
-              style={{ 'font-size': '15px', 'font-weight': 'bold' }}
-            >
+            <h6 style={{ fontSize: '15px', fontWeight: 'bold' }}>
               Log out
             </h6>
           </i>

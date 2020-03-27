@@ -76,11 +76,11 @@ export const Sidebar = ({
             </div>
             <div className="profileText">
               {/* <h4>Welcome</h4> */}
-              <h6 style={{ color: 'grey', 'margin-bottom': '0px' }}>
+              <h6 style={{ color: 'grey', marginBottom: '0px' }}>
                 {personalProfileUser.username}
               </h6>
               <div className="location">
-                <h6 style={{ color: 'grey', 'margin-bottom': '0px' }}>
+                <h6 style={{ color: 'grey', marginBottom: '0px' }}>
                   location:
                 </h6>
                 <div>
@@ -88,7 +88,7 @@ export const Sidebar = ({
                     <input
                       id="location"
                       placeholder={personalProfileUser.location}
-                      disabled="true"
+                      disabled={true}
                     ></input>
                   </h6>
                 </div>
@@ -110,26 +110,27 @@ export const Sidebar = ({
 
           {/* <Modal /> */}
         </div>
-        <div style={{ 'margin-top': '20px' }}></div>
+        <div style={{ marginTop: '20px' }}></div>
         <div className="content">
           <div
             className="item"
             onClick={() => setCurrentState('discipline')}
           >
-            <i class="fas fa-user-graduate mr-4 fa-lg"></i>
+            <i className="fas fa-user-graduate mr-4 fa-lg"></i>
             disciplines
           </div>
           <div
             className="item"
             onClick={() => setCurrentState('project')}
           >
-            <i class="fas fa-calendar-minus mr-4 fa-lg"></i>Project
+            <i className="fas fa-calendar-minus mr-4 fa-lg"></i>
+            Project
           </div>
           <div
             className="item"
             onClick={() => setCurrentState('availability')}
           >
-            <i class="far fa-clock mr-4 fa-lg"></i>Utilization
+            <i className="far fa-clock mr-4 fa-lg"></i>Utilization
           </div>
         </div>
       </div>
