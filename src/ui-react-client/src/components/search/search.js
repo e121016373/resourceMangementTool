@@ -79,6 +79,7 @@ const Search = ({
   const search = () => {
     searchUsers();
   };
+  const addPeople = () => {};
   return (
     <div>
       <div
@@ -243,6 +244,18 @@ const Search = ({
               checkBox={true}
               datas={searchUsersResult}
             ></WTable>
+            <div>
+              <div
+                style={{
+                  width: '10vw',
+                  'margin-top': '20px',
+                }}
+                className="btn-green"
+                onClick={addPeople}
+              >
+                Add People
+              </div>
+            </div>
           </div>
         </div>
       </div>

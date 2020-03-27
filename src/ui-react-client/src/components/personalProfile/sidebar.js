@@ -129,7 +129,7 @@ export const Sidebar = ({
             className="item"
             onClick={() => setCurrentState('availability')}
           >
-            <i class="far fa-clock mr-4 fa-lg"></i>availability
+            <i class="far fa-clock mr-4 fa-lg"></i>Utilization
           </div>
         </div>
       </div>
