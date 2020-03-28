@@ -60,11 +60,12 @@ let project3 = {
     endDate: "20211010",
     utilization: "0%"
 };
-let projects = [project1, project2, project3]
-let user1 = {id: 1, name: "user1", utilization: "30%"}
-let user2 = {id: 2, name: "user2", utilization: "40%"}
-let user3 = {id: 3, name: "user3", utilization: "0%"}
-let users = [user1, user2, user3]
+let projects = [project1, project2, project3];
+let user1 = {id: 1, name: "user1", utilization: "30%"};
+let user2 = {id: 2, name: "user2", utilization: "40%"};
+let user3 = {id: 3, name: "user3", utilization: "0%"};
+let users = [user1, user2, user3];
+
 
 class ProjectsPage extends React.Component {
     constructor(props) {
@@ -80,7 +81,6 @@ class ProjectsPage extends React.Component {
         return users;
     }
 
-
     // componentDidUpdate(prevProps,prevStates){
     //     console.log('run to componentdidmount');
     //     if (this.state.data.length ===0) {
@@ -93,17 +93,14 @@ class ProjectsPage extends React.Component {
     getProjects(){
         console.log('before load');
         console.log(loadProjects);
-        this.props.loadProjects();
+        if(this.state.data.length ===0){
+            this.props.loadProjects().catch(error => {
+                alert("load projects failed"+error);
+            });
+        }
+        console.log("IN props !!!! projects are following");
+        console.log(this.props.projects);
     }
-
-    // useEffect() {
-    //     if (projects.length === 0) {
-    //         console.log('run to componentdidmount');
-    //         loadProjects().catch(error => {
-    //             alert('Loading projects failed' + error);
-    //         });
-    //     }
-    // };
 
 
     handleRowClick(rowId) {
@@ -199,7 +196,8 @@ class ProjectsPage extends React.Component {
 
 
 ProjectsPage.propTypes = {
-    projects: PropTypes.array.isRequired,
+    // projects: PropTypes.array.isRequired,
+    projects:PropTypes.array,
     loadProjects: PropTypes.func.isRequired,
 };
 

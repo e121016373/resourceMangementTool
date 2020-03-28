@@ -13,7 +13,8 @@ export const loadProjectsMostRecentData = projects => {
 };
 
 export const loadProjectsData = projects => {
-  return {
+    console.log("load projects data is "+projects);
+    return {
     type: types.LOAD_PROJECTS_ALL,
     projects: projects,
   };
@@ -56,11 +57,9 @@ export const loadProjectsMostRecent = () => {
 export const loadProjects = () => {
   return dispatch => {
       console.log('the URL in loadprojects is', baseURL);
-      console.log('headers are hihihihi', headers);
       return axios
       .get(baseURL)
       .then(response => {
-        console.log(response.data);
         dispatch(loadProjectsData(response.data));
       })
       .catch(error => {
