@@ -44,8 +44,9 @@ namespace Web.API.Infrastructure.Data
         public async Task<UserProject> GetAProject(string username, string project)
         {
             var sql = @"
-                select P.Title as Project, L.Name as Location, UP.FromDate, UP.ToDate, UP.Hours 
-                    from UserInProjects UP
+                select Top 1 P.Title as Project, L.Name as Location, PS.FromDate, PS.ToDate, 
+                P.UpdatedAt, PS.Status as Status 
+                    from UserHours UP
                     INNER JOIN Projects P
                     on UP.ProjectId = P.Id 
 					INNER JOIN Locations L
@@ -61,16 +62,56 @@ namespace Web.API.Infrastructure.Data
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            return await connection.QueryFirstOrDefault(sql, new { Username = username, Project = project });
+            return await connection.QueryFirstOrDefaultAsync<UserProject>(sql, new { Username = username, Project = project });
         }
-        public async Task<UserProject> CreateProject(string username, UserProject proj)
+        public async Task<UserProject> CreateProject(string username, string project, UserUtil uu)
         {
             var sql = @"
-                insert into UserHours
-                (UserId, ProjectId, Year, Month, Hours)
-                values ((select Id from Users where Username = @Username),
-                (select Id from Projects where Title = @Project),
-                @FromDate, @ToDate, @Hours)
+                declare @uid int;
+                declare @pid int;
+                set @uid = (select Id from Users where Username = @Username);
+                set @pid = (select Id from Projects where Title = @Project);
+                if (select Id from ProjectStatus where Id = @pid and
+                    Year = @Year) != null
+                    insert into UserHours
+                    (UserId, ProjectId, Year, Month, Hours)
+                    values(@uid, @pid, @Year, 1, @Jan)
+                   insert into UserHours
+                    (UserId, ProjectId, Year, Month, Hours)
+                    values(@uid, @pid, @Year, 2, @Feb)
+                   insert into UserHours
+                    (UserId, ProjectId, Year, Month, Hours)
+                    values(@uid, @pid, @Year, 3, @Mar)
+                   insert into UserHours
+                    (UserId, ProjectId, Year, Month, Hours)
+                    values(@uid, @pid, @Year, 4, @Apr)
+                   insert into UserHours
+                    (UserId, ProjectId, Year, Month, Hours)
+                    values(@uid, @pid, @Year, 5, @May)
+                   insert into UserHours
+                    (UserId, ProjectId, Year, Month, Hours)
+                    values(@uid, @pid, @Year, 6, @Jun)
+                   insert into UserHours
+                    (UserId, ProjectId, Year, Month, Hours)
+                    values(@uid, @pid, @Year, 7, @Jul)
+                   insert into UserHours
+                    (UserId, ProjectId, Year, Month, Hours)
+                    values(@uid, @pid, @Year, 8, @Aug)
+                   insert into UserHours
+                    (UserId, ProjectId, Year, Month, Hours)
+                    values(@uid, @pid, @Year, 9, @Sep)
+                   insert into UserHours
+                    (UserId, ProjectId, Year, Month, Hours)
+                    values(@uid, @pid, @Year, 10, @Oct)
+                   insert into UserHours
+                    (UserId, ProjectId, Year, Month, Hours)
+                    values(@uid, @pid, @Year, 11, @Nov)
+                   insert into UserHours
+                    (UserId, ProjectId, Year, Month, Hours)
+                    values(@uid, @pid, @Year, 12, @Dec);
+                update Projects
+                set UpdatedAt = GETDATE()
+                where Id = @pid
             ;";
 
             using var connection = new SqlConnection(connectionString);
@@ -78,20 +119,34 @@ namespace Web.API.Infrastructure.Data
             await connection.ExecuteAsync(sql, new
             {
                 Username = username,
-                Project = proj.Project,
-                FromDate = proj.FromDate,
-                ToDate = proj.ToDate,
-                Hours = proj.Status
-            });
-            return proj;
+                Project = project,
+                uu.Year,
+                uu.Jan,
+                uu.Feb,
+                uu.Mar,
+                uu.Apr,
+                uu.May,
+                uu.Jun,
+                uu.Jul,
+                uu.Aug,
+                uu.Sep,
+                uu.Oct,
+                uu.Nov,
+                uu.Dec
+            }) ;
+            return await GetAProject(username, project);
         }
         public async Task<UserProject> DeleteProject(string username, string project)
         {
             var proj = await GetAProject(username, project);
             var sql = @"
-                delete from UserInProjects
+                delete from UserHours
                 where ProjectId = (select Id from Projects where Title = @Project)
                 and UserId = (select Id from Users where Username = @Username)
+                
+                update Projects
+                set UpdatedAt = GETDATE()
+                where Id = (select Id from Projects where Title = @Project)
             ;";
 
             using var connection = new SqlConnection(connectionString);
@@ -103,15 +158,44 @@ namespace Web.API.Infrastructure.Data
             });
             return proj;
         }
-        public async Task<UserProject> UpdateProject(string username, UserProject proj)
+        public async Task<UserProject> UpdateProject(string username, string project, int year, Hour hr)
         {
             var sql = @"
-                update UserInProjects
-                set FromDate = @FromDate,
-                    ToDate = @ToDate,
-                    Hours = @Hours
+                declare @m int;
+				set @m = 0;
+                if @Months = 'jan'
+                    set @m = 1;
+                if @Months = 'feb'
+                    set @m = 2;
+                if @Months = 'mar'
+                    set @m = 3;
+                if @Months = 'apr'
+                    set @m = 4;
+                if @Months = 'may'
+                    set @m = 5;
+                if @Months = 'jun'
+                    set @m = 6;
+                if @Months = 'jul'
+                    set @m = 7;
+                if @Months = 'aug'
+                    set @m = 8;
+                if @Months = 'sep'
+                    set @m = 9;
+                if @Months = 'oct'
+                    set @m = 10;
+                if @Months = 'nov'
+                    set @m = 11;
+                if @Months = 'dec'
+                    set @m = 12;
+				update UserHours
+                set Hours = @Hours 
                 where UserId = (select Id from Users where Username = @Username)
-                and ProjectId = (select Id from Projects where Title = @Project)
+                and ProjectId = 7
+                and Year = @Year and Month = @m;
+
+                update Projects
+                set UpdatedAt = GETDATE()
+                where Id = (select Id from Projects where Title = @Project)
             ;";
 
             using var connection = new SqlConnection(connectionString);
@@ -119,12 +203,12 @@ namespace Web.API.Infrastructure.Data
             await connection.ExecuteAsync(sql, new
             {
                 Username = username,
-                Project = proj.Project,
-                FromDate = proj.FromDate,
-                ToDate = proj.ToDate,
-                Hours = proj.Status
+                Project = project,
+                Months = hr.Month,
+                Year = year,
+                Hours = hr.Hours
             });
-            return proj;
+            return await GetAProject(username, project);
 
         }
     }

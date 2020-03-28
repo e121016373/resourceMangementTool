@@ -37,10 +37,10 @@ namespace Web.API.Controllers
             return Ok(viewModel);
         }
         [HttpPost]
-        [Route("/userprojects/{username}")]
-        public async Task<ActionResult<UserProject>> CreateProject([FromRoute]string username, [FromBody] UserProject proj)
+        [Route("/userprojects/{username}/{project}")]
+        public async Task<ActionResult<UserProject>> CreateProject([FromRoute]string username, string project, [FromBody] UserUtil uu)
         {
-            var response = await upRepository.CreateProject(username, proj);
+            var response = await upRepository.CreateProject(username, project, uu);
             var viewModel = mapper.Map<UserProject>(response);
             return Created("GetProject", viewModel);
         }
@@ -52,11 +52,12 @@ namespace Web.API.Controllers
             var viewModel = mapper.Map<UserProject>(response);
             return Ok(viewModel);
         }
-        [HttpPut]
-        [Route("/userprojects/{username}")]
-        public async Task<ActionResult<UserProject>> UpdateProject([FromRoute]string username, [FromBody] UserProject proj)
+        [HttpPatch]
+        [Route("/userprojects/{username}/{project}/{year}")]
+        public async Task<ActionResult<UserProject>> UpdateProject([FromRoute]string username,
+            string project, int year, [FromBody] Hour hr)
         {
-            var response = await upRepository.UpdateProject(username, proj);
+            var response = await upRepository.UpdateProject(username, project, year, hr);
             var viewModel = mapper.Map<UserProject>(response);
             return Accepted(viewModel);
         }
