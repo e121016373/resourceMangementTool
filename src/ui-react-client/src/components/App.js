@@ -22,6 +22,7 @@ import PropTypes from 'prop-types';
 import { loadPersonalProfile } from '../redux/actions/personalProfileAction';
 import { connect } from 'react-redux';
 import ShowFeedbackMsg from './feedbackMsg/feedbackMsg';
+import {loadProjects} from "../redux/actions/projectsActions";
 
 // const PrivateRoute = ({ component: Component, ...rest }) => (
 //   <Route

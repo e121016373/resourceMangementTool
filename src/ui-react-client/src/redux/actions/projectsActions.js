@@ -55,8 +55,8 @@ export const loadProjectsMostRecent = () => {
 
 export const loadProjects = () => {
   return dispatch => {
-      console.log('the URL is ', baseURL);
-      console.log('headers are', headers);
+      console.log('the URL in loadprojects is', baseURL);
+      console.log('headers are hihihihi', headers);
       return axios
       .get(baseURL, { headers })
       .then(response => {
