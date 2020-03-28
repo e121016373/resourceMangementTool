@@ -1,56 +1,62 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-  width: 70%;
-}
-.searchCard {
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-  margin-top: 4%;
-  background-color: white;
-  z-index: 1;
-  border-radius: 5px;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-bottom: 20px;
-}
-.row {
-  margin: 1px;
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
-  margin-bottom: 0;
-}
-.title {
-  margin: 7px;
-}
-.searchBox {
-  width: 110px;
-  height: 35px;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  margin: 7px;
-  padding-left: 10;
-}
-.header {
-  margin-top: 20px;
-  margin-left: 20px;
-  font-size: large;
-  font-family: 'Times New Roman', Times, serif;
-}
-table {
+.table {
   font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   text-align: left;
   width: 100%;
-  td,
-  th {
+
+  //border-style: dashed;
+
+  //margin-top: 100px;
+  //display: inline-block;
+  .row {
+    margin: 1px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    margin-bottom: 0;
+    //position: absolute;
+  }
+  .header {
+    margin-top: 20px;
+    margin-left: 10px;
+    font-size: large;
+    font-family: 'Times New Roman', Times, serif;
+    //position: absolute;
+  }
+  tr {
+    border-style: none;
+    display: block;
+    display: flex;
+    &:hover {
+      cursor: pointer;
+      color: grey;
+    }
+  }
+  td {
+    //border-style: solid;
+    border-style: none;
     margin-top: 1px;
     border-bottom: 1px solid #dddddd;
     text-align: left;
-    padding: 1px;
+    padding: 10px;
+    flex-basis: 100%;
+    text-align: left;
+  }
+
+  tbody {
+    display: block;
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+
+  th {
+    //border-style: solid;
+    border-style: none;
+    flex-basis: 100%;
+    margin-top: 1px;
+    border-bottom: 1px solid #dddddd;
+    text-align: left;
+    padding: 10px;
   }
   button {
     border: none;

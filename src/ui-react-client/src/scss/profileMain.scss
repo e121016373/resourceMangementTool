@@ -67,47 +67,47 @@
       width: 400px;
       height: 200px;
     }
-    .table {
-      font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
-      border-collapse: collapse;
-      text-align: left;
-      width: 100%;
-      tr {
-        &:hover {
-          color: grey;
-          cursor: pointer;
-        }
-      }
-      td,
-      th {
-        margin-top: 30px;
-        border-bottom: 1px solid #dddddd;
-        text-align: left;
-        padding: 15px;
-      }
-      button {
-        border: none;
-      }
-    }
+    // .table {
+    //   font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
+    //   border-collapse: collapse;
+    //   text-align: left;
+    //   width: 100%;
+    //   tr {
+    //     &:hover {
+    //       color: grey;
+    //       cursor: pointer;
+    //     }
+    //   }
+    //   td,
+    //   th {
+    //     margin-top: 30px;
+    //     border-bottom: 1px solid #dddddd;
+    //     text-align: left;
+    //     padding: 15px;
+    //   }
+    //   button {
+    //     border: none;
+    //   }
+    // }
   }
   .col2 {
     width: 400px;
-    .table {
-      font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
-      border-collapse: collapse;
-      text-align: left;
-      width: 100%;
-      td,
-      th {
-        margin-top: 30px;
-        border-bottom: 1px solid #dddddd;
-        text-align: left;
-        padding: 15px;
-      }
-      button {
-        border: none;
-      }
-    }
+    // .table {
+    //   font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
+    //   border-collapse: collapse;
+    //   text-align: left;
+    //   width: 100%;
+    //   td,
+    //   th {
+    //     margin-top: 30px;
+    //     border-bottom: 1px solid #dddddd;
+    //     text-align: left;
+    //     padding: 15px;
+    //   }
+    //   button {
+    //     border: none;
+    //   }
+    // }
     .button-add {
       margin: 10px;
       float: left;
