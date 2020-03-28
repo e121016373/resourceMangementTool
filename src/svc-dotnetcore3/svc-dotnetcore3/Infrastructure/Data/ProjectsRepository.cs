@@ -90,25 +90,41 @@ namespace Web.API.Infrastructure.Data
             return await connection.QueryFirstOrDefaultAsync<Project>(sql, new { Title = project });
         }
 
-        public async Task<Project> CreateAProject(Project project)
+        public async Task<ProjectCreate> CreateAProject(ProjectCreate project)
         {
             var sql = @"
-                insert into Projects 
+                declare @n int;
+				set @n = YEAR(@FromDate);
+				declare @pid int;
+
+				insert into Projects 
                     (Number, Title, LocationId)
                 values 
                     (@Number, @Title,
                     (select Id from Locations where Name = @Location));
-                select cast(scope_identity() as int);
-            ;";
+                set @pid = (select cast(scope_identity() as int));
 
+				WHILE @n <= YEAR(@ToDate)
+				BEGIN
+				insert into ProjectStatus
+                (Id, FromDate, ToDate, Status, Year, Jan, Feb, Mar, Apr, May,
+                Jun, Jul, Aug, Sep, Oct, Nov, Dec)
+                values(@pid,
+                @FromDate, @ToDate, 'Active', @n, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0);
+				set @n = @n+1;
+				END
+            ;";
+            
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            var id = await connection.QuerySingleAsync<int>(sql, new {
-                project.Number,
+            await connection.ExecuteAsync(sql, new {
+                project.Number,        
                 project.Title,
-                project.Location         
+                project.Location,
+                project.FromDate,
+                project.ToDate
             });
-            project.Id = id;
             return project;
         }
 
@@ -128,7 +144,7 @@ namespace Web.API.Infrastructure.Data
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            int result = await connection.ExecuteAsync(sql, new
+            await connection.ExecuteAsync(sql, new
             {
                 project.Id,
                 project.Number,
@@ -188,6 +204,26 @@ namespace Web.API.Infrastructure.Data
             connection.Open();
             return await connection.QueryAsync<ProjectStatus>(sql, new
             {
+            });
+        }
+
+        public async Task<IEnumerable<ProjectStatus>> GetActivatedProjectsWhere(string project)
+        {
+            var sql = @"
+                select DISTINCT P.Title as Project, PS.FromDate, PS.ToDate, PS.Status, PS.Year,
+                PS.Jan, PS.Feb, PS.Mar, PS.Apr, PS.May, PS.Apr, PS.Jun, PS.Jul, PS.Aug,
+                PS.Sep, PS.Oct, PS.Nov, PS.Dec
+                from ProjectStatus PS
+                INNER JOIN Projects P
+                on P.Id = PS.Id
+                where P.Title = @Project;
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            return await connection.QueryAsync<ProjectStatus>(sql, new
+            {
+                Project = project
             });
         }
         public async Task<ProjectStatus> ActivateAProject(ProjectStatus ps)

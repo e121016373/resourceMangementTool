@@ -49,10 +49,10 @@ namespace Web.API.Controllers
 
         [HttpPost]
         [Route("/projects")]
-        public async Task<ActionResult<Project>> CreateAProject([FromBody] Project project)
+        public async Task<ActionResult<ProjectCreate>> CreateAProject([FromBody] ProjectCreate project)
         {
             var response = await projectsRepository.CreateAProject(project);
-            var viewModel = mapper.Map<Project>(response);
+            var viewModel = mapper.Map<ProjectCreate>(response);
             return Created("GetAProject", viewModel);
         }
 
@@ -94,8 +94,18 @@ namespace Web.API.Controllers
 
         [HttpGet]
         [Route("/activatedlist/")]
-        public async Task<ActionResult<IEnumerable<ProjectStatus>>> GetActivatedProjects() { 
+        public async Task<ActionResult<IEnumerable<ProjectStatus>>> GetActivatedProjects()
+        {
             var response = await projectsRepository.GetActivatedProjects();
+            var viewModel = mapper.Map<IEnumerable<ProjectStatus>>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpGet]
+        [Route("/activatedlist/{project}")]
+        public async Task<ActionResult<IEnumerable<ProjectStatus>>> GetActivatedProjectsWhere([FromRoute] string project)
+        {
+            var response = await projectsRepository.GetActivatedProjectsWhere(project);
             var viewModel = mapper.Map<IEnumerable<ProjectStatus>>(response);
             return Ok(viewModel);
         }
