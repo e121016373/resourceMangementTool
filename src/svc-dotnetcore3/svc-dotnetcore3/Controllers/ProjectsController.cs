@@ -92,6 +92,14 @@ namespace Web.API.Controllers
             return Ok(viewModel);
         }
 
+        [HttpGet]
+        [Route("/activatedlist/")]
+        public async Task<ActionResult<IEnumerable<ProjectStatus>>> GetActivatedProjects() { 
+            var response = await projectsRepository.GetActivatedProjects();
+            var viewModel = mapper.Map<IEnumerable<ProjectStatus>>(response);
+            return Ok(viewModel);
+        }
+
         [HttpPost]
         [Route("/activate/")]
         public async Task<ActionResult<ProjectStatus>> ActivateAProject([FromBody] ProjectStatus ps)

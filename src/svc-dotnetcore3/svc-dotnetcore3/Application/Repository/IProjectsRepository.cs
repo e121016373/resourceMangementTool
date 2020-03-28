@@ -12,6 +12,7 @@ namespace Web.API.Application.Repository
         Task<Project> GetAProject(string projectNumber);
         Task<Project> GetAProjectWithTitle(string project);
         Task<IEnumerable<ProjectStatus>> CheckAProject(string project);
+        Task<IEnumerable<ProjectStatus>> GetActivatedProjects();
 
         // POST
         Task<Project> CreateAProject(Project project);

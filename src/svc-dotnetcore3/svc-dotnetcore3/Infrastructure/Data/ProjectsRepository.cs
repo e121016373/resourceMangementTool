@@ -164,6 +164,23 @@ namespace Web.API.Infrastructure.Data
                 Title = project
             });
         }
+        public async Task<IEnumerable<ProjectStatus>> GetActivatedProjects()
+        {
+            var sql = @"
+                select DISTINCT P.Title as Project, PS.FromDate, PS.ToDate, PS.Status, PS.Year,
+                PS.Jan, PS.Feb, PS.Mar, PS.Apr, PS.May, PS.Apr, PS.Jun, PS.Jul, PS.Aug,
+                PS.Sep, PS.Oct, PS.Nov, PS.Dec
+                from ProjectStatus PS
+                INNER JOIN Projects P
+                on P.Id = PS.Id
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            return await connection.QueryAsync<ProjectStatus>(sql, new
+            {
+            });
+        }
         public async Task<ProjectStatus> ActivateAProject(ProjectStatus ps)
         {
             var sql = @"
