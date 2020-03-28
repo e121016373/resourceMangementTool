@@ -7,7 +7,7 @@ namespace Web.API.Application.Models
         public int Id { get; set; }
         public string Number { get; set; }
         public string Title { get; set; }
-        public int LocationId { get; set; }
+        public string Location { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

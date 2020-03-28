@@ -21,10 +21,12 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 select
-                    P.Id, P.Number, P.Title, P.LocationId, P.CreatedAt, 
+                    P.Id, P.Number, P.Title, L.Name as Location, P.CreatedAt, 
                     P.UpdatedAt
                 from
                     Projects P
+                INNER JOIN Locations L
+                on L.Id = P.LocationId
             ;";
 
             using var connection = new SqlConnection(connectionString);
@@ -36,10 +38,12 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 select top(25)
-                    P.Id, P.Number, P.Title, P.LocationId, P.CreatedAt,
+                    P.Id, P.Number, P.Title, L.Name as Location, P.CreatedAt,
                     P.UpdatedAt
                 from
                     Projects P
+                INNER JOIN Locations L
+                on P.LocationId = L.Id
                 order by
                     UpdatedAt desc
             ;";
@@ -53,10 +57,12 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 select
-                    P.Id, P.Number, P.Title, P.LocationId, P.CreatedAt, 
+                    P.Id, P.Number, P.Title, L.Name as Location, P.CreatedAt, 
                     P.UpdatedAt
                 from
                     Projects P
+                INNER JOIN Locations L
+                on L.Id = P.LocationId
                 where
                     P.Number = @Number
             ;";
@@ -69,10 +75,12 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 select
-                    P.Id, P.Number, P.Title, P.LocationId, P.CreatedAt, 
+                    P.Id, P.Number, P.Title, L.Name as Location, P.CreatedAt, 
                     P.UpdatedAt
                 from
                     Projects P
+                INNER JOIN Locations L
+                on L.Id = P.LocationId
                 where
                     P.Title = @Title
             ;";
@@ -88,7 +96,8 @@ namespace Web.API.Infrastructure.Data
                 insert into Projects 
                     (Number, Title, LocationId)
                 values 
-                    (@Number, @Title, @LocationId);
+                    (@Number, @Title,
+                    (select Id from Locations where Name = @Location));
                 select cast(scope_identity() as int);
             ;";
 
@@ -97,7 +106,7 @@ namespace Web.API.Infrastructure.Data
             var id = await connection.QuerySingleAsync<int>(sql, new {
                 project.Number,
                 project.Title,
-                project.LocationId         
+                project.Location         
             });
             project.Id = id;
             return project;
@@ -111,7 +120,7 @@ namespace Web.API.Infrastructure.Data
                 set 
                     Number = @Number,
                     Title = @Title,
-                    LocationId = @LocationId,
+                    LocationId = (select Id from Locations where Name = @Location),
                     UpdatedAt = SYSUTCDATETIME()
                 where 
                     Id = @Id;                
@@ -124,7 +133,7 @@ namespace Web.API.Infrastructure.Data
                 project.Id,
                 project.Number,
                 project.Title,
-                project.LocationId,
+                project.Location,
             });
             return project;
         }
@@ -192,7 +201,7 @@ namespace Web.API.Infrastructure.Data
                 @May, @Jun, @Jul, @Aug, @Sep, @Oct, @Nov, @Dec);
                 
                 update Projects
-                set UpdatedAt = GETDATE()
+                set UpdatedAt = SYSUTCDATETIME()
                 where Title = @Title
             ;";
 
@@ -213,7 +222,7 @@ namespace Web.API.Infrastructure.Data
                 where Id = (select Id from Projects where Title = @Title); 
 
                 update Projects
-                set UpdatedAt = GETDATE()
+                set UpdatedAt = SYSUTCDATETIME()
                 where Title = @Title;
             ";
             using var connection = new SqlConnection(connectionString);
@@ -285,6 +294,9 @@ namespace Web.API.Infrastructure.Data
                  set Dec = @Hours
                     where Id = (select Id from Projects where Title = @Project)
                     and Year = @Year;
+                update Projects
+                set UpdatedAt = SYSUTCDATETIME()
+                where Title = @Project;
             ";
             using var connection = new SqlConnection(connectionString);
             connection.Open();
