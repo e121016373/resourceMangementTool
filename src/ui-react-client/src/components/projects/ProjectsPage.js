@@ -92,7 +92,8 @@ class ProjectsPage extends React.Component {
     // }
     getProjects(){
         console.log('before load');
-        loadProjects();
+        console.log(loadProjects);
+        this.props.loadProjects();
     }
 
     // useEffect() {
@@ -150,7 +151,7 @@ class ProjectsPage extends React.Component {
     render() {
         let allProjectRows = [];
         console.log('before get');
-        let projectstest = this.getProjects();
+        this.getProjects();
         // this.setState({data: this.getallprojects()});
 
         this.state.data.forEach(project => {
@@ -197,12 +198,10 @@ class ProjectsPage extends React.Component {
 }
 
 
-// ProjectsPage.propTypes = {
-//     projects: PropTypes.array.isRequired,
-//     locations: PropTypes.array.isRequired,
-//     loadProjects: PropTypes.func.isRequired,
-//     loadLocations: PropTypes.func.isRequired,
-// };
+ProjectsPage.propTypes = {
+    projects: PropTypes.array.isRequired,
+    loadProjects: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = state => {
     return {
