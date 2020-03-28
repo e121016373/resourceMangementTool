@@ -17,4 +17,18 @@ namespace Web.API.Application.Models
         public string ProjectNumber { get; set; }
         public string ProjectTitle { get; set; }
     }
+
+    public class UserInSearch
+    {
+        public int Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Username { get; set; }
+        public string Location { get; set; }
+        public string Type { get; set; }
+        public string Discipline { get; set; }
+        public string YOE { get; set; }
+        public string Skill { get; set; }
+        public float Availability { get; set; }
+    }
 }

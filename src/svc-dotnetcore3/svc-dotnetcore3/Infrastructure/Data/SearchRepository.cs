@@ -18,25 +18,75 @@ namespace Web.API.Infrastructure.Data
         }
 
         //return a list of user based on discipline, skill, location, year, availability in a given date range
-        public async Task<IEnumerable<User>> GetAllUsers(Search search)
+        public async Task<IEnumerable<UserInSearch>> GetAllUsers(Search search)
         {
+            // TEMPLATE
+            // var sql = @"
+            //     SELECT *
+            //     FROM (
+            //         SELECT DISTINCT
+            //             U.Id, U.FirstName, U.LastName, U.Username, L.Name AS 'Location', 
+            //             U.Type, D.Name AS 'Discipline', S.Name AS 'Skill', UWD.Year AS 'YOE', 
+            //             (SELECT CONVERT(FLOAT, 1-SUM(UH.Hours/176.0/months))
+            //             FROM UserHours UH
+            //             WHERE UH.UserId = U.Id
+            //                 AND ((UH.Year = 2020 AND UH.Month = 7)
+            //                     OR (UH.Year = 2020 AND UH.Month = 8)
+            //                     OR (UH.Year = 2020 AND UH.Month = 9)
+            //                     OR (UH.Year = 2020 AND UH.Month = 10)
+            //                     OR (UH.Year = 2020 AND UH.Month = 11)
+            //                     OR (UH.Year = 2020 AND UH.Month = 12)
+            //                     OR (UH.Year = 2021 AND UH.Month = 1))
+            //             GROUP BY UH.UserId) AS 'Availability'
+            //         FROM 
+            //             Users U
+            //             INNER JOIN UserWorksDiscipline UWD ON U.Id = UWD.UserId
+            //             INNER JOIN UserHasSkills UHS ON U.Id = UHS.UserId
+            //             INNER JOIN Locations L ON U.LocationId = L.Id
+            //             INNER JOIN Disciplines D ON UWD.DisciplineId = D.Id
+            //             INNER JOIN Skills S ON UHS.SkillId = S.Id
+            //         WHERE 
+            //             S.DisciplineId = D.Id
+            //     ) AS SearchUser
+            //     WHERE SearchUser.Avaiability >= @Availability/100.0";
+
             var sql = @"
-                SELECT DISTINCT
-                    U.Id, U.FirstName, U.LastName, U.Username, L.Name AS 'Location', U.Type
-                FROM 
-                    UserWorksDiscipline UWD, 
-                    Users U, 
-                    UserHasSkills UHS, 
-                    Locations L, 
-                    Disciplines D, 
-                    Skills S
-                WHERE 
-                    UWD.UserId = U.Id
-                    AND UHS.UserId = U.Id
-                    AND L.Id = U.LocationId
-                    AND UWD.DisciplineId = D.Id
-                    AND S.Id = UHS.SkillId
-                    AND S.DisciplineId = D.Id";
+                SELECT *
+                FROM (
+                    SELECT DISTINCT
+                        U.Id, U.FirstName, U.LastName, U.Username, L.Name AS 'Location', 
+                        U.Type, D.Name AS 'Discipline', S.Name AS 'Skill', UWD.Year AS 'YOE'";
+
+            if (search.FromDate != null && search.ToDate != null) {
+                int month_diff = ((search.ToDate.Year - search.FromDate.Year) * 12) + search.ToDate.Month - search.FromDate.Month;
+                int year = search.FromDate.Year;
+                int month = search.FromDate.Month;     
+                sql += ", (SELECT CONVERT(FLOAT, 1-SUM(UH.Hours/176.0/" + (month_diff + 1) + "))";
+                sql += @" FROM UserHours UH
+                        WHERE UH.UserId = U.Id";
+                sql += " AND ((UH.Year = " + year + "AND UH.Month =" + month + ")";
+                month++;
+                for (int i = 0; i < month_diff; i++) {
+                    if (month >= 13) {
+                        year += 1;
+                        month = 1;
+                    }
+                    sql += " OR (UH.Year = " + year + " AND UH.Month = " + month + ")";
+                    month++;
+                }
+                sql += @") 
+                    GROUP BY UH.UserId) AS 'Availability'";
+            }
+
+            sql += @" FROM 
+                        Users U
+                        INNER JOIN UserWorksDiscipline UWD ON U.Id = UWD.UserId
+                        INNER JOIN UserHasSkills UHS ON U.Id = UHS.UserId
+                        INNER JOIN Locations L ON U.LocationId = L.Id
+                        INNER JOIN Disciplines D ON UWD.DisciplineId = D.Id
+                        INNER JOIN Skills S ON UHS.SkillId = S.Id 
+                    WHERE 
+                        S.DisciplineId = D.Id";
 
             if (search.Discipline != null) {
                 sql += " AND D.Name = @Discipline";
@@ -48,45 +98,20 @@ namespace Web.API.Infrastructure.Data
                 sql += " AND L.Name = @Location";
             }
             if ((search.YOE != null) && (search.Discipline != null)) {
-                // sql += " AND ";
-                // if (search.YOE == 1)
-                //     sql += "(UWD.Year >= 1 and UWD.Year <=3 )";
-                // else if (search.YOE == 2)
-                //     sql += "(UWD.Year >=3 and UWD.Year <=5)";
-                // else if (search.YOE == 3)
-                //     sql += "(UWD.Year >=5 and UWD.Year <= 10)";
-                // else
-                //     sql += "(UWD.Year >=10)";
                 sql += " AND LTRIM(UWD.Year) = @YOE";
             }
-            if (search.FromDate != null && search.ToDate != null && search.Availability != 0) {
-                int month_diff = ((search.ToDate.Year - search.FromDate.Year) * 12) + search.ToDate.Month - search.FromDate.Month;
-                int year = search.FromDate.Year;
-                int month = search.FromDate.Month;
-                sql += @" 
-                    AND U.Id IN (SELECT UH.UserId
-                        FROM UserHours UH
-                        GROUP BY UH.UserId, UH.Year, UH.Month
-                        HAVING CONVERT(FLOAT, 1-SUM(UH.Hours/176.0)) >= CONVERT(FLOAT, @Availability/100.0)";
-                
-                sql += " AND ((UH.Year = " + year + "AND UH.Month =" + month + ")";
-                month++;
-                for (int i = 0; i < month_diff; i++) {
-                    if (month >= 13) {
-                        year += 1;
-                        month = 1;
-                    }
-                    sql += " OR (UH.Year = " + year + " AND UH.Month = " + month + ")";
-                    month++;
-                }
-                sql += "))";
+            
+            sql += " ) AS SearchUser";
+            if (search.FromDate != null && search.ToDate != null) {
+                sql += " WHERE SearchUser.Availability >= @Availability/100.0";
             }
+           
             sql += ";";
             
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            return await connection.QueryAsync<User>(sql, new {
+            return await connection.QueryAsync<UserInSearch>(sql, new {
                 search.Discipline,
                 search.Skill,
                 search.Location,
