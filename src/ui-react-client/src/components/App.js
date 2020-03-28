@@ -17,6 +17,7 @@ import '../scss/profileMain.scss';
 import './App.css';
 import '../scss/search.scss';
 import '../scss/loading.scss';
+import '../scss/table.scss';
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { loadPersonalProfile } from '../redux/actions/personalProfileAction';

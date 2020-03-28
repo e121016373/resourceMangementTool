@@ -56,7 +56,7 @@ namespace Web.API.Controllers
             return Created("GetAProject", viewModel);
         }
 
-        [HttpPatch]
+        [HttpPut]
         [Route("/projects")]
         public async Task<ActionResult<Project>> UpdateAProject([FromBody] Project project)
         {
@@ -71,6 +71,60 @@ namespace Web.API.Controllers
         {
             var response = await projectsRepository.DeleteAProject(number);
             var viewModel = mapper.Map<Project>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpGet]
+        [Route("/projects/title/{project}")]
+        public async Task<ActionResult<Project>> GetAProjectWithTitle([FromRoute]string project)
+        {
+            var response = await projectsRepository.GetAProjectWithTitle(project);
+            var viewModel = mapper.Map<Project>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpGet]
+        [Route("/check/{project}")]
+        public async Task<ActionResult<IEnumerable<ProjectStatus>>> CheckAProject([FromRoute] string project)
+        {
+            var response = await projectsRepository.CheckAProject(project);
+            var viewModel = mapper.Map<IEnumerable<ProjectStatus>>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpGet]
+        [Route("/activatedlist/")]
+        public async Task<ActionResult<IEnumerable<ProjectStatus>>> GetActivatedProjects() { 
+            var response = await projectsRepository.GetActivatedProjects();
+            var viewModel = mapper.Map<IEnumerable<ProjectStatus>>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpPost]
+        [Route("/activate/")]
+        public async Task<ActionResult<ProjectStatus>> ActivateAProject([FromBody] ProjectStatus ps)
+        {
+            var response = await projectsRepository.ActivateAProject(ps);
+            var viewModel = mapper.Map<ProjectStatus>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpDelete]
+        [Route("/deactivate/{project}")]
+        public async Task<ActionResult<IEnumerable<ProjectStatus>>> DeactivateAProject([FromRoute] string project)
+        {
+            var response = await projectsRepository.DeactivateAProject(project);
+            var viewModel = mapper.Map<IEnumerable<ProjectStatus>>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpPatch]
+        [Route("/projectstatus/{project}/{year}")]
+        public async Task<ActionResult<IEnumerable<ProjectStatus>>> PatchAProject([FromRoute] string project, int year,
+            [FromBody] Hour hr)
+        {
+            var response = await projectsRepository.PatchAProject(project, year, hr);
+            var viewModel = mapper.Map<IEnumerable<ProjectStatus>>(response);
             return Ok(viewModel);
         }
     }
