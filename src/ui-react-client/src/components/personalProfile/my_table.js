@@ -104,7 +104,7 @@ const WTable = ({
     }
   };
   return (
-    <div>
+    <div className="table">
       <div
         style={{
           borderBottom: '2px solid #ccc',
@@ -121,18 +121,17 @@ const WTable = ({
         style={{
           width: '100%',
         }}
-        className="table"
       >
+        <tr>
+          {tableHead.map((name, index) => {
+            return (
+              <th key={index} scope="col">
+                <div>{name}</div>
+              </th>
+            );
+          })}
+        </tr>
         <tbody>
-          <tr>
-            {tableHead.map((name, index) => {
-              return (
-                <th key={index} scope="col">
-                  {name}
-                </th>
-              );
-            })}
-          </tr>
           {datas.map((data, index) => {
             return (
               <>

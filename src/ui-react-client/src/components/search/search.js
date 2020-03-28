@@ -75,6 +75,7 @@ const Search = ({
     'Skill',
     'Location',
     'Availability',
+    'Assign',
   ];
   const search = () => {
     searchUsers();
