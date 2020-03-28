@@ -20,36 +20,6 @@ namespace Web.API.Infrastructure.Data
         //return a list of user based on discipline, skill, location, year, availability in a given date range
         public async Task<IEnumerable<UserInSearch>> GetAllUsers(Search search)
         {
-            // TEMPLATE
-            // var sql = @"
-            //     SELECT *
-            //     FROM (
-            //         SELECT DISTINCT
-            //             U.Id, U.FirstName, U.LastName, U.Username, L.Name AS 'Location', 
-            //             U.Type, D.Name AS 'Discipline', S.Name AS 'Skill', UWD.Year AS 'YOE', 
-            //             (SELECT CONVERT(FLOAT, 1-SUM(UH.Hours/176.0/months))
-            //             FROM UserHours UH
-            //             WHERE UH.UserId = U.Id
-            //                 AND ((UH.Year = 2020 AND UH.Month = 7)
-            //                     OR (UH.Year = 2020 AND UH.Month = 8)
-            //                     OR (UH.Year = 2020 AND UH.Month = 9)
-            //                     OR (UH.Year = 2020 AND UH.Month = 10)
-            //                     OR (UH.Year = 2020 AND UH.Month = 11)
-            //                     OR (UH.Year = 2020 AND UH.Month = 12)
-            //                     OR (UH.Year = 2021 AND UH.Month = 1))
-            //             GROUP BY UH.UserId) AS 'Availability'
-            //         FROM 
-            //             Users U
-            //             INNER JOIN UserWorksDiscipline UWD ON U.Id = UWD.UserId
-            //             INNER JOIN UserHasSkills UHS ON U.Id = UHS.UserId
-            //             INNER JOIN Locations L ON U.LocationId = L.Id
-            //             INNER JOIN Disciplines D ON UWD.DisciplineId = D.Id
-            //             INNER JOIN Skills S ON UHS.SkillId = S.Id
-            //         WHERE 
-            //             S.DisciplineId = D.Id
-            //     ) AS SearchUser
-            //     WHERE SearchUser.Avaiability >= @Availability/100.0";
-
             var sql = @"
                 SELECT *
                 FROM (
