@@ -91,8 +91,8 @@ class ProjectsPage extends React.Component {
     //     }
     // }
     getproject() {
-        console.log('before load');
-        console.log(loadProjects);
+        // console.log('before load');
+        // console.log(loadProjects);
         if (this.props.projects.length === 0) {
             this.props.loadProjects().catch(error => {
                 alert("load projects failed" + error);
