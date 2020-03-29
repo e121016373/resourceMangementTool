@@ -13,7 +13,6 @@ export const loadProjectsMostRecentData = projects => {
 };
 
 export const loadProjectsData = projects => {
-    console.log("load projects data is "+projects);
     return {
     type: types.LOAD_PROJECTS_ALL,
     projects: projects,

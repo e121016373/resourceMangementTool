@@ -30,8 +30,8 @@ export const projectsReducer = (
   state = initialState.projects,
   action,
 ) => {
-  console.log("current project state is "+state);
-  console.log("current project action is "+action.projects);
+  // console.log("current project state is "+state);
+  // console.log("current project action is "+action.projects);
   switch (action.type) {
     case types.LOAD_PROJECTS_ALL:
         // return executeLoadProjectsData(action);

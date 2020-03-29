@@ -60,7 +60,7 @@ let project3 = {
     endDate: "20211010",
     utilization: "0%"
 };
-let projects = [project1, project2, project3];
+// let projects = [project1, project2, project3];
 let user1 = {id: 1, name: "user1", utilization: "30%"};
 let user2 = {id: 2, name: "user2", utilization: "40%"};
 let user3 = {id: 3, name: "user3", utilization: "0%"};
@@ -71,7 +71,7 @@ class ProjectsPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: [],
+            projects: [],
             expandedRows: []
         };
     }
@@ -90,16 +90,16 @@ class ProjectsPage extends React.Component {
     //         })
     //     }
     // }
-    getProjects(){
+    getproject() {
         console.log('before load');
         console.log(loadProjects);
-        if(this.state.data.length ===0){
+        if (this.props.projects.length === 0) {
             this.props.loadProjects().catch(error => {
-                alert("load projects failed"+error);
+                alert("load projects failed" + error);
             });
         }
-        console.log("IN props !!!! projects are following");
-        console.log(this.props.projects);
+        // console.log("IN props !!!! projects are following");
+        // console.log(this.props.projects);
     }
 
 
@@ -123,7 +123,7 @@ class ProjectsPage extends React.Component {
                 <td>{project.name}</td>
                 <td>{project.status}</td>
                 <td>{project.location}</td>
-                <td>{project.startDate}</td>
+                <td>{project.createdAt}</td>
                 <td>{project.endDate}</td>
                 <td>{project.utilization}</td>
             </tr>
@@ -147,14 +147,19 @@ class ProjectsPage extends React.Component {
 
     render() {
         let allProjectRows = [];
-        console.log('before get');
-        this.getProjects();
-        // this.setState({data: this.getallprojects()});
 
-        this.state.data.forEach(project => {
-            const perProjectRows = this.renderProject(project);
-            allProjectRows = allProjectRows.concat(perProjectRows);
-        });
+        this.getproject();
+        console.log('following is in render');
+        console.log(this.props.projects.projects);
+
+        if (this.props.projects.length !== 0){
+            this.props.projects.projects.forEach(project => {
+                const perProjectRows = this.renderProject(project);
+                allProjectRows = allProjectRows.concat(perProjectRows);
+            });
+        }
+
+
 
         return (
             <div>
@@ -186,7 +191,8 @@ class ProjectsPage extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {allProjectRows}
+                    {/*{allProjectRows}*/}
+                    {this.props.projects.length === 0 ? "loading": allProjectRows}
                     </tbody>
                 </table>
             </div>
@@ -197,13 +203,13 @@ class ProjectsPage extends React.Component {
 
 ProjectsPage.propTypes = {
     // projects: PropTypes.array.isRequired,
-    projects:PropTypes.array,
+    projects: PropTypes.array,
     loadProjects: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => {
     return {
-        projects: state.data,
+        projects: state.projects,
         expandedRows: state.expandedRows,
     };
 };
