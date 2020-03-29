@@ -20,7 +20,7 @@ namespace Web.API.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("/search/users")]
         public async Task<ActionResult<IEnumerable<UserInSearch>>> GetAllUsers([FromBody] Search search)
         {
@@ -29,7 +29,7 @@ namespace Web.API.Controllers
             return Ok(viewModel);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("/search/projects")]
         public async Task<ActionResult<IEnumerable<Project>>> GetAllProjects([FromBody] Search search)
         {
