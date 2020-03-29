@@ -20,18 +20,18 @@ export const searchUsersAction = users => {
 
 export const searchUsers = content => {
   let url = `${SVC_ROOT}search/users`;
-  console.log('the contenet is ', content);
-  console.log(JSON.stringify(content));
   //console.log('the contenet is ', content);
-  content = {
-    discipline: 'airports',
-    yoe: '3-5 years',
-    skill: 'aprons',
-    location: 'kitchener',
-    fromDate: '2020-07-01',
-    toDate: '2021-01-01',
-    availability: 40,
-  };
+  //console.log(JSON.stringify(content));
+  //console.log('the contenet is ', content);
+  // content = {
+  //   discipline: 'airports',
+  //   yoe: '3-5 years',
+  //   skill: 'aprons',
+  //   location: 'kitchener',
+  //   fromDate: '2020-07-01',
+  //   toDate: '2021-01-01',
+  //   availability: 40,
+  // };
   return dispatch => {
     const options = {
       method: 'POST',
