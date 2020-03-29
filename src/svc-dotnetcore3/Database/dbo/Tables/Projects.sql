@@ -10,5 +10,6 @@
 	-- [Hours] nvarchar(4000) NOT NULL
  CONSTRAINT [PK_Projects] PRIMARY KEY CLUSTERED ([Id]),
  CONSTRAINT [FK_Projects_Locations] FOREIGN KEY ([LocationId]) REFERENCES [Locations]([Id]),
- CONSTRAINT [UK_Projects_Number] UNIQUE ([Number])
+ CONSTRAINT [UK_Projects_Number] UNIQUE ([Number]),
+ CONSTRAINT [UK_Projects_Title] UNIQUE ([Title])
 )
