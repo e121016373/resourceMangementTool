@@ -29,6 +29,13 @@ namespace Web.API.Infrastructure.Data
                     from UserHours UP
                  where UP.ProjectId  = @pid and
 				    Year = @yr;
+                declare @table2 table (Username nvarchar(max), jan int, feb int, mar int, apr int, may int, jun int,
+                jul int, aug int, sep int, oct int, nov int, dec int);
+
+                insert into @table2
+                select 'Total', jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec from ProjectStatus where Id = @pid and year = @yr;
+
+                insert into @table2
 					Select Username,   
 					ISNULL([1], 0) as jan,
 					ISNULL([2], 0) as feb,
@@ -47,7 +54,24 @@ namespace Web.API.Infrastructure.Data
                 PIVOT (
 	            sum(hours)
 	            for month in ([1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12])
-                ) AS PivotTable
+                ) AS PivotTable;
+                insert into @table2
+                select 'Required Resource',
+                (select TOP 1 jan from @table2) - sum(CASE WHEN Username != 'Total' THEN jan ELSE 0 END) as jan,
+                (select TOP 1 feb from @table2) - sum(CASE WHEN Username != 'Total' THEN feb ELSE 0 END) as feb,
+                (select TOP 1 mar from @table2) - sum(CASE WHEN Username != 'Total' THEN mar ELSE 0 END) as mar,
+                (select TOP 1 apr from @table2) - sum(CASE WHEN Username != 'Total' THEN apr ELSE 0 END) as apr,
+                (select TOP 1 may from @table2) - sum(CASE WHEN Username != 'Total' THEN may ELSE 0 END) as may,
+                (select TOP 1 jun from @table2) - sum(CASE WHEN Username != 'Total' THEN jun ELSE 0 END) as jun,
+                (select TOP 1 jul from @table2) - sum(CASE WHEN Username != 'Total' THEN jul ELSE 0 END) as jul,
+                (select TOP 1 aug from @table2) - sum(CASE WHEN Username != 'Total' THEN aug ELSE 0 END) as aug,
+                (select TOP 1 sep from @table2) - sum(CASE WHEN Username != 'Total' THEN sep ELSE 0 END) as sep,
+                (select TOP 1 oct from @table2) - sum(CASE WHEN Username != 'Total' THEN oct ELSE 0 END) as oct,
+                (select TOP 1 nov from @table2) - sum(CASE WHEN Username != 'Total' THEN nov ELSE 0 END) as nov,
+                (select TOP 1 dec from @table2) - sum(CASE WHEN Username != 'Total' THEN dec ELSE 0 END) as dec
+                from @table2
+
+                select * from @table2;
             ;";
 
             using var connection = new SqlConnection(connectionString);
