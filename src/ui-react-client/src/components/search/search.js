@@ -78,7 +78,43 @@ const Search = ({
     'Assign',
   ];
   const search = () => {
-    searchUsers();
+    let content = {};
+    //console.log('in search ', content);
+    content.discipline = document.getElementById(
+      'search-discipline',
+    ).value;
+    let tempExperience = document.getElementById('search-experience')
+      .value;
+    //console.log(tempExperience);
+    switch (tempExperience) {
+      case '0':
+        console.log("it's one");
+        content.yoe = '1-3 years';
+        break;
+      case '1':
+        content.yoe = '3-5 years';
+        break;
+      case '2':
+        content.yoe = '5-10 years';
+        break;
+      case '3':
+        content.yoe = '10+ years';
+        break;
+    }
+
+    content.skill = document.getElementById('search-skills').value;
+    content.location = document.getElementById(
+      'search-location',
+    ).value;
+    content.fromDate = document.getElementById(
+      'search-fromDate',
+    ).value;
+    content.toDate = document.getElementById('search-toDate').value;
+    content.availability = document.getElementById(
+      'search-availability',
+    ).value;
+    content.availability = parseInt(content.availability);
+    searchUsers(content);
   };
   const addPeople = () => {};
   return (
@@ -135,7 +171,10 @@ const Search = ({
                     </div>
                   </td>
                   <td>
-                    <AutoComplete elements={parseDisciplines()} />
+                    <AutoComplete
+                      id="search-discipline"
+                      elements={parseDisciplines()}
+                    />
                   </td>
                 </tr>
                 <tr>
@@ -146,7 +185,10 @@ const Search = ({
                     </div>
                   </td>
                   <td>
-                    <select className="searchBox">
+                    <select
+                      id="search-experience"
+                      className="searchBox"
+                    >
                       <option value="0">1-3 years</option>
                       <option value="1">3-5 years</option>
                       <option value="2">5-10 years</option>
@@ -162,7 +204,10 @@ const Search = ({
                     </div>
                   </td>
                   <td>
-                    <AutoComplete elements={parseSkills()} />
+                    <AutoComplete
+                      id="search-skills"
+                      elements={parseSkills()}
+                    />
                   </td>
                 </tr>
                 <tr>
@@ -174,12 +219,14 @@ const Search = ({
                   </td>
                   <td>
                     <input
+                      id="search-fromDate"
                       placeholder="MM/DD/YYYY"
                       type="date"
                       className="searchBox"
                     ></input>
                     To
                     <input
+                      id="search-toDate"
                       placeholder="MM/DD/YYYY"
                       type="date"
                       className="searchBox"
@@ -194,7 +241,10 @@ const Search = ({
                     </div>
                   </td>
                   <td>
-                    <AutoComplete elements={parseLocations()} />
+                    <AutoComplete
+                      id="search-location"
+                      elements={parseLocations()}
+                    />
                   </td>
                 </tr>
                 <tr>
@@ -205,7 +255,11 @@ const Search = ({
                     </div>
                   </td>
                   <td>
-                    <input type="text" className="searchBox"></input>
+                    <input
+                      id="search-availability"
+                      type="text"
+                      className="searchBox"
+                    ></input>
                   </td>
                 </tr>
               </tbody>
@@ -239,7 +293,7 @@ const Search = ({
               marginTop: '10px',
               padding: '20px',
               paddingTop: '5px',
-              height: '70vh',
+              //height: '75vh',
             }}
           >
             <WTable

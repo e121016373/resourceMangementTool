@@ -186,8 +186,6 @@ const ProfileMain = ({
     if (currentState === 'discipline') {
       return (
         <div className="profileMain">
-          {/* <Modal /> */}
-
           <div
             style={{
               display: 'flex',
@@ -321,6 +319,7 @@ const ProfileMain = ({
     } else if (currentState === 'project') {
       return (
         <div className="profileMain">
+          {/* <Modal /> */}
           <div
             style={{
               display: 'flex',

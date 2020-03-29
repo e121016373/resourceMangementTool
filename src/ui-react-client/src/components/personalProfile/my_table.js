@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Posts from './post';
-import Pagination from './Pagination';
-import axios from 'axios';
-import PropTypes from 'prop-types';
-import { render } from 'enzyme';
-import { doc } from 'prettier';
-
+import { Modal } from './modal';
 const WTable = ({
   tableName,
   datas,
@@ -15,6 +9,7 @@ const WTable = ({
   addFeedback,
   width,
   checkBox,
+  renderModal,
 }) => {
   if (!datas) datas = [];
   if (!tableHead) tableHead = [];
@@ -156,6 +151,8 @@ const WTable = ({
                               'the index of the row is ',
                               index,
                             );
+                            if (renderModal) {
+                            }
                           }}
                         >
                           {item}

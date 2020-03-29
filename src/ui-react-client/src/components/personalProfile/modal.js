@@ -35,9 +35,10 @@ export const Modal = () => {
       });
   };
   return (
-    <div id="myModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onClick={close}>
+    <div id="myModal" className="modal">
+      <div>hi</div>
+      <div className="modal-content">
+        <span className="close" onClick={close}>
           &times;
         </span>
         <div className="content-add">

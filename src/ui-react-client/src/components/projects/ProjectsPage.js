@@ -161,7 +161,7 @@ export class ProjectsPage extends React.Component {
           </div>
         </div>
         <hr />
-        <table className="table">
+        <table>
           <thead>
             <tr>
               <th scope="col">ID</th>
