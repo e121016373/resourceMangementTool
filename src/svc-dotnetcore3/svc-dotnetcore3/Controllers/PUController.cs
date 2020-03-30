@@ -21,10 +21,10 @@ namespace Web.API.Controllers
         }
 
         [HttpGet]
-        [Route("/util/{project}/{year}")]
+        [Route("/util/{project}")]
         public async Task<ActionResult<IEnumerable<ProjectUtil>>> GetProjectUtil([FromRoute]string project, int year)
         {
-            var response = await puRepository.GetProjectUtil(project, year);
+            var response = await puRepository.GetProjectUtil(project);
             var viewModel = mapper.Map<IEnumerable<ProjectUtil>>(response);
             return Ok(viewModel);
         }
