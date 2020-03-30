@@ -206,6 +206,24 @@ namespace Web.API.Infrastructure.Data
             });
         }
 
+        public async Task<IEnumerable<Project>> GetDeactivatedProjects()
+        {
+            var sql = @"
+                select P.Id, Number, L.Name as Location, CreatedAt, UpdatedAt
+                from Projects P
+                INNER JOIN 
+                Locations L
+                on L.Id = P.LocationId
+                WHERE P.Id NOT IN (select DISTINCT Id from ProjectStatus);
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            return await connection.QueryAsync<Project>(sql, new
+            {
+            });
+        }
+
         public async Task<ProjectStatus> GetActivatedProjectsWhere(string project)
         {
             var sql = @"

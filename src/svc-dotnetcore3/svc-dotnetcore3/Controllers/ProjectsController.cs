@@ -102,6 +102,15 @@ namespace Web.API.Controllers
         }
 
         [HttpGet]
+        [Route("/deactivatedlist/")]
+        public async Task<ActionResult<IEnumerable<Project>>> GetDeactivatedProjects()
+        {
+            var response = await projectsRepository.GetDeactivatedProjects();
+            var viewModel = mapper.Map<IEnumerable<Project>>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpGet]
         [Route("/activatedlist/{project}")]
         public async Task<ActionResult<ProjectStatus>> GetActivatedProjectsWhere([FromRoute] string project)
         {
