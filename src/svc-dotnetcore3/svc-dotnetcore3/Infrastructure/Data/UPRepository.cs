@@ -64,54 +64,50 @@ namespace Web.API.Infrastructure.Data
             connection.Open();
             return await connection.QueryFirstOrDefaultAsync<UserProject>(sql, new { Username = username, Project = project });
         }
-        public async Task<UserProject> CreateProject(string username, string project, UserUtil uu)
+        public async Task<UserProject> CreateProject(string username, string project)
         {
             var sql = @"
-                declare @uid int;
-                declare @pid int;
-                set @uid = (select Id from Users where Username = @Username);
-                set @pid = (select Id from Projects where Title = @Project);
-                if (select Id from ProjectStatus where Id = @pid and
-                    Year = @Year) != null
-                    insert into UserHours
-                    (UserId, ProjectId, Year, Month, Hours)
-                    values(@uid, @pid, @Year, 1, @Jan)
-                   insert into UserHours
-                    (UserId, ProjectId, Year, Month, Hours)
-                    values(@uid, @pid, @Year, 2, @Feb)
-                   insert into UserHours
-                    (UserId, ProjectId, Year, Month, Hours)
-                    values(@uid, @pid, @Year, 3, @Mar)
-                   insert into UserHours
-                    (UserId, ProjectId, Year, Month, Hours)
-                    values(@uid, @pid, @Year, 4, @Apr)
-                   insert into UserHours
-                    (UserId, ProjectId, Year, Month, Hours)
-                    values(@uid, @pid, @Year, 5, @May)
-                   insert into UserHours
-                    (UserId, ProjectId, Year, Month, Hours)
-                    values(@uid, @pid, @Year, 6, @Jun)
-                   insert into UserHours
-                    (UserId, ProjectId, Year, Month, Hours)
-                    values(@uid, @pid, @Year, 7, @Jul)
-                   insert into UserHours
-                    (UserId, ProjectId, Year, Month, Hours)
-                    values(@uid, @pid, @Year, 8, @Aug)
-                   insert into UserHours
-                    (UserId, ProjectId, Year, Month, Hours)
-                    values(@uid, @pid, @Year, 9, @Sep)
-                   insert into UserHours
-                    (UserId, ProjectId, Year, Month, Hours)
-                    values(@uid, @pid, @Year, 10, @Oct)
-                   insert into UserHours
-                    (UserId, ProjectId, Year, Month, Hours)
-                    values(@uid, @pid, @Year, 11, @Nov)
-                   insert into UserHours
-                    (UserId, ProjectId, Year, Month, Hours)
-                    values(@uid, @pid, @Year, 12, @Dec);
-                update Projects
-                set UpdatedAt = GETDATE()
-                where Id = @pid
+            declare @pid int;
+			declare @uid int;
+			declare @fd datetime;
+			declare @td datetime;
+			declare @fm int;
+			declare @fy int;
+			declare @tm int;
+			declare @ty int;
+			declare @tempm int;
+			declare @tempy int;
+
+			set @pid = (select Id from Projects where 
+			Title = @Project);
+			set @uid = (select Id from Users where Username = @Username);
+			
+			set @fd = (select DISTINCT FromDate from ProjectStatus where Id = @pid);
+			set @td = (select DISTINCT ToDate from ProjectStatus where Id = @pid);
+			set @fy = YEAR(@fd);
+			set @fm = MONTH(@fd);
+			set @ty = YEAR(@td);
+			set @tm = MONTH(@td);
+			set @tempy = @fy;
+			set @tempm = @fm;
+			
+			WHILE @tempm <= @tm and @tempy <= @ty
+			BEGIN
+			INSERT INTO UserHours
+			(UserId, ProjectId, Year, Month, Hours)
+			values (@uid, @pid, @tempy, @tempm, 0);
+			if @tempm = 12
+			BEGIN
+				set @tempm = 1;
+				set @tempy = @tempy+1;
+			END
+			else
+				set @tempm = @tempm + 1;
+			END;
+            
+            update Projects
+            set UpdatedAt = SYSUTCDATETIME()
+            where Id = @pid
             ;";
 
             using var connection = new SqlConnection(connectionString);
@@ -119,20 +115,7 @@ namespace Web.API.Infrastructure.Data
             await connection.ExecuteAsync(sql, new
             {
                 Username = username,
-                Project = project,
-                uu.Year,
-                uu.Jan,
-                uu.Feb,
-                uu.Mar,
-                uu.Apr,
-                uu.May,
-                uu.Jun,
-                uu.Jul,
-                uu.Aug,
-                uu.Sep,
-                uu.Oct,
-                uu.Nov,
-                uu.Dec
+                Project = project
             }) ;
             return await GetAProject(username, project);
         }
@@ -145,7 +128,7 @@ namespace Web.API.Infrastructure.Data
                 and UserId = (select Id from Users where Username = @Username)
                 
                 update Projects
-                set UpdatedAt = GETDATE()
+                set UpdatedAt = SYSUTCDATETIME()
                 where Id = (select Id from Projects where Title = @Project)
             ;";
 
@@ -194,7 +177,7 @@ namespace Web.API.Infrastructure.Data
                 and Year = @Year and Month = @m;
 
                 update Projects
-                set UpdatedAt = GETDATE()
+                set UpdatedAt = SYSUTCDATETIME()
                 where Id = (select Id from Projects where Title = @Project)
             ;";
 
