@@ -103,18 +103,27 @@ namespace Web.API.Controllers
 
         [HttpGet]
         [Route("/activatedlist/{project}")]
-        public async Task<ActionResult<IEnumerable<ProjectStatus>>> GetActivatedProjectsWhere([FromRoute] string project)
+        public async Task<ActionResult<ProjectStatus>> GetActivatedProjectsWhere([FromRoute] string project)
         {
             var response = await projectsRepository.GetActivatedProjectsWhere(project);
-            var viewModel = mapper.Map<IEnumerable<ProjectStatus>>(response);
+            var viewModel = mapper.Map<ProjectStatus>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpGet]
+        [Route("/years/{project}")]
+        public async Task<ActionResult<IEnumerable<Years>>> GetYearsOfProject([FromRoute] string project)
+        {
+            var response = await projectsRepository.GetYearsOfProject(project);
+            var viewModel = mapper.Map<IEnumerable<Years>> (response);
             return Ok(viewModel);
         }
 
         [HttpPost]
-        [Route("/activate/")]
-        public async Task<ActionResult<ProjectStatus>> ActivateAProject([FromBody] ProjectStatus ps)
+        [Route("/activate/{project}")]
+        public async Task<ActionResult<ProjectStatus>> ActivateAProject([FromRoute] string project)
         {
-            var response = await projectsRepository.ActivateAProject(ps);
+            var response = await projectsRepository.ActivateAProject(project);
             var viewModel = mapper.Map<ProjectStatus>(response);
             return Ok(viewModel);
         }

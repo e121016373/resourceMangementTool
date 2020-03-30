@@ -13,11 +13,12 @@ namespace Web.API.Application.Repository
         Task<Project> GetAProjectWithTitle(string project);
         Task<IEnumerable<ProjectStatus>> CheckAProject(string project);
         Task<IEnumerable<ProjectStatus>> GetActivatedProjects();
-        Task<IEnumerable<ProjectStatus>> GetActivatedProjectsWhere(string project);
+        Task<ProjectStatus> GetActivatedProjectsWhere(string project);
+        Task<IEnumerable<Years>> GetYearsOfProject(string project);
 
         // POST
         Task<ProjectCreate> CreateAProject(ProjectCreate project);
-        Task<ProjectStatus> ActivateAProject(ProjectStatus ps);
+        Task<ProjectStatus> ActivateAProject(string project);
 
         // PUT
         Task<Project> UpdateAProject(Project project);

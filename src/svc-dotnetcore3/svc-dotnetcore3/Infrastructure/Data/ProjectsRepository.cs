@@ -206,36 +206,44 @@ namespace Web.API.Infrastructure.Data
             });
         }
 
-        public async Task<IEnumerable<ProjectStatus>> GetActivatedProjectsWhere(string project)
+        public async Task<ProjectStatus> GetActivatedProjectsWhere(string project)
         {
             var sql = @"
-                select DISTINCT P.Title as Project, L.Name as Location, PS.FromDate, PS.ToDate, P.UpdatedAt, PS.Status, PS.Year,
-                PS.Jan, PS.Feb, PS.Mar, PS.Apr, PS.May, PS.Apr, PS.Jun, PS.Jul, PS.Aug,
-                PS.Sep, PS.Oct, PS.Nov, PS.Dec
+                select TOP 1 P.Title as Project, L.Name as Location,
+                PS.FromDate, PS.ToDate, P.UpdatedAt, PS.Status
                 from ProjectStatus PS
                 INNER JOIN Projects P
                 on P.Id = PS.Id
                 INNER JOIN Locations L
-                on L.Id = P.LocationId
+                on P.LocationId = L.Id
                 where P.Title = @Project;
             ;";
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            return await connection.QueryAsync<ProjectStatus>(sql, new
+            return await connection.QueryFirstOrDefaultAsync<ProjectStatus>(sql, new
             {
                 Project = project
             });
         }
-        public async Task<ProjectStatus> ActivateAProject(ProjectStatus ps)
+        public async Task<ProjectStatus> ActivateAProject(string project)
         {
             var sql = @"
-                insert into ProjectStatus
+                declare @n int;
+				set @n = YEAR(@FromDate);
+				declare @pid int;
+                set @pid = (select Id from Projects where Title = @Title)
+
+				WHILE @n <= YEAR(@ToDate)
+				BEGIN
+				insert into ProjectStatus
                 (Id, FromDate, ToDate, Status, Year, Jan, Feb, Mar, Apr, May,
                 Jun, Jul, Aug, Sep, Oct, Nov, Dec)
-                values((select Id from Projects where Title = @Title),
-                @FromDate, @ToDate, @Status, @Year, @Jan, @Feb, @Mar, @Apr,
-                @May, @Jun, @Jul, @Aug, @Sep, @Oct, @Nov, @Dec);
+                values(@pid,
+                @FromDate, @ToDate, 'Active', @n, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0);
+				set @n = @n+1;
+				END
                 
                 update Projects
                 set UpdatedAt = SYSUTCDATETIME()
@@ -244,9 +252,37 @@ namespace Web.API.Infrastructure.Data
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            await connection.ExecuteAsync(sql, new { Title = ps.Project,
-            ps.FromDate, ps.ToDate, ps.Status});
-            return ps;
+            await connection.ExecuteAsync(sql, new { Title = project });
+            return await GetActivatedProjectsWhere(project);
+        }
+
+        public async Task<IEnumerable<Years>> GetYearsOfProject(string project)
+        {
+            var sql = @"
+                declare @table table (years int);
+                declare @fy int;
+                declare @ty int;
+                declare @tempy int;
+
+                set @fy = YEAR((select Top 1 FromDate from ProjectStatus where
+                        Id = (select Id from Projects where Title = @Title)));
+                set @ty = YEAR((select Top 1 ToDate from ProjectStatus where
+                        Id = (select Id from Projects where Title = @Title)));
+                set @tempy = @fy;
+                WHILE @tempy <= @ty
+                BEGIN
+                insert into @table
+                (years)
+                values (@tempy)
+                set @tempy = @tempy + 1;
+                END
+                select years as year from @table
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            
+            return await connection.QueryAsync<Years>(sql, new { Title = project });
         }
 
         public async Task<IEnumerable<ProjectStatus>> DeactivateAProject(string project)
