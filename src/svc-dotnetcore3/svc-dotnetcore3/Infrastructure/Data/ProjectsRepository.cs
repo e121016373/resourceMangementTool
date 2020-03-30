@@ -173,9 +173,7 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<ProjectStatus>> CheckAProject(string project)
         {
             var sql = @"
-                select P.Title as Project, PS.FromDate, PS.ToDate, PS.Status, PS.Year,
-                PS.Jan, PS.Feb, PS.Mar, PS.Apr, PS.May, PS.Apr, PS.Jun, PS.Jul, PS.Aug,
-                PS.Sep, PS.Oct, PS.Nov, PS.Dec
+                select P.Title as Project, PS.FromDate, PS.ToDate, PS.Status
                 from ProjectStatus PS
                 INNER JOIN Projects P
                 on P.Id = PS.Id
@@ -192,12 +190,13 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<ProjectStatus>> GetActivatedProjects()
         {
             var sql = @"
-                select DISTINCT P.Title as Project, PS.FromDate, PS.ToDate, PS.Status, PS.Year,
-                PS.Jan, PS.Feb, PS.Mar, PS.Apr, PS.May, PS.Apr, PS.Jun, PS.Jul, PS.Aug,
-                PS.Sep, PS.Oct, PS.Nov, PS.Dec
+                select DISTINCT P.Title as Project, L.Name as Location,
+                PS.FromDate, PS.ToDate, P.UpdatedAt, PS.Status
                 from ProjectStatus PS
                 INNER JOIN Projects P
                 on P.Id = PS.Id
+                INNER JOIN Locations L
+                on P.LocationId = L.Id
             ;";
 
             using var connection = new SqlConnection(connectionString);
@@ -210,12 +209,14 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<ProjectStatus>> GetActivatedProjectsWhere(string project)
         {
             var sql = @"
-                select DISTINCT P.Title as Project, PS.FromDate, PS.ToDate, PS.Status, PS.Year,
+                select DISTINCT P.Title as Project, L.Name as Location, PS.FromDate, PS.ToDate, P.UpdatedAt, PS.Status, PS.Year,
                 PS.Jan, PS.Feb, PS.Mar, PS.Apr, PS.May, PS.Apr, PS.Jun, PS.Jul, PS.Aug,
                 PS.Sep, PS.Oct, PS.Nov, PS.Dec
                 from ProjectStatus PS
                 INNER JOIN Projects P
                 on P.Id = PS.Id
+                INNER JOIN Locations L
+                on L.Id = P.LocationId
                 where P.Title = @Project;
             ;";
 
@@ -244,9 +245,7 @@ namespace Web.API.Infrastructure.Data
             using var connection = new SqlConnection(connectionString);
             connection.Open();
             await connection.ExecuteAsync(sql, new { Title = ps.Project,
-            ps.FromDate, ps.ToDate, ps.Status, ps.Year, ps.Jan, ps.Feb, ps.Mar,
-            ps.Apr, ps.May, ps.Jun, ps.Jul, ps.Aug, ps.Sep, ps.Oct, ps.Nov,
-            ps.Dec});
+            ps.FromDate, ps.ToDate, ps.Status});
             return ps;
         }
 
