@@ -38,9 +38,9 @@ namespace Web.API.Controllers
         }
         [HttpPost]
         [Route("/userprojects/{username}/{project}")]
-        public async Task<ActionResult<UserProject>> CreateProject([FromRoute]string username, string project, [FromBody] UserUtil uu)
+        public async Task<ActionResult<UserProject>> CreateProject([FromRoute]string username, string project)
         {
-            var response = await upRepository.CreateProject(username, project, uu);
+            var response = await upRepository.CreateProject(username, project);
             var viewModel = mapper.Map<UserProject>(response);
             return Created("GetProject", viewModel);
         }

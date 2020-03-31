@@ -49,10 +49,10 @@ namespace Web.API.Controllers
 
         [HttpPost]
         [Route("/projects")]
-        public async Task<ActionResult<ProjectCreate>> CreateAProject([FromBody] ProjectCreate project)
+        public async Task<ActionResult<ProjectStatus>> CreateAProject([FromBody] ProjectCreate project)
         {
             var response = await projectsRepository.CreateAProject(project);
-            var viewModel = mapper.Map<ProjectCreate>(response);
+            var viewModel = mapper.Map<ProjectStatus>(response);
             return Created("GetAProject", viewModel);
         }
 
@@ -65,11 +65,20 @@ namespace Web.API.Controllers
             return Accepted(viewModel);
         }
 
-        [HttpDelete]
-        [Route("/projects/{number}")]
-        public async Task<ActionResult<Project>> DeleteAProject([FromRoute] string number)
+        [HttpPut]
+        [Route("/projectstatus/{project}")]
+        public async Task<ActionResult<ProjectStatus>> UpdateProjectStatus([FromRoute] string project, [FromBody] UserUtil uu)
         {
-            var response = await projectsRepository.DeleteAProject(number);
+            var response = await projectsRepository.UpdateProjectStatus(project, uu);
+            var viewModel = mapper.Map<ProjectStatus>(response);
+            return Accepted(viewModel);
+        }
+
+        [HttpDelete]
+        [Route("/projects/{project}")]
+        public async Task<ActionResult<Project>> DeleteAProject([FromRoute] string project)
+        {
+            var response = await projectsRepository.DeleteAProject(project);
             var viewModel = mapper.Map<Project>(response);
             return Ok(viewModel);
         }
@@ -102,19 +111,37 @@ namespace Web.API.Controllers
         }
 
         [HttpGet]
+        [Route("/deactivatedlist/")]
+        public async Task<ActionResult<IEnumerable<Project>>> GetDeactivatedProjects()
+        {
+            var response = await projectsRepository.GetDeactivatedProjects();
+            var viewModel = mapper.Map<IEnumerable<Project>>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpGet]
         [Route("/activatedlist/{project}")]
-        public async Task<ActionResult<IEnumerable<ProjectStatus>>> GetActivatedProjectsWhere([FromRoute] string project)
+        public async Task<ActionResult<ProjectStatus>> GetActivatedProjectsWhere([FromRoute] string project)
         {
             var response = await projectsRepository.GetActivatedProjectsWhere(project);
-            var viewModel = mapper.Map<IEnumerable<ProjectStatus>>(response);
+            var viewModel = mapper.Map<ProjectStatus>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpGet]
+        [Route("/years/{project}")]
+        public async Task<ActionResult<IEnumerable<Years>>> GetYearsOfProject([FromRoute] string project)
+        {
+            var response = await projectsRepository.GetYearsOfProject(project);
+            var viewModel = mapper.Map<IEnumerable<Years>> (response);
             return Ok(viewModel);
         }
 
         [HttpPost]
-        [Route("/activate/")]
-        public async Task<ActionResult<ProjectStatus>> ActivateAProject([FromBody] ProjectStatus ps)
+        [Route("/activate/{project}")]
+        public async Task<ActionResult<ProjectStatus>> ActivateAProject([FromRoute] string project)
         {
-            var response = await projectsRepository.ActivateAProject(ps);
+            var response = await projectsRepository.ActivateAProject(project);
             var viewModel = mapper.Map<ProjectStatus>(response);
             return Ok(viewModel);
         }
