@@ -1,7 +1,7 @@
 export default {
   currentUserProfile: {},
   users: [],
-  projects: [],
+  projects: {},
   locations: [],
   disciplines: [],
   skills: [],

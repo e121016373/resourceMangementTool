@@ -123,11 +123,11 @@ const Search = ({
         style={{
           display: 'flex',
           flexDirection: 'row',
-          width: '100vw',
+          //width: '100vw',
           height: '100vh',
           margin: 0,
-          position: 'fixed',
-          padding: '20px',
+          // position: 'fixed',
+          // padding: '10px',
         }}
         className="card"
       >
@@ -144,137 +144,139 @@ const Search = ({
               display: 'flex',
               flexDirection: 'column',
               margin: 0,
-              marginTop: '30px',
+              //marginTop: '30px',
               padding: '20px',
               paddingTop: '5px',
             }}
           >
-            <div
-              style={{
-                borderBottom: '2px solid #ccc',
-                margin: '0',
-              }}
-              className="row"
-            >
-              <div className="header">
-                <h3>Search</h3>
-              </div>
-            </div>
-            <div className="line"></div>
-            <table>
-              <tbody>
-                <tr>
-                  <td>
-                    <div className="title">
-                      <i className="fas fa-user-graduate mr-4 fa-lg"></i>
-                      Discipline
-                    </div>
-                  </td>
-                  <td>
-                    <AutoComplete
-                      id="search-discipline"
-                      elements={parseDisciplines()}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div className="title">
-                      <i className="fas fa-user-clock mr-3 fa-lg"></i>
-                      experience
-                    </div>
-                  </td>
-                  <td>
-                    <select
-                      id="search-experience"
-                      className="searchBox"
-                    >
-                      <option value="0">1-3 years</option>
-                      <option value="1">3-5 years</option>
-                      <option value="2">5-10 years</option>
-                      <option value="3">10+ years</option>
-                    </select>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div className="title">
-                      <i className="fas fa-book mr-4 fa-lg"></i>
-                      Skills
-                    </div>
-                  </td>
-                  <td>
-                    <AutoComplete
-                      id="search-skills"
-                      elements={parseSkills()}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div className="title">
-                      <i className="fas fa-calendar-day mr-4 fa-lg"></i>
-                      Date
-                    </div>
-                  </td>
-                  <td>
-                    <input
-                      id="search-fromDate"
-                      placeholder="MM/DD/YYYY"
-                      type="date"
-                      className="searchBox"
-                    ></input>
-                    To
-                    <input
-                      id="search-toDate"
-                      placeholder="MM/DD/YYYY"
-                      type="date"
-                      className="searchBox"
-                    ></input>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div className="title">
-                      <i className="fas fa-street-view mr-4 fa-lg"></i>
-                      Location
-                    </div>
-                  </td>
-                  <td>
-                    <AutoComplete
-                      id="search-location"
-                      elements={parseLocations()}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div className="title">
-                      <i className="fas fa-calendar-check mr-4 fa-lg"></i>
-                      Availability
-                    </div>
-                  </td>
-                  <td>
-                    <input
-                      id="search-availability"
-                      type="text"
-                      className="searchBox"
-                    ></input>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div>
+            <div className="search">
               <div
                 style={{
-                  width: '7vw',
-                  marginTop: '20px',
+                  borderBottom: '2px solid #ccc',
+                  margin: '0',
                 }}
-                className="btn-green"
-                onClick={search}
+                className="row"
               >
-                Search
+                <div className="header">
+                  <h3>Search</h3>
+                </div>
+              </div>
+              <div className="line"></div>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div className="title">
+                        <i className="fas fa-user-graduate mr-4 fa-lg"></i>
+                        Discipline
+                      </div>
+                    </td>
+                    <td>
+                      <AutoComplete
+                        id="search-discipline"
+                        elements={parseDisciplines()}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div className="title">
+                        <i className="fas fa-user-clock mr-3 fa-lg"></i>
+                        experience
+                      </div>
+                    </td>
+                    <td>
+                      <select
+                        id="search-experience"
+                        className="searchBox"
+                      >
+                        <option value="0">1-3 years</option>
+                        <option value="1">3-5 years</option>
+                        <option value="2">5-10 years</option>
+                        <option value="3">10+ years</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div className="title">
+                        <i className="fas fa-book mr-4 fa-lg"></i>
+                        Skills
+                      </div>
+                    </td>
+                    <td>
+                      <AutoComplete
+                        id="search-skills"
+                        elements={parseSkills()}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div className="title">
+                        <i className="fas fa-calendar-day mr-4 fa-lg"></i>
+                        Date
+                      </div>
+                    </td>
+                    <td>
+                      <input
+                        id="search-fromDate"
+                        placeholder="MM/DD/YYYY"
+                        type="date"
+                        className="searchBox"
+                      ></input>
+                      To
+                      <input
+                        id="search-toDate"
+                        placeholder="MM/DD/YYYY"
+                        type="date"
+                        className="searchBox"
+                      ></input>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div className="title">
+                        <i className="fas fa-street-view mr-4 fa-lg"></i>
+                        Location
+                      </div>
+                    </td>
+                    <td>
+                      <AutoComplete
+                        id="search-location"
+                        elements={parseLocations()}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div className="title">
+                        <i className="fas fa-calendar-check mr-4 fa-lg"></i>
+                        Availability
+                      </div>
+                    </td>
+                    <td>
+                      <input
+                        id="search-availability"
+                        type="text"
+                        className="searchBox"
+                      ></input>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div>
+                <div
+                  style={{
+                    width: '7vw',
+                    marginTop: '20px',
+                  }}
+                  className="btn-green"
+                  onClick={search}
+                >
+                  Search
+                </div>
               </div>
             </div>
           </div>

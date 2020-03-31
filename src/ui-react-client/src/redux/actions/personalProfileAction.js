@@ -35,7 +35,7 @@ export const loadUserProfile = (
     skillsOfDiscipline: skillsOfDiscipline,
     util: util,
   };
-  console.log('the total is ', profile);
+  //console.log('the total is ', profile);
   return { type: types.LOAD_PERSONALPROFILE, payload: profile };
 };
 
@@ -53,13 +53,13 @@ export const editLocationAction = userProfile => {
 
 export const loadPersonalProfile = () => {
   return dispatch => {
-    console.log('the URL is ', baseURL);
+    //console.log('the URL is ', baseURL);
 
     //personal profile
     return axios
       .get(baseURL, { headers })
       .then(response => {
-        console.log('the personal profile response ', response);
+        //console.log('the personal profile response ', response);
 
         //load disciplines
         axios
@@ -67,7 +67,7 @@ export const loadPersonalProfile = () => {
             headers,
           })
           .then(disciplines => {
-            console.log('the discipline is ', disciplines.data);
+            //console.log('the discipline is ', disciplines.data);
             if (disciplines.data[0]) {
               //load current skills
               axios
@@ -78,7 +78,7 @@ export const loadPersonalProfile = () => {
                   },
                 )
                 .then(skills => {
-                  console.log(disciplines, skills);
+                  //console.log(disciplines, skills);
 
                   //load the project of the user
 
@@ -90,18 +90,18 @@ export const loadPersonalProfile = () => {
 
                       //auto skills of the discipline
                       let URL = `${SVC_ROOT}skills/d/${disciplines.data[0].discipline}`;
-                      console.log('skills of the discipline ', URL);
+                      //console.log('skills of the discipline ', URL);
                       axios
                         .get(URL, { headers })
                         .then(skillDisciplinesR => {
-                          console.log(
-                            'skillDisciplineR',
-                            skillDisciplinesR,
-                          );
+                          //console.log(
+                          //   'skillDisciplineR',
+                          //   skillDisciplinesR,
+                          // );
 
                           //load utitl
                           let URL = `${SVC_ROOT}util/user/${currentUser}`;
-                          console.log('util URL is ', URL);
+                          //console.log('util URL is ', URL);
                           axios
                             .get(URL, { headers })
                             .then(utilResponse => {
@@ -157,7 +157,7 @@ export const loadPersonalProfile = () => {
 
                 //load utitl
                 let URL = `${SVC_ROOT}/util/user/${currentUser}`;
-                console.log('util URL is ', URL);
+                //console.log('util URL is ', URL);
                 axios
                   .get(URL, { headers })
                   .then(utilResponse => {
@@ -205,7 +205,7 @@ export const loadPersonalProfile = () => {
 
 export const editLocation = profile => {
   return dispatch => {
-    console.log('editlocatio url', `${SVC_ROOT}users`, baseURL);
+    //console.log('editlocatio url', `${SVC_ROOT}users`, baseURL);
     let url = `${SVC_ROOT}users`;
     return axios
       .patch(url, { header: headers }, { data: profile })
@@ -219,14 +219,14 @@ export const editLocation = profile => {
 };
 export const deleteDiscipline = discipline => {
   return dispatch => {
-    console.log(discipline);
+    //console.log(discipline);
     //return dispatch(deleteDisciplineAction(discipline));
     let url = `${SVC_ROOT}${currentUser}/disciplines/${discipline.discipline}`;
-    console.log('the delete url is ', url);
+    //console.log('the delete url is ', url);
     return axios
       .delete(url, { header: headers })
       .then(response => {
-        console.log('deleteDiscipline response', response);
+        //console.log('deleteDiscipline response', response);
         dispatch(deleteDisciplineAction(discipline));
         if (discipline.discipline === currentDiscipline.discipline) {
           dispatch(updateSkillTableAction([]));
@@ -253,13 +253,13 @@ export const deleteSkillAction = skill => {
 };
 export const deleteSkill = skill => {
   return dispatch => {
-    console.log('the skill is ', skill);
+    //console.log('the skill is ', skill);
     let url = `${SVC_ROOT}${currentUser}/${currentDiscipline.discipline}/${skill.skill}`;
-    console.log('the skill url is ', url);
+    //console.log('the skill url is ', url);
     return axios
       .delete(url, { header: headers })
       .then(response => {
-        console.log('the delete skill response', response);
+        //console.log('the delete skill response', response);
         return dispatch(deleteSkillAction(skill));
       })
       .catch(error => {
@@ -271,13 +271,13 @@ export const deleteSkill = skill => {
 export const addSkill = skill => {
   return dispatch => {
     let url = `${SVC_ROOT}personal`;
-    console.log('the skill url is ', url);
-    console.log({
-      username: currentUser,
-      skill: skill,
-      discipline: currentDiscipline.discipline,
-      yoe: currentDiscipline.yoe,
-    });
+    //console.log('the skill url is ', url);
+    //console.log({
+    //   username: currentUser,
+    //   skill: skill,
+    //   discipline: currentDiscipline.discipline,
+    //   yoe: currentDiscipline.yoe,
+    // });
     return axios
       .post(
         url,
@@ -290,7 +290,7 @@ export const addSkill = skill => {
         { header: headers },
       )
       .then(response => {
-        console.log('add skill response', response);
+        //console.log('add skill response', response);
         return dispatch(
           addSkillAction({ skill: response.data.skill }),
         );
@@ -311,7 +311,7 @@ export const addSkillAction = skill => {
 export const addDiscipline = (discipline, yoe) => {
   return dispatch => {
     let url = `${SVC_ROOT}${currentUser}/disciplines`;
-    console.log('the add discipline url is ', url, discipline, yoe);
+    //console.log('the add discipline url is ', url, discipline, yoe);
     return axios
       .post(
         url,
@@ -319,7 +319,7 @@ export const addDiscipline = (discipline, yoe) => {
         { header: headers },
       )
       .then(response => {
-        console.log('the add discipline response', response);
+        //console.log('the add discipline response', response);
         return dispatch(addDisciplineAction(response.data));
       })
       .catch(error => {
@@ -338,7 +338,7 @@ export const addDisciplineAction = discipline => {
 export const updateSkillTable = discipline => {
   return dispatch => {
     let url = `${SVC_ROOT}${currentUser}/skills/${discipline.discipline}`;
-    console.log('the updateSkillTable url is ', url);
+    //console.log('the updateSkillTable url is ', url);
     return axios
       .get(url, { header: headers })
       .then(response => {
@@ -377,5 +377,30 @@ export const updateSkillTableAction = (
   return {
     type: types.UPDATE_SKILL_TABLE,
     payload: { skills, discipline, skillsOfDiscipline },
+  };
+};
+
+export const loadDetails = projectName => {
+  return dispatch => {
+    let url = `${SVC_ROOT}util/${projectName}`;
+    //console.log('the add discipline url is ', url, discipline, yoe);
+    return axios
+      .get(url, { headers })
+      .then(response => {
+        console.log('the load detail', response);
+        return dispatch(loadDetailAction(projectName, response.data));
+      })
+      .catch(error => {
+        throw error;
+      });
+  };
+};
+
+export const loadDetailAction = (projectName, response) => {
+  projectName = projectName;
+
+  return {
+    type: types.LOAD_DETAILS,
+    payload: { details: response, projectName: projectName },
   };
 };

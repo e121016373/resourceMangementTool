@@ -1,7 +1,7 @@
 .modal {
-  display: block; /* Hidden by default */
+  display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
-  z-index: 1991; /* Sit on top */
+  z-index: 10; /* Sit on top */
   padding-top: 100px; /* Location of the box */
   left: 0;
   top: 0;
@@ -10,59 +10,86 @@
   //   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0, 0, 0); /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-}
-
-/* Modal Content */
-.modal-content {
-  display: block;
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 40%;
-  height: 20%;
-}
-
-/* The Close Button */
-.close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-}
-.content-add {
-  margin: 5px;
-  border-style: solid;
-  float: left;
-  display: flex;
-  border-width: 1px;
   border-radius: 5px;
-  border-color: #e4e6eb;
-  input {
-    height: 30px;
-    margin: 10px;
-    font-size: 17px;
-  }
+  /* Modal Content */
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    border: 1px solid #888;
+    width: 400px;
+    border-radius: 15px;
+    button {
+      background-color: #3d7ccf; /* Green */
+      border: none;
+      color: white;
+      font-size: 20px;
+      margin: 10px 6px;
+      border-radius: 5px;
+      width: 90px;
+      float: right;
+      order: 1;
+      cursor: pointer;
+      &:hover {
+        background-color: #3364a5;
+      }
+    }
+    h5 {
+      float: left;
+      margin-top: 15px;
+      margin-left: 10px;
+    }
 
-  input::placeholder {
-    font-size: 15px;
-  }
-  button {
-    background-color: #fcba03; /* Green */
-    border: none;
-    color: white;
-    font-size: 20px;
-    margin: 10px 6px;
-    cursor: pointer;
-    &:hover {
-      background-color: #dea404;
+    /* The Close Button */
+    .close {
+      color: black;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      margin-right: 13px;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .content-add {
+      border-style: solid;
+      border-left: none;
+      border-right: none;
+      display: flex;
+      border-width: 1px;
+      border-color: #e4e6eb;
+      flex-direction: column;
+      padding: 5px;
+      .input-content {
+        display: flex;
+        flex-direction: column;
+        .input-name {
+          float: left;
+          margin-left: 10px;
+          margin-top: 5px;
+        }
+        input {
+          //height: 30px;
+          margin: 10px;
+          margin-top: 0px;
+          font-size: 17px;
+          border-radius: 5px;
+          border-style: solid;
+          border-width: 1px;
+          &:focus {
+            border-width: 2px;
+            border-color: #9aa6db;
+            outline-color: #9aa6db;
+          }
+        }
+
+        input::placeholder {
+          font-size: 15px;
+        }
+      }
     }
   }
 }

@@ -9,7 +9,7 @@ import AdminPage from './admin/AdminPage';
 import Loading from './loading/loading';
 import ProjectInfoPage from './projects/ProjectInfoPage';
 import UserInfoPage from './projects/UserInfoPage';
-import { ProjectsPage } from './projects/ProjectsPage';
+import ProjectsPage from './projects/ProjectsPage';
 import PersonalProfile from './personalProfile/personalProfile';
 import Search from './search/search';
 import '../scss/sidebar.scss';
@@ -44,36 +44,43 @@ const App = ({ personalProfileUser, loadPersonalProfile }) => {
       return <Route path="/projects" component={ProjectsPage} />;
     }
   };
-  return (
-    <div className="App">
-      <Header />
-      <ShowFeedbackMsg />
-      <Switch>
-        {/*All our Routes goes here!*/}
-        <Route exact path="/" component={Loading} />
-        <Route path="/users" component={UsersPage} />
-        <Route
-          path="/projects/:project/:user"
-          component={UserInfoPage}
-        />
-        {renderPrivateRoute()}
-        {/* <Route
-          path="/projects/:project"
-          component={ProjectInfoPage}
-        /> */}
-        <Route path="/locations" component={LocationsPage} />
-        <Route
-          exact
-          path="/personalProfile"
-          component={PersonalProfile}
-        />
-        {/* add admin component */}
-        <Route path="/admin" component={AdminPage} />
-        <Route path="/search" component={Search} />
-        <Route component={PageNotFound} />
-      </Switch>
-    </div>
-  );
+
+  const renderAll = () => {
+    if (userType && Object.keys(personalProfileUser).length !== 0) {
+      return (
+        <div className="App">
+          <Header />
+          <ShowFeedbackMsg />
+          <Switch>
+            {/*All our Routes goes here!*/}
+            <Route
+              path="/projects/:project/:user"
+              component={UserInfoPage}
+            />
+            {renderPrivateRoute()}
+            {/* <Route
+              path="/projects/:project"
+              component={ProjectInfoPage}
+            /> */}
+            <Route path="/locations" component={LocationsPage} />
+            <Route exact path="/" component={PersonalProfile} />
+            {/* add admin component */}
+            <Route path="/admin" component={AdminPage} />
+            <Route path="/search" component={Search} />
+            <Route component={PageNotFound} />
+          </Switch>
+        </div>
+      );
+    } else {
+      return (
+        <div style={{ marginTop: '60px' }}>
+          <Loading />
+        </div>
+      );
+    }
+  };
+
+  return renderAll();
 };
 Header.propTypes = {
   personalProfileUser: PropTypes.object.isRequired,

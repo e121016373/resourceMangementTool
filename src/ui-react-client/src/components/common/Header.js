@@ -29,6 +29,7 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
     : '';
 
   const renderProject = () => {
+    console.log('the user type is ', userType);
     if (userType === 'Resource Manager') {
       return (
         <li>
@@ -101,16 +102,16 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
                     style={{
                       display: 'block',
                     }}
-                    className="fas fa-home fa-lg"
+                    className="far fa-user fa-lg"
                   ></i>
-                  Home
+                  Profile
                 </div>
               </NavLink>
             </li>
             <li>
-              <NavLink
+              <a
                 className="item"
-                to="/search"
+                href="https://turtle-319-admin.azurewebsites.net/"
                 activeStyle={activeStyle}
               >
                 <div id="search" onClick={e => moveBar(e)}>
@@ -118,13 +119,13 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
                     style={{
                       display: 'block',
                     }}
-                    className="fas fa-search fa-lg"
+                    className="fas fa-users-cog fa-lg"
                   ></i>
-                  Search
+                  Admin
                 </div>
-              </NavLink>
+              </a>
             </li>
-            <li>
+            {/* <li>
               <NavLink
                 className="item"
                 to="/personalProfile"
@@ -140,7 +141,7 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
                   Profile
                 </div>
               </NavLink>
-            </li>
+            </li> */}
             {renderProject()}
           </ul>
           <div id="bar" className="bar"></div>

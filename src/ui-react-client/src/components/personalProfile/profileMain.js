@@ -25,6 +25,9 @@ const ProfileMain = ({
   currentDiscipline,
   skillsOfDiscipline,
   util,
+  details,
+  loadDetails,
+  projectName,
 }) => {
   // console.log('All disciplines', AllDisciplines);
   const [showAddDiscipline, setShowAddDiscipline] = useState(false);
@@ -48,7 +51,7 @@ const ProfileMain = ({
     let discipline = document.getElementById('addDisciplineName')
       .value;
     let yoe = document.getElementById('addDisciplineYOE').value;
-    console.log('yoe isisisisiisis', yoe);
+    //console.log('yoe isisisisiisis', yoe);
     addDiscipline(discipline, yoe)
       .then(() => {
         addFeedback({

@@ -39,6 +39,11 @@ const executeUpdateSkillTable = (state, action) => {
   state.skillsOfDiscipline = action.payload.skillsOfDiscipline;
   return { ...state };
 };
+const executeLoadDetails = (state, action) => {
+  state.details = action.payload.details;
+  state.projectName = action.payload.projectName;
+  return { ...state };
+};
 export const personalProfileReducer = (
   state = initialState.currentUserProfile,
   action,
@@ -58,6 +63,8 @@ export const personalProfileReducer = (
       return executeAddSkill(state, action);
     case types.UPDATE_SKILL_TABLE:
       return executeUpdateSkillTable(state, action);
+    case types.LOAD_DETAILS:
+      return executeLoadDetails(state, action);
     default:
       return state;
   }

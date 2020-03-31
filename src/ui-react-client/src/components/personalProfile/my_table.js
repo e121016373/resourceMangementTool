@@ -10,6 +10,8 @@ const WTable = ({
   width,
   checkBox,
   renderModal,
+  detail,
+  loadDetails,
 }) => {
   if (!datas) datas = [];
   if (!tableHead) tableHead = [];
@@ -62,6 +64,17 @@ const WTable = ({
               <span className="checkMark"></span>
             </label>
           </div>
+        </td>
+      );
+    }
+  };
+
+  const renderDetail = data => {
+    if (detail) {
+      console.log('detail clicked');
+      return (
+        <td onClick={() => loadDetails(data.project)}>
+          <i className="far fa-caret-square-down fa-1x"></i>
         </td>
       );
     }
@@ -162,6 +175,7 @@ const WTable = ({
                   })}
                   {renderRemove(data, index)}
                   {renderCheckBox()}
+                  {renderDetail(data)}
                 </tr>
               </>
             );

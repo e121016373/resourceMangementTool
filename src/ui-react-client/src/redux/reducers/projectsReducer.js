@@ -2,7 +2,9 @@ import * as types from '../actions/actionTypes';
 import initialState from './_initialState';
 
 const executeLoadProjectsData = action => {
-  return action.projects;
+  let projects = {};
+  projects.projects = action.projects;
+  return projects;
 };
 
 const executeLoadProjectsMostRecentData = action => {
@@ -10,7 +12,8 @@ const executeLoadProjectsMostRecentData = action => {
 };
 
 const executeCreateProjectData = (state, action) => {
-  return [...state, { ...action.project }];
+  state.projects.push(action.payload);
+  return { ...state };
 };
 
 const executeUpdateProjectData = (state, action) => {
@@ -20,9 +23,20 @@ const executeUpdateProjectData = (state, action) => {
 };
 
 const executeDeleteProjectData = (state, action) => {
-  return state.filter(project => project.id !== action.project.id);
+  state.projects = state.projects.filter(project => {
+    //console.log(project.Name, action.payload);
+    //console.log(project.Name === action.payload);
+    return project.Name !== action.payload;
+  });
+  //console.log();
+  return { ...state };
 };
 
+const executeLoadDetails = (state, action) => {
+  state.details = action.payload.details;
+
+  return { ...state };
+};
 export const projectsReducer = (
   state = initialState.projects,
   action,
@@ -38,6 +52,8 @@ export const projectsReducer = (
       return executeUpdateProjectData(state, action);
     case types.DELETE_PROJECT:
       return executeDeleteProjectData(state, action);
+    case types.LOAD_DETAILS:
+      return executeLoadDetails(state, action);
     default:
       return state;
   }
