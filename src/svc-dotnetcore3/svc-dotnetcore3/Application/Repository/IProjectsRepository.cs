@@ -25,7 +25,7 @@ namespace Web.API.Application.Repository
         Task<Project> UpdateAProject(Project project);
 
         // DELETE
-        Task<Project> DeleteAProject(string number);
+        Task<Project> DeleteAProject(string project);
         Task<IEnumerable<ProjectStatus>> DeactivateAProject(string project);
 
         // PATCH

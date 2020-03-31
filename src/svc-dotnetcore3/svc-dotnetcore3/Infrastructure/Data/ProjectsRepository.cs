@@ -154,21 +154,21 @@ namespace Web.API.Infrastructure.Data
             return project;
         }
 
-        public async Task<Project> DeleteAProject(string number)
+        public async Task<Project> DeleteAProject(string project)
         {
-            var project = await GetAProject(number);
+            var pt = await GetAProjectWithTitle(project);
             var sql = @"
                 delete from ProjectStatus
-                    where Id = (select Id from Projects where Number =  @Number);
-                delete from Projects where Number = @Number;
+                    where Id = (select Id from Projects where Title = @Project);
+                delete from Projects where Title = @Project;
                 delete from UserHours where ProjectId = (select Id from Projects
-                where Number = @Number)
+                where Title = @Project)
             ;";
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            await connection.ExecuteAsync(sql, new { number });
-            return project;
+            await connection.ExecuteAsync(sql, new { project });
+            return pt;
         }
         public async Task<IEnumerable<ProjectStatus>> CheckAProject(string project)
         {

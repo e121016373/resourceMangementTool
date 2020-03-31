@@ -66,10 +66,10 @@ namespace Web.API.Controllers
         }
 
         [HttpDelete]
-        [Route("/projects/{number}")]
-        public async Task<ActionResult<Project>> DeleteAProject([FromRoute] string number)
+        [Route("/projects/{project}")]
+        public async Task<ActionResult<Project>> DeleteAProject([FromRoute] string project)
         {
-            var response = await projectsRepository.DeleteAProject(number);
+            var response = await projectsRepository.DeleteAProject(project);
             var viewModel = mapper.Map<Project>(response);
             return Ok(viewModel);
         }
