@@ -65,6 +65,15 @@ namespace Web.API.Controllers
             return Accepted(viewModel);
         }
 
+        [HttpPut]
+        [Route("/projectstatus/{project}")]
+        public async Task<ActionResult<ProjectStatus>> UpdateProjectStatus([FromRoute] string project, [FromBody] UserUtil uu)
+        {
+            var response = await projectsRepository.UpdateProjectStatus(project, uu);
+            var viewModel = mapper.Map<ProjectStatus>(response);
+            return Accepted(viewModel);
+        }
+
         [HttpDelete]
         [Route("/projects/{project}")]
         public async Task<ActionResult<Project>> DeleteAProject([FromRoute] string project)

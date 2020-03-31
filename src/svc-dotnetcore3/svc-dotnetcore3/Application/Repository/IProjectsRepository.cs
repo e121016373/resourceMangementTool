@@ -23,6 +23,7 @@ namespace Web.API.Application.Repository
 
         // PUT
         Task<Project> UpdateAProject(Project project);
+        Task<ProjectStatus> UpdateProjectStatus(string project, UserUtil uu);
 
         // DELETE
         Task<Project> DeleteAProject(string project);
