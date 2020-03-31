@@ -18,7 +18,7 @@ namespace Web.API.Application.Repository
         Task<IEnumerable<Years>> GetYearsOfProject(string project);
 
         // POST
-        Task<ProjectCreate> CreateAProject(ProjectCreate project);
+        Task<ProjectStatus> CreateAProject(ProjectCreate project);
         Task<ProjectStatus> ActivateAProject(string project);
 
         // PUT

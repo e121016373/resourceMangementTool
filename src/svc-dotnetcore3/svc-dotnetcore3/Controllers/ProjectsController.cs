@@ -49,10 +49,10 @@ namespace Web.API.Controllers
 
         [HttpPost]
         [Route("/projects")]
-        public async Task<ActionResult<ProjectCreate>> CreateAProject([FromBody] ProjectCreate project)
+        public async Task<ActionResult<ProjectStatus>> CreateAProject([FromBody] ProjectCreate project)
         {
             var response = await projectsRepository.CreateAProject(project);
-            var viewModel = mapper.Map<ProjectCreate>(response);
+            var viewModel = mapper.Map<ProjectStatus>(response);
             return Created("GetAProject", viewModel);
         }
 

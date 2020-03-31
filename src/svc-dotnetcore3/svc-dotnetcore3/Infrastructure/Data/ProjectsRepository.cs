@@ -90,7 +90,7 @@ namespace Web.API.Infrastructure.Data
             return await connection.QueryFirstOrDefaultAsync<Project>(sql, new { Title = project });
         }
 
-        public async Task<ProjectCreate> CreateAProject(ProjectCreate project)
+        public async Task<ProjectStatus> CreateAProject(ProjectCreate project)
         {
             var sql = @"
                 declare @n int;
@@ -125,7 +125,7 @@ namespace Web.API.Infrastructure.Data
                 project.FromDate,
                 project.ToDate
             });
-            return project;
+            return await GetActivatedProjectsWhere(project.Title);
         }
 
         public async Task<Project> UpdateAProject(Project project)
