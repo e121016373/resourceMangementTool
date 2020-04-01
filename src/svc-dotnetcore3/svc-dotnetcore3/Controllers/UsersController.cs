@@ -56,7 +56,7 @@ namespace Web.API.Controllers
             return Created("GetAUser", viewModel);
         }
 
-        [HttpPut]
+        [HttpPatch]
         [Route("/users")]
         public async Task<ActionResult<User>> UpdateAUser([FromBody] User user)
         {
