@@ -33,7 +33,7 @@ namespace Web.API.Controllers
         [Route("/forecast/project/{project}")]
         public async Task<ActionResult<IEnumerable<ProjectUtil>>> ForecastProject([FromRoute]string project)
         {
-            var response = await puRepository.GetProjectUtil(project);
+            var response = await puRepository.ForecastProject(project);
             var viewModel = mapper.Map<IEnumerable<ProjectUtil>>(response);
             return Ok(viewModel);
         }
