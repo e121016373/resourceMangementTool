@@ -119,6 +119,17 @@ namespace Web.API.Infrastructure.Data
             }) ;
             return await GetAProject(username, project);
         }
+        public async Task<Usernames[]> AddMultiUser(string project, Usernames[] users)
+        {
+            for (int i = 0; i < users.Length; i++)
+            {
+                await CreateProject(users[i].Username, project);
+            }
+
+            return users;
+
+        }
+
         public async Task<UserProject> DeleteProject(string username, string project)
         {
             var proj = await GetAProject(username, project);

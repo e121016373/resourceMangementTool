@@ -44,6 +44,16 @@ namespace Web.API.Controllers
             var viewModel = mapper.Map<UserProject>(response);
             return Created("GetProject", viewModel);
         }
+
+        [HttpPost]
+        [Route("/userprojects/multi/{project}")]
+        public async Task<ActionResult<Usernames[]>> AddMultiUser([FromRoute]string project, [FromBody] Usernames[] users)
+        {
+            var response = await upRepository.AddMultiUser(project, users);
+            var viewModel = mapper.Map<Usernames[]>(response);
+            return Created("GetProject",viewModel);
+        }
+
         [HttpDelete]
         [Route("/userprojects/{username}/{project}")]
         public async Task<ActionResult<UserProject>> DeleteProject([FromRoute]string username, string project)
