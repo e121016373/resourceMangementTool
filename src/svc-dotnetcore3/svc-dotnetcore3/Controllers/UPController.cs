@@ -62,6 +62,16 @@ namespace Web.API.Controllers
             var viewModel = mapper.Map<UserProject>(response);
             return Ok(viewModel);
         }
+
+        [HttpPut]
+        [Route("/userprojects/{username}/{project}")]
+        public async Task<ActionResult<UserProject>> PutAProject([FromRoute]string username,
+            string project, [FromBody] UserUtil uu)
+        {
+            var response = await upRepository.PutAProject(username, project, uu);
+            var viewModel = mapper.Map<UserProject>(response);
+            return Accepted(viewModel);
+        }
         [HttpPatch]
         [Route("/userprojects/{username}/{project}/{year}")]
         public async Task<ActionResult<UserProject>> UpdateProject([FromRoute]string username,

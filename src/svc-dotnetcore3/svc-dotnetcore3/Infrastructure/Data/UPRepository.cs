@@ -152,6 +152,119 @@ namespace Web.API.Infrastructure.Data
             });
             return proj;
         }
+        public async Task<UserProject> PutAProject(string username, string project, UserUtil uu)
+        {
+            if (uu.Jan != 0)
+            {
+                var hr = new Hour
+                {
+                    Month = "jan",
+                    Hours = (int)uu.Jan
+                };
+                await UpdateProject(username, project, uu.Year, hr);
+            }
+            if (uu.Feb != 0)
+            {
+                var hr = new Hour
+                {
+                    Month = "feb",
+                    Hours = (int)uu.Feb
+                };
+                await UpdateProject(username, project, uu.Year, hr);
+            }
+            if (uu.Mar != 0)
+            {
+                var hr = new Hour
+                {
+                    Month = "mar",
+                    Hours = (int)uu.Mar
+                };
+                await UpdateProject(username, project, uu.Year, hr);
+            }
+            if (uu.Apr != 0)
+            {
+                var hr = new Hour
+                {
+                    Month = "apr",
+                    Hours = (int)uu.Apr
+                };
+                await UpdateProject(username, project, uu.Year, hr);
+            }
+            if (uu.May != 0)
+            {
+                var hr = new Hour
+                {
+                    Month = "may",
+                    Hours = (int)uu.May
+                };
+                await UpdateProject(username, project, uu.Year, hr);
+            }
+            if (uu.Jun != 0)
+            {
+                var hr = new Hour
+                {
+                    Month = "jun",
+                    Hours = (int)uu.Jun
+                };
+                await UpdateProject(username, project, uu.Year, hr);
+            }
+            if (uu.Jul != 0)
+            {
+                var hr = new Hour
+                {
+                    Month = "jul",
+                    Hours = (int)uu.Jul
+                };
+                await UpdateProject(username, project, uu.Year, hr);
+            }
+            if (uu.Aug != 0)
+            {
+                var hr = new Hour
+                {
+                    Month = "aug",
+                    Hours = (int)uu.Aug
+                };
+                await UpdateProject(username, project, uu.Year, hr);
+            }
+            if (uu.Sep != 0)
+            {
+                var hr = new Hour
+                {
+                    Month = "sep",
+                    Hours = (int)uu.Sep
+                };
+                await UpdateProject(username, project, uu.Year, hr);
+            }
+            if (uu.Oct != 0)
+            {
+                var hr = new Hour
+                {
+                    Month = "oct",
+                    Hours = (int)uu.Oct
+                };
+                await UpdateProject(username, project, uu.Year, hr);
+            }
+            if (uu.Nov != 0)
+            {
+                var hr = new Hour
+                {
+                    Month = "nov",
+                    Hours = (int)uu.Nov
+                };
+                await UpdateProject(username, project, uu.Year, hr);
+            }
+            if (uu.Dec != 0)
+            {
+                var hr = new Hour
+                {
+                    Month = "dec",
+                    Hours = (int)uu.Dec
+                };
+                await UpdateProject(username, project, uu.Year, hr);
+            }
+
+            return await GetAProject(username, project);
+        }
         public async Task<UserProject> UpdateProject(string username, string project, int year, Hour hr)
         {
             var sql = @"
