@@ -238,17 +238,36 @@ const ProfileMain = ({
 
                 {/* add discipline component */}
                 {showAddDiscipline ? (
-                  <div className="content-add">
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}
+                    className="content-add"
+                  >
                     <AutoComplete
                       elements={AllDisciplines}
                       placeholder={'disciplines'}
                       id={'addDisciplineName'}
                     />
-                    <AutoComplete
+                    {/* <AutoComplete
                       elements={[]}
                       placeholder="Years of experience"
                       id={'addDisciplineYOE'}
-                    />
+                    /> */}
+                    <select
+                      style={{
+                        height: '30px',
+                      }}
+                      id="addDisciplineYOE"
+                    >
+                      <option value="1-3years">1-3 years</option>
+                      <option value="3-5years">3-5 years</option>
+                      <option value="5-7years">5-7 years</option>
+                      <option value="7-10years">7-10 years</option>
+                      <option value="10+years">10+ years</option>
+                    </select>
                     <button
                       onClick={submitAddDiscipline}
                       style={{ borderRadius: '5px' }}

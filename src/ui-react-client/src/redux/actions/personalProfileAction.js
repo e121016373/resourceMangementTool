@@ -207,6 +207,7 @@ export const editLocation = profile => {
   return dispatch => {
     //console.log('editlocatio url', `${SVC_ROOT}users`, baseURL);
     let url = `${SVC_ROOT}users`;
+    console.log('the profiel sending is ', profile);
     return axios
       .patch(url, { header: headers }, { data: profile })
       .then(response => {
@@ -311,11 +312,11 @@ export const addSkillAction = skill => {
 export const addDiscipline = (discipline, yoe) => {
   return dispatch => {
     let url = `${SVC_ROOT}${currentUser}/disciplines`;
-    //console.log('the add discipline url is ', url, discipline, yoe);
+    console.log('the add discipline url is ', url, discipline, yoe);
     return axios
       .post(
         url,
-        { discipline: discipline, yoe: parseInt(yoe, 10) },
+        { discipline: discipline, yoe: yoe },
         { header: headers },
       )
       .then(response => {
