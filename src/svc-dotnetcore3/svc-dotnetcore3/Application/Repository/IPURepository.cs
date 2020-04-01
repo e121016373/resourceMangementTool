@@ -7,5 +7,6 @@ namespace Web.API.Application.Repository
     public interface IPURepository
     {
         Task<IEnumerable<ProjectUtil>> GetProjectUtil(string project);
+        Task<IEnumerable<ProjectUtil>> ForecastProject(string project);
     }
 }

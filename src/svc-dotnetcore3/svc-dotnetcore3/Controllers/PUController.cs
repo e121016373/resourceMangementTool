@@ -22,7 +22,16 @@ namespace Web.API.Controllers
 
         [HttpGet]
         [Route("/util/{project}")]
-        public async Task<ActionResult<IEnumerable<ProjectUtil>>> GetProjectUtil([FromRoute]string project, int year)
+        public async Task<ActionResult<IEnumerable<ProjectUtil>>> GetProjectUtil([FromRoute]string project)
+        {
+            var response = await puRepository.GetProjectUtil(project);
+            var viewModel = mapper.Map<IEnumerable<ProjectUtil>>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpGet]
+        [Route("/forecast/project/{project}")]
+        public async Task<ActionResult<IEnumerable<ProjectUtil>>> ForecastProject([FromRoute]string project)
         {
             var response = await puRepository.GetProjectUtil(project);
             var viewModel = mapper.Map<IEnumerable<ProjectUtil>>(response);

@@ -8,19 +8,19 @@ using Web.API.Application.Repository;
 
 namespace Web.API.Infrastructure.Data
 {
-    public class PURepository : IPURepository
-    {
-        private readonly string connectionString = string.Empty;
+	public class PURepository : IPURepository
+	{
+		private readonly string connectionString = string.Empty;
 
-        public PURepository(string connectionString)
-        {
-            this.connectionString = !string.IsNullOrWhiteSpace(connectionString) ? connectionString : throw new ArgumentNullException(nameof(connectionString));
-        }
+		public PURepository(string connectionString)
+		{
+			this.connectionString = !string.IsNullOrWhiteSpace(connectionString) ? connectionString : throw new ArgumentNullException(nameof(connectionString));
+		}
 
-        
-        public async Task<IEnumerable<ProjectUtil>> GetProjectUtil(string project)
-        {
-            var sql = @"
+
+		public async Task<IEnumerable<ProjectUtil>> GetProjectUtil(string project)
+		{
+			var sql = @"
                 declare @table table (UserId int, Year int, month int, hours int);
 				declare @pid int;
 				declare @yr1 int, @yr2 int
@@ -156,10 +156,131 @@ namespace Web.API.Infrastructure.Data
 				LEFT JOIN @table3 t3 on t2.Resource = t3.Resource;
             ;";
 
-            using var connection = new SqlConnection(connectionString);
-            connection.Open();
-            return await connection.QueryAsync<ProjectUtil>(sql, new { Project = project});
-        }
+			using var connection = new SqlConnection(connectionString);
+			connection.Open();
+			return await connection.QueryAsync<ProjectUtil>(sql, new { Project = project });
+		}
 
-    }
+		public async Task<IEnumerable<ProjectUtil>> ForecastProject(string project)
+		{
+			var sql = @"
+                				declare @table table (UserId int, Year int, month int, hours int);
+				declare @pid int;
+				declare @yr1 int, @yr2 int
+				set @yr1= YEAR(GETDATE());
+				set @yr2 = YEAR(GETDATE()) + 1;
+                set @pid = (select Id from Projects where Title = @Project);
+                insert into @table
+                 select UP.UserId,  UP.Year, UP.month, coalesce(UP.hours, 0) as hours
+                    from UserHours UP
+                 where UP.ProjectId  = @pid and
+				    (Year = @yr1 or Year = @yr2);
+                declare @table2 table (Resource nvarchar(max), jan float, feb float, mar float, apr float, may float, jun float,
+                jul float, aug float, sep float, oct float, nov float, dec float);
+				declare @table3 table (Resource nvarchar(max),jan float, feb float, mar float, apr float, may float, jun float,
+                jul float, aug float, sep float, oct float, nov float, dec float);
+
+                insert into @table2
+					Select Username as Resource, 
+					CASE WHEN (select Jan from ProjectStatus where Id = @pid and Year = @yr1) = 0
+					THEN 0 ELSE [1]/cast((select Jan from ProjectStatus where Id = @pid and Year = @yr1) as float) END as jan,
+					CASE WHEN (select Feb from ProjectStatus where Id = @pid and Year = @yr1) = 0
+					THEN 0 ELSE [2]/cast((select Feb from ProjectStatus where Id = @pid and Year = @yr1) as float) END as feb,
+					CASE WHEN (select Mar from ProjectStatus where Id = @pid and Year = @yr1) = 0
+					THEN 0 ELSE [3]/cast((select Mar from ProjectStatus where Id = @pid and Year = @yr1) as float) END as mar,
+					CASE WHEN (select Apr from ProjectStatus where Id = @pid and Year = @yr1) = 0
+					THEN 0 ELSE [4]/cast((select Apr from ProjectStatus where Id = @pid and Year = @yr1) as float) END as apr,
+					CASE WHEN (select May from ProjectStatus where Id = @pid and Year = @yr1) = 0
+					THEN 0 ELSE [5]/cast((select May from ProjectStatus where Id = @pid and Year = @yr1) as float) END as may,
+					CASE WHEN (select Jun from ProjectStatus where Id = @pid and Year = @yr1) = 0
+					THEN 0 ELSE [6]/cast((select Jun from ProjectStatus where Id = @pid and Year = @yr1) as float) END as jun,
+					CASE WHEN (select Jul from ProjectStatus where Id = @pid and Year = @yr1) = 0
+					THEN 0 ELSE [7]/cast((select Jul from ProjectStatus where Id = @pid and Year = @yr1) as float) END as jul,
+					CASE WHEN (select Aug from ProjectStatus where Id = @pid and Year = @yr1) = 0
+					THEN 0 ELSE [8]/cast((select Aug from ProjectStatus where Id = @pid and Year = @yr1) as float) END as aug,
+					CASE WHEN (select Sep from ProjectStatus where Id = @pid and Year = @yr1) = 0
+					THEN 0 ELSE [9]/cast((select Sep from ProjectStatus where Id = @pid and Year = @yr1) as float) END as sep,
+					CASE WHEN (select Oct from ProjectStatus where Id = @pid and Year = @yr1) = 0
+					THEN 0 ELSE [10]/cast((select Oct from ProjectStatus where Id = @pid and Year = @yr1) as float) END as oct,
+					CASE WHEN (select Nov from ProjectStatus where Id = @pid and Year = @yr1) = 0
+					THEN 0 ELSE [11]/cast((select Nov from ProjectStatus where Id = @pid and Year = @yr1) as float) END as nov,
+					CASE WHEN (select Dec from ProjectStatus where Id = @pid and Year = @yr1) = 0
+					THEN 0 ELSE [12]/cast((select Dec from ProjectStatus where Id = @pid and Year = @yr1) as float) END as dec
+				FROM
+                (select U.Username as Username, month, hours from @table T  INNER JOIN Users U on U.Id = T.UserId where year = @yr1) AS SourceTable 
+                PIVOT (
+	            sum(hours)
+	            for month in ([1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12])
+                ) AS PivotTable;
+
+
+                insert into @table3
+					Select Username as Resource, 
+					CASE WHEN (select Jan from ProjectStatus where Id = @pid and Year = @yr2) = 0
+					THEN 0 ELSE [1]/cast((select Jan from ProjectStatus where Id = @pid and Year = @yr2) as float) END as jan,
+					CASE WHEN (select Feb from ProjectStatus where Id = @pid and Year = @yr2) = 0
+					THEN 0 ELSE [2]/cast((select Feb from ProjectStatus where Id = @pid and Year = @yr2) as float) END as feb,
+					CASE WHEN (select Mar from ProjectStatus where Id = @pid and Year = @yr2) = 0
+					THEN 0 ELSE [3]/cast((select Mar from ProjectStatus where Id = @pid and Year = @yr2) as float) END as mar,
+					CASE WHEN (select Apr from ProjectStatus where Id = @pid and Year = @yr2) = 0
+					THEN 0 ELSE [4]/cast((select Apr from ProjectStatus where Id = @pid and Year = @yr2) as float) END as apr,
+					CASE WHEN (select May from ProjectStatus where Id = @pid and Year = @yr2) = 0
+					THEN 0 ELSE [5]/cast((select May from ProjectStatus where Id = @pid and Year = @yr2) as float) END as may,
+					CASE WHEN (select Jun from ProjectStatus where Id = @pid and Year = @yr2) = 0
+					THEN 0 ELSE [6]/cast((select Jun from ProjectStatus where Id = @pid and Year = @yr2) as float) END as jun,
+					CASE WHEN (select Jul from ProjectStatus where Id = @pid and Year = @yr2) = 0
+					THEN 0 ELSE [7]/cast((select Jul from ProjectStatus where Id = @pid and Year = @yr2) as float) END as jul,
+					CASE WHEN (select Aug from ProjectStatus where Id = @pid and Year = @yr2) = 0
+					THEN 0 ELSE [8]/cast((select Aug from ProjectStatus where Id = @pid and Year = @yr2) as float) END as aug,
+					CASE WHEN (select Sep from ProjectStatus where Id = @pid and Year = @yr2) = 0
+					THEN 0 ELSE [9]/cast((select Sep from ProjectStatus where Id = @pid and Year = @yr2) as float) END as sep,
+					CASE WHEN (select Oct from ProjectStatus where Id = @pid and Year = @yr2) = 0
+					THEN 0 ELSE [10]/cast((select Oct from ProjectStatus where Id = @pid and Year = @yr2) as float) END as oct,
+					CASE WHEN (select Nov from ProjectStatus where Id = @pid and Year = @yr2) = 0
+					THEN 0 ELSE [11]/cast((select Nov from ProjectStatus where Id = @pid and Year = @yr2) as float) END as nov,
+					CASE WHEN (select Dec from ProjectStatus where Id = @pid and Year = @yr2) = 0
+					THEN 0 ELSE [12]/cast((select Dec from ProjectStatus where Id = @pid and Year = @yr2) as float) END as dec
+				FROM
+                (select U.Username as Username, month, coalesce(hours, 0) as hours from @table T  INNER JOIN Users U on U.Id = T.UserId where year = @yr2) AS SourceTable 
+                PIVOT (
+	            sum(hours)
+	            for month in ([1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12])
+                ) AS PivotTable;                
+				
+
+				select t2.Resource,
+				case when t2.jan < 0 then 0 else (ISNULL(t2.jan, 0)) end as jan,
+				case when t2.feb < 0 then 0 else (ISNULL(t2.feb, 0)) end as feb,
+				case when t2.mar < 0 then 0 else (ISNULL(t2.mar, 0)) end as mar,
+				case when t2.apr < 0 then 0 else (ISNULL(t2.apr, 0)) end as apr,
+				case when t2.may < 0 then 0 else (ISNULL(t2.may, 0)) end as may,
+				case when t2.jun < 0 then 0 else (ISNULL(t2.jun, 0)) end as jun,
+				case when t2.jul < 0 then 0 else (ISNULL(t2.jul, 0)) end as jul,
+				case when t2.aug < 0 then 0 else (ISNULL(t2.aug, 0)) end as aug,
+				case when t2.sep < 0 then 0 else (ISNULL(t2.sep, 0)) end as sep,
+				case when t2.oct < 0 then 0 else (ISNULL(t2.oct, 0)) end as oct,
+				case when t2.nov < 0 then 0 else (ISNULL(t2.nov, 0)) end as nov,
+				case when t2.dec < 0 then 0 else (ISNULL(t2.dec, 0)) end as dec,
+				case when t3.jan < 0 then 0 else (ISNULL(t3.jan, 0)) end as jan2,
+				case when t3.feb < 0 then 0 else (ISNULL(t3.feb, 0)) end as feb2,
+				case when t3.mar < 0 then 0 else (ISNULL(t3.mar, 0)) end as mar2,
+				case when t3.apr < 0 then 0 else (ISNULL(t3.apr, 0)) end as apr2,
+				case when t3.may < 0 then 0 else (ISNULL(t3.may, 0)) end as may2,
+				case when t3.jun < 0 then 0 else (ISNULL(t3.jun, 0)) end as jun2,
+				case when t3.jul < 0 then 0 else (ISNULL(t3.jul, 0)) end as jul2,
+				case when t3.aug < 0 then 0 else (ISNULL(t3.aug, 0)) end as aug2,
+				case when t3.sep < 0 then 0 else (ISNULL(t3.sep, 0)) end as sep2,
+				case when t3.oct < 0 then 0 else (ISNULL(t3.oct, 0)) end as oct2,
+				case when t3.nov < 0 then 0 else (ISNULL(t3.nov, 0)) end as nov2,
+				case when t3.dec < 0 then 0 else (ISNULL(t3.dec, 0)) end as dec2
+				from @table2 t2 
+				LEFT JOIN @table3 t3 on t2.Resource = t3.Resource;
+            ;";
+
+			using var connection = new SqlConnection(connectionString);
+			connection.Open();
+			return await connection.QueryAsync<ProjectUtil>(sql, new { Project = project });
+		}
+
+	}
 }
