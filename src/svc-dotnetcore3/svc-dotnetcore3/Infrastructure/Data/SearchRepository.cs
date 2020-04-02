@@ -58,21 +58,22 @@ namespace Web.API.Infrastructure.Data
                     WHERE 
                         S.DisciplineId = D.Id";
 
-            if (search.Discipline != null) {
-                sql += " AND D.Name = @Discipline";
+            if ((search.Discipline != null) && search.Discipline.Trim() != "") {
+                sql += " AND RTRIM(LTRIM(D.Name)) = LTRIM(@Discipline)";
             }
             if (search.Skill != null) {
-                sql += " AND S.Name = @Skill";
+                sql += " AND RTRIM(LTRIM(S.Name)) = LTRIM(@Skill)";
             }
             if (search.Location != null) {
-                sql += " AND L.Name = @Location";
+                sql += " AND RTRIM(LTRIM(L.Name)) = LTRIM(@Location)";
             }
             if (search.YOE != null) {
-                sql += " AND LTRIM(UWD.Year) = @YOE";
+                sql += " AND RTRIM(LTRIM(UWD.Year)) = LTRIM(@YOE)";
             }
             
             sql += " ) AS SearchUser";
             if (search.FromDate != null && search.ToDate != null) {
+                // if (search.Availability.GetType() == typeof(int)
                 sql += " WHERE SearchUser.Availability >= @Availability/100.0";
             }
            
