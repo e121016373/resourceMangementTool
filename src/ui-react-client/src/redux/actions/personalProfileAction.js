@@ -70,6 +70,7 @@ export const loadPersonalProfile = () => {
             //console.log('the discipline is ', disciplines.data);
             if (disciplines.data[0]) {
               //load current skills
+              currentDiscipline = disciplines.data[0];
               axios
                 .get(
                   `${SVC_ROOT}${currentUser}/skills/${disciplines.data[0].discipline}`,
@@ -279,6 +280,7 @@ export const addSkill = skill => {
     //   discipline: currentDiscipline.discipline,
     //   yoe: currentDiscipline.yoe,
     // });
+    //console.log(currentDiscipline);
     return axios
       .post(
         url,
@@ -312,7 +314,7 @@ export const addSkillAction = skill => {
 export const addDiscipline = (discipline, yoe) => {
   return dispatch => {
     let url = `${SVC_ROOT}${currentUser}/disciplines`;
-    console.log('the add discipline url is ', url, discipline, yoe);
+    //console.log('the add discipline url is ', url, discipline, yoe);
     return axios
       .post(
         url,
@@ -337,6 +339,7 @@ export const addDisciplineAction = discipline => {
 };
 
 export const updateSkillTable = discipline => {
+  //console.log('updateSkillTbale ', discipline);
   return dispatch => {
     let url = `${SVC_ROOT}${currentUser}/skills/${discipline.discipline}`;
     //console.log('the updateSkillTable url is ', url);
