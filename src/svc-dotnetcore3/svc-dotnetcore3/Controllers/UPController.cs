@@ -70,7 +70,7 @@ namespace Web.API.Controllers
         {
             var response = await upRepository.PutAProject(username, project, uu);
             var viewModel = mapper.Map<UserProject>(response);
-            return Accepted(viewModel);
+            return Ok(viewModel);
         }
         [HttpPatch]
         [Route("/userprojects/{username}/{project}/{year}")]
@@ -79,7 +79,7 @@ namespace Web.API.Controllers
         {
             var response = await upRepository.UpdateProject(username, project, year, hr);
             var viewModel = mapper.Map<UserProject>(response);
-            return Accepted(viewModel);
+            return Ok(viewModel);
         }
     }
 }

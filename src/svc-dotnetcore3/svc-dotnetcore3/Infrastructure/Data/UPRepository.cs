@@ -52,8 +52,7 @@ namespace Web.API.Infrastructure.Data
 					INNER JOIN Locations L
 					on P.LocationId = L.Id
                     INNER JOIN ProjectStatus PS
-                    on PS.status = 'Active'
-                    AND PS.Id = P.Id
+                    on PS.Id = P.Id
 
                 where UP.UserId = 
                   (select Id from Users where Username = @Username) and
@@ -154,6 +153,7 @@ namespace Web.API.Infrastructure.Data
         }
         public async Task<UserProject> PutAProject(string username, string project, UserUtil uu)
         {
+            var res = await GetAProject(username, project);
             if (uu.Jan != 0)
             {
                 var hr = new Hour
@@ -161,7 +161,7 @@ namespace Web.API.Infrastructure.Data
                     Month = "jan",
                     Hours = (int)uu.Jan
                 };
-                await UpdateProject(username, project, uu.Year, hr);
+                res = await UpdateProject(username, project, uu.Year, hr);
             }
             if (uu.Feb != 0)
             {
@@ -263,7 +263,7 @@ namespace Web.API.Infrastructure.Data
                 await UpdateProject(username, project, uu.Year, hr);
             }
 
-            return await GetAProject(username, project);
+            return res;
         }
         public async Task<UserProject> UpdateProject(string username, string project, int year, Hour hr)
         {
@@ -297,7 +297,7 @@ namespace Web.API.Infrastructure.Data
 				update UserHours
                 set Hours = @Hours 
                 where UserId = (select Id from Users where Username = @Username)
-                and ProjectId = 7
+                and ProjectId = (select Id from Projects where Title = @Project)
                 and Year = @Year and Month = @m;
 
                 update Projects
