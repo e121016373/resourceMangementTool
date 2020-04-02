@@ -46,6 +46,13 @@ const executeUpdateProjectStatus = (state, action) => {
   });
   return { ...state };
 };
+const executeAddPeopleToProject = (state, action) => {
+  action.payload.map(item => {
+    state.details.splice(1, 0, item);
+  });
+
+  return { ...state };
+};
 export const projectsReducer = (
   state = initialState.projects,
   action,
@@ -65,6 +72,8 @@ export const projectsReducer = (
       return executeLoadDetails(state, action);
     case types.UPDATE_PROJECT_STATUS:
       return executeUpdateProjectStatus(state, action);
+    case types.ADD_PEOPLE_TO_PROJECT:
+      return executeAddPeopleToProject(state, action);
     default:
       return state;
   }

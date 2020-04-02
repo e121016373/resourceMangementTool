@@ -93,17 +93,27 @@ const ProjectsPage = ({
   const edit = resource => {
     console.log('the resource is ', resource);
   };
+  const [projectName, setProjectName] = useState('');
+  const [fromDate, setFromDate] = useState('');
+  const [toDate, setToDate] = useState('');
+
   const renderDetail = year => {
     if (projects.details) {
       let details = projects.details;
-      let projectName;
+
       let detailTableHead;
       let detailTable = details.map(detail => {
         let resource = detail.resource;
         let DetailTableHead = details[0].projectName;
-        let fromDate = details[0].fromDate;
-        let toDate = details[0].toDate;
-
+        if (
+          !(
+            fromDate === details[0].fromDate &&
+            toDate === details[0].toDate
+          )
+        ) {
+          setFromDate(details[0].fromDate);
+          setToDate(details[0].toDate);
+        }
         let fromDateYear = fromDate.split('-')[0];
         let toDateYear = toDate.split('-')[0];
         //console.log(fromDateYear, toDateYear, toDate);
@@ -118,8 +128,9 @@ const ProjectsPage = ({
           secondYear = toDateYear;
         }
 
-        if (!projectName) {
-          projectName = detail.projectName;
+        if (!(projectName === detail.projectName)) {
+          //console.log(projectName, detail.projectName);
+          setProjectName(detail.projectName);
         }
         let years = detail.year;
         //prase the first year here
@@ -249,6 +260,7 @@ const ProjectsPage = ({
                 style={{
                   borderStyle: 'solid',
                   borderWidth: '1px',
+                  maxHeight: '27vh',
                 }}
               >
                 {detailTable.map((data, index) => {
@@ -412,6 +424,7 @@ const ProjectsPage = ({
                     style={{
                       borderStyle: 'solid',
                       borderWidth: '1px',
+                      maxHeight: '30vh',
                     }}
                   >
                     {projects.projects.map((data, index) => {
@@ -572,7 +585,11 @@ const ProjectsPage = ({
         createProject={createProject}
         addFeedback={addFeedback}
       />
-      <SearchModal />
+      <SearchModal
+        projectName={projectName}
+        fromDate={fromDate}
+        toDate={toDate}
+      />
       {renderProjectPage()}
     </div>
   );
