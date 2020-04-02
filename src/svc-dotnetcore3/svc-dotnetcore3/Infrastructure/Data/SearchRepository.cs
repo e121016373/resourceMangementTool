@@ -67,7 +67,7 @@ namespace Web.API.Infrastructure.Data
             if (search.Location != null) {
                 sql += " AND L.Name = @Location";
             }
-            if ((search.YOE != null) && (search.Discipline != null)) {
+            if (search.YOE != null) {
                 sql += " AND LTRIM(UWD.Year) = @YOE";
             }
             
