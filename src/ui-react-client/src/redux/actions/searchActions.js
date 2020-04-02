@@ -20,17 +20,17 @@ export const searchUsersAction = users => {
 
 export const searchUsers = content => {
   let url = `${SVC_ROOT}search/users`;
-  //console.log('the contenet is ', content);
+  console.log('the contenet is ', content);
   //console.log(JSON.stringify(content));
   //console.log('the contenet is ', content);
   // content = {
-  //   discipline: 'airports',
+  //   discipline: 'Environmental Management',
   //   yoe: '3-5 years',
-  //   skill: 'aprons',
-  //   location: 'kitchener',
-  //   fromDate: '2020-07-01',
-  //   toDate: '2021-01-01',
-  //   availability: 40,
+  //   //skill: 'aprons',
+  //   //location: 'kitchener',
+  //   fromDate: '2020-04-01',
+  //   toDate: '2021-04-01',
+  //   //availability: 40,
   // };
   return dispatch => {
     const options = {
@@ -54,71 +54,6 @@ export const searchUsers = content => {
           };
         });
         console.log('the search reposen is ', response);
-        // response = [
-        //   {
-        //     name: 'mertza',
-        //     experience: '1-3 years',
-        //     Skill: 'environment',
-        //     Location: 'kelowna',
-        //     Availability: '18%',
-        //   },
-        //   {
-        //     name: 'winton',
-        //     experience: '1-3 years',
-        //     Skill: 'environment',
-        //     Location: 'kelowna',
-        //     Availability: '20%',
-        //   },
-        //   {
-        //     name: 'Alice',
-        //     experience: '1-3 years',
-        //     Skill: 'environment',
-        //     Location: 'kelowna',
-        //     Availability: '80%',
-        //   },
-        //   {
-        //     name: 'Alice',
-        //     experience: '1-3 years',
-        //     Skill: 'environment',
-        //     Location: 'kelowna',
-        //     Availability: '45%',
-        //   },
-        //   {
-        //     name: 'Alice',
-        //     experience: '1-3 years',
-        //     Skill: 'environment',
-        //     Location: 'kelowna',
-        //     Availability: '43%',
-        //   },
-        //   {
-        //     name: 'Alice',
-        //     experience: '1-3 years',
-        //     Skill: 'environment',
-        //     Location: 'kelowna',
-        //     Availability: '90%',
-        //   },
-        //   {
-        //     name: 'Alice',
-        //     experience: '1-3 years',
-        //     Skill: 'environment',
-        //     Location: 'kelowna',
-        //     Availability: '91%',
-        //   },
-        //   {
-        //     name: 'Alice',
-        //     experience: '1-3 years',
-        //     Skill: 'environment',
-        //     Location: 'kelowna',
-        //     Availability: '91%',
-        //   },
-        //   {
-        //     name: 'Alice',
-        //     experience: '1-3 years',
-        //     Skill: 'environment',
-        //     Location: 'kelowna',
-        //     Availability: '91%',
-        //   },
-        //];
         dispatch(searchUsersAction(response));
       })
       .catch(error => {

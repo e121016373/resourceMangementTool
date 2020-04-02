@@ -7,6 +7,7 @@ import { loadSkills } from '../../redux/actions/skillsActions';
 import { loadLocations } from '../../redux/actions/locationsActions';
 import WTable from '../personalProfile/my_table';
 import { searchUsers } from '../../redux/actions/searchActions';
+import Loading from '../loading/loading';
 const Search = ({
   disciplines,
   loadDisciplines,
@@ -77,18 +78,80 @@ const Search = ({
     'Availability',
     'Assign',
   ];
+  const renderResultTable = () => {
+    if (searchUsersResult.length === 0) {
+      return (
+        <WTable
+          tableName="Result"
+          tableHead={tableHead}
+          checkBox={true}
+          datas={[{ noresult: 'no results' }]}
+        ></WTable>
+      );
+    } else {
+      return (
+        <WTable
+          tableName="Result"
+          tableHead={tableHead}
+          checkBox={true}
+          datas={searchUsersResult}
+        ></WTable>
+      );
+    }
+  };
+  const renderSearchResult = () => {
+    if (searchState === 'notSearching') {
+      return (
+        <>
+          <WTable
+            tableName="Result"
+            tableHead={tableHead}
+            checkBox={true}
+            datas={searchUsersResult}
+          ></WTable>
+          <div>
+            <div
+              style={{
+                width: '10vw',
+
+                marginBottom: '20px',
+              }}
+              className="btn-green"
+              onClick={addPeople}
+            >
+              Add People
+            </div>
+          </div>
+        </>
+      );
+    } else if (searchState === 'searching') {
+      return <Loading></Loading>;
+    } else if (searchState === 'doneSearching') {
+      return renderResultTable();
+    }
+  };
+  const [searchState, setSearchState] = useState('notSearching');
   const search = () => {
-    let content = {};
+    setSearchState('searching');
+    let content = {
+      discipline: undefined,
+      yoe: undefined,
+      skill: undefined,
+      fromDate: undefined,
+      toDate: undefined,
+      location: undefined,
+      availability: undefined,
+    };
     //console.log('in search ', content);
-    content.discipline = document.getElementById(
-      'search-discipline',
-    ).value;
+    content.discipline =
+      document.getElementById('search-discipline').value === ''
+        ? undefined
+        : document.getElementById('search-discipline').value;
     let tempExperience = document.getElementById('search-experience')
       .value;
     //console.log(tempExperience);
     switch (tempExperience) {
       case '0':
-        console.log("it's one");
         content.yoe = '1-3 years';
         break;
       case '1':
@@ -102,19 +165,35 @@ const Search = ({
         break;
     }
 
-    content.skill = document.getElementById('search-skills').value;
-    content.location = document.getElementById(
-      'search-location',
-    ).value;
-    content.fromDate = document.getElementById(
-      'search-fromDate',
-    ).value;
-    content.toDate = document.getElementById('search-toDate').value;
-    content.availability = document.getElementById(
-      'search-availability',
-    ).value;
-    content.availability = parseInt(content.availability);
-    searchUsers(content);
+    content.skill =
+      document.getElementById('search-skills').value === ''
+        ? undefined
+        : document.getElementById('search-skills').value;
+    content.location =
+      document.getElementById('search-location').value === ''
+        ? undefined
+        : document.getElementById('search-location').value;
+    content.fromDate =
+      document.getElementById('search-fromDate').value === ''
+        ? undefined
+        : document.getElementById('search-fromDate').value;
+    content.toDate =
+      document.getElementById('search-toDate').value === ''
+        ? undefined
+        : document.getElementById('search-toDate').value;
+    content.availability =
+      document.getElementById('search-availability').value === ''
+        ? undefined
+        : parseInt(
+            document.getElementById('search-availability').value,
+          );
+    searchUsers(content)
+      .then(() => {
+        //setTimeout(1000);
+        setSearchState('doneSearching');
+      })
+      .catch //setTimeout(setSearchState('doneSearching'), 3000)
+      ();
   };
   const addPeople = () => {};
   return (
@@ -292,31 +371,13 @@ const Search = ({
               display: 'flex',
               flexDirection: 'column',
               margin: 0,
-              marginTop: '10px',
+              marginTop: '0px',
               padding: '20px',
               paddingTop: '5px',
               //height: '75vh',
             }}
           >
-            <WTable
-              tableName="Result"
-              tableHead={tableHead}
-              checkBox={true}
-              datas={searchUsersResult}
-            ></WTable>
-            <div>
-              <div
-                style={{
-                  width: '10vw',
-
-                  marginBottom: '20px',
-                }}
-                className="btn-green"
-                onClick={addPeople}
-              >
-                Add People
-              </div>
-            </div>
+            {renderSearchResult()}
           </div>
         </div>
       </div>

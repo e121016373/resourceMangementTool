@@ -262,11 +262,11 @@ const ProfileMain = ({
                       }}
                       id="addDisciplineYOE"
                     >
-                      <option value="1-3years">1-3 years</option>
-                      <option value="3-5years">3-5 years</option>
-                      <option value="5-7years">5-7 years</option>
-                      <option value="7-10years">7-10 years</option>
-                      <option value="10+years">10+ years</option>
+                      <option value="1-3 years">1-3 years</option>
+                      <option value="3-5 years">3-5 years</option>
+                      <option value="5-7 years">5-7 years</option>
+                      <option value="7-10 years">7-10 years</option>
+                      <option value="10+ years">10+ years</option>
                     </select>
                     <button
                       onClick={submitAddDiscipline}
