@@ -133,7 +133,8 @@ const ProjectsPage = ({
       //   }
       //   //});
       // }
-      showDetail('Ab vero aut atque laborum.', fromDate, toDate);
+      //'Ab vero aut atque laborum.'
+      showDetail(projectName, fromDate, toDate);
     });
   };
   const cancel = resource => {

@@ -193,10 +193,10 @@ export const forecastProject = (projectName, resource, data) => {
     } else {
       url = UerURL;
     }
-    console.log('the URL is', url, 'data is ', JSON.stringify(data));
+    console.log('the URL is', url, 'data is ', data);
 
     return axios
-      .put(url, { data: JSON.stringify(data) })
+      .put(url, { data: data }, { headers: headers })
       .then(response => {
         console.log('forecast result is ', response);
         //loadDetails('Ab vero aut atque laborum.', fromDate, toDate);
