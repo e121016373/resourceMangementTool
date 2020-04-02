@@ -21,12 +21,18 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 SELECT *,
+
+                    (SELECT D.Name
+                    FROM Disciplines D
+                    WHERE D.Id = S.DisciplineId) AS 'DisciplineName',
+
                     (SELECT Count(DISTINCT UHS.UserId)
                         FROM UserHasSkills UHS
                         WHERE UHS.SkillId = S.Id
                             AND UHS.DisciplineId = S.DisciplineId
                         GROUP BY UHS.SkillId
                     ) AS 'NumberOfPeople'
+                    
                 FROM Skills S
                 ORDER BY S.DisciplineId, S.Id
             ;";
