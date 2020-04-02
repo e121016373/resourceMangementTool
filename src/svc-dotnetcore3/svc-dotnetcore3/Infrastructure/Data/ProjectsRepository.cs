@@ -161,67 +161,13 @@ namespace Web.API.Infrastructure.Data
 
         public async Task<ProjectStatus> UpdateProjectStatus(string project, UserUtil uu)
         {
-            var sql = @"";
-            if (uu.Jan != 0)
-                sql += "update ProjectStatus set " +
-                    "Jan = @Jan where Id = " +
-                    "(select Id from Projects where Title = @Project)" +
-                    " and Year = @Year; \n";
-            if (uu.Feb != 0)
-                sql += "update ProjectStatus set " +
-                    "Feb = @Feb where Id = " +
-                    "(select Id from Projects where Title = @Project)" +
-                    " and Year = @Year; \n";
-            if (uu.Mar != 0)
-                sql += "update ProjectStatus set " +
-                    "Mar = @Mar where Id = " +
-                    "(select Id from Projects where Title = @Project)" +
-                    " and Year = @Year; \n";
-            if (uu.Apr != 0)
-                sql += "update ProjectStatus set " +
-                    "Apr = @Apr where Id = " +
-                    "(select Id from Projects where Title = @Project)" +
-                    " and Year = @Year; \n";
-            if (uu.May != 0)
-                sql += "update ProjectStatus set " +
-                    "May = @May where Id = " +
-                    "(select Id from Projects where Title = @Project)" +
-                    " and Year = @Year; \n";
-            if (uu.Jun != 0)
-                sql += "update ProjectStatus set " +
-                    "Jun = @Jun where Id = " +
-                    "(select Id from Projects where Title = @Project)" +
-                    " and Year = @Year; \n";
-            if (uu.Jul != 0)
-                sql += "update ProjectStatus set " +
-                    "Jul = @Jul where Id = " +
-                    "(select Id from Projects where Title = @Project)" +
-                    " and Year = @Year; \n";
-            if (uu.Aug != 0)
-                sql += "update ProjectStatus set " +
-                    "Aug = @Aug where Id = " +
-                    "(select Id from Projects where Title = @Project)" +
-                    " and Year = @Year; \n";
-            if (uu.Sep != 0)
-                sql += "update ProjectStatus set " +
-                    "Sep = @Sep where Id = " +
-                    "(select Id from Projects where Title = @Project)" +
-                    " and Year = @Year; \n";
-            if (uu.Oct != 0)
-                sql += "update ProjectStatus set " +
-                    "Oct = @Oct where Id = " +
-                    "(select Id from Projects where Title = @Project)" +
-                    " and Year = @Year; \n";
-            if (uu.Nov != 0)
-                sql += "update ProjectStatus set " +
-                    "Nov = @Nov where Id = " +
-                    "(select Id from Projects where Title = @Project)" +
-                    " and Year = @Year; \n";
-            if (uu.Dec != 0)
-                sql += "update ProjectStatus set " +
-                    "Dec = @Dec where Id = " +
-                    "(select Id from Projects where Title = @Project)" +
-                    " and Year = @Year; \n";
+            var sql = @"
+                update ProjectStatus
+                set Jan = @Jan, Feb = @Feb, Mar = @Mar, Apr = @Apr, May = @May, Jun = @Jun, Jul = @Jul, Aug = @Aug, Sep = @Sep, Oct = @Oct, Nov = @Nov, Dec = @Dec
+                where Id = (select Id from Projects where Title = @Project)
+                and Year = @Year;
+
+            ";
             sql += "update Projects " + "set UpdatedAt = SYSUTCDATETIME()" +
                 "where Id = (select Id from Projects where Title = @Project);";
 
