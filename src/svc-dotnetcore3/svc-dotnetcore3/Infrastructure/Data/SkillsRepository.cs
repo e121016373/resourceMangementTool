@@ -20,7 +20,7 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<Skill>> GetAllSkills()
         {
             var sql = @"
-                SELECT *,
+                SELECT S.Id, S.DisciplineId, S.Name AS 'SkillName',
 
                     (SELECT D.Name
                     FROM Disciplines D
@@ -32,7 +32,7 @@ namespace Web.API.Infrastructure.Data
                             AND UHS.DisciplineId = S.DisciplineId
                         GROUP BY UHS.SkillId
                     ) AS 'NumberOfPeople'
-                    
+
                 FROM Skills S
                 ORDER BY S.DisciplineId, S.Id
             ;";
