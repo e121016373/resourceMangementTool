@@ -21,7 +21,7 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 select
-                    U.Id, U.FirstName, U.LastName, U.Username, L.Name as Location, U.Type
+                    U.Id, U.FirstName, U.LastName, U.Username, L.Name as Location, U.Type, U.Organization
                 from
                     Users U
                 INNER JOIN Locations L
@@ -37,7 +37,7 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 select
-                    U.Id, U.FirstName, U.LastName, U.Username, L.Name as Location, U.Type
+                    U.Id, U.FirstName, U.LastName, U.Username, L.Name as Location, U.Type, U.Organization
                 from
                     Users U
                 INNER JOIN Locations L
@@ -55,10 +55,10 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 insert into Users 
-                    (FirstName, LastName, Username, LocationId, Type)
+                    (FirstName, LastName, Username, LocationId, Type, Organization)
                 values 
                     (@FirstName, @LastName, @Username, 
-                    (select Id from Locations where Name = @Location), @Type);
+                    (select Id from Locations where Name = @Location), @Type, @Organization);
                 select cast(scope_identity() as int);
             ;";
 
@@ -70,7 +70,8 @@ namespace Web.API.Infrastructure.Data
                 user.LastName,
                 user.Username,
                 user.Location,
-                user.Type
+                user.Type,
+                user.Organization
 
             });
             user.Id = id;
@@ -95,12 +96,13 @@ namespace Web.API.Infrastructure.Data
             var sql = @"
                 update Users
                 set LocationID = (select Id from Locations where Name = @Location),
-                    Type = @Type
+                    Type = @Type,
+                    Organization = @Organization
                 where Username = @Username;
             ";
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            await connection.ExecuteAsync(sql, new { user.Location, user.Type, user.Username });
+            await connection.ExecuteAsync(sql, new { user.Location, user.Type, user.Organization, user.Username });
             return await GetAUser(user.Username);
         }
     }

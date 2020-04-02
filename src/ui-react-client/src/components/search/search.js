@@ -6,7 +6,11 @@ import { loadDisciplines } from '../../redux/actions/disciplinesActions';
 import { loadSkills } from '../../redux/actions/skillsActions';
 import { loadLocations } from '../../redux/actions/locationsActions';
 import WTable from '../personalProfile/my_table';
-import { searchUsers } from '../../redux/actions/searchActions';
+import {
+  searchUsers,
+  addPeopleToProject,
+} from '../../redux/actions/searchActions';
+import { addFeedback } from '../../redux/actions/feedbackAction';
 import Loading from '../loading/loading';
 const Search = ({
   disciplines,
@@ -17,6 +21,11 @@ const Search = ({
   loadLocations,
   searchUsers,
   searchUsersResult,
+  projectName,
+  addPeopleToProject,
+  fromDate,
+  toDate,
+  addFeedback,
 }) => {
   // const [parsedDisciplines, setParsedDisciplines] = useState([]);
   useEffect(() => {
@@ -76,26 +85,56 @@ const Search = ({
     'Skill',
     'Location',
     'Availability',
-    'Assign',
+    'Add',
   ];
   const renderResultTable = () => {
     if (searchUsersResult.length === 0) {
       return (
-        <WTable
-          tableName="Result"
-          tableHead={tableHead}
-          checkBox={true}
-          datas={[{ noresult: 'no results' }]}
-        ></WTable>
+        <>
+          <WTable
+            tableName="Result"
+            tableHead={tableHead}
+            checkBox={true}
+            datas={[{ noresult: 'no results' }]}
+          ></WTable>
+          <div>
+            <div
+              style={{
+                width: '10vw',
+
+                marginBottom: '20px',
+              }}
+              className="btn-green"
+              onClick={addPeople}
+            >
+              Add People
+            </div>
+          </div>
+        </>
       );
     } else {
       return (
-        <WTable
-          tableName="Result"
-          tableHead={tableHead}
-          checkBox={true}
-          datas={searchUsersResult}
-        ></WTable>
+        <>
+          <WTable
+            tableName="Result"
+            tableHead={tableHead}
+            checkBox={true}
+            datas={searchUsersResult}
+          ></WTable>
+          <div>
+            <div
+              style={{
+                width: '10vw',
+
+                marginBottom: '20px',
+              }}
+              className="btn-green"
+              onClick={addPeople}
+            >
+              Add People
+            </div>
+          </div>
+        </>
       );
     }
   };
@@ -195,7 +234,33 @@ const Search = ({
       .catch //setTimeout(setSearchState('doneSearching'), 3000)
       ();
   };
-  const addPeople = () => {};
+  const addPeople = () => {
+    let checkboxes = document.querySelectorAll('.searchCheckbox');
+    let people = [];
+    checkboxes.forEach(checkBox => {
+      if (checkBox.checked) {
+        people.push({ Username: checkBox.name });
+      }
+    });
+    addPeopleToProject(people, projectName, fromDate, toDate)
+      .then(() => {
+        console.log('added');
+        addFeedback({
+          type: 'success',
+          data: 'add people successfully',
+          show: true,
+        });
+      })
+      .catch(error => {
+        console.log('not added');
+        addFeedback({
+          type: 'error',
+          data: 'add people unsuccessfully',
+          show: true,
+        });
+      });
+    console.log(people, projectName);
+  };
   return (
     <div>
       <div
@@ -398,6 +463,8 @@ const mapDispatchToProps = {
   loadSkills,
   loadLocations,
   searchUsers,
+  addPeopleToProject,
+  addFeedback,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);

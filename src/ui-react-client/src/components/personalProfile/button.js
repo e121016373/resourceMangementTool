@@ -60,8 +60,8 @@ const WButton = ({
           {/* <div className="btn-green" onClick={submit}>
             {buttonNameTwo}
           </div> */}
-          <div className="btn-blue" onClick={cancel}>
-            cancel
+          <div className="btn-cancel" onClick={cancel}>
+            {buttonNameTwo}
           </div>
         </div>
       </div>
