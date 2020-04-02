@@ -31,5 +31,6 @@ namespace Web.API.Application.Repository
 
         // PATCH
         Task<IEnumerable<ProjectStatus>> PatchAProject(string project, int year, Hour hr);
+        Task<ProjectStatus> PatchStatus(string project, string status);
     }
 }

@@ -115,11 +115,12 @@ namespace Web.API.Infrastructure.Data
 				set @n = @n+1;
 				END
             ;";
-            
+
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            await connection.ExecuteAsync(sql, new {
-                project.Number,        
+            await connection.ExecuteAsync(sql, new
+            {
+                project.Number,
                 project.Title,
                 project.Location,
                 project.FromDate,
@@ -238,7 +239,7 @@ namespace Web.API.Infrastructure.Data
                 uu.Oct,
                 uu.Nov,
                 uu.Dec
-            }) ;
+            });
             return await GetActivatedProjectsWhere(project);
         }
 
@@ -387,7 +388,7 @@ namespace Web.API.Infrastructure.Data
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            
+
             return await connection.QueryAsync<Years>(sql, new { Title = project });
         }
 
@@ -477,9 +478,31 @@ namespace Web.API.Infrastructure.Data
             ";
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            await connection.ExecuteAsync(sql, new { Project = project, Year = year,
-            month = hr.Month, Hours = hr.Hours});
+            await connection.ExecuteAsync(sql, new
+            {
+                Project = project,
+                Year = year,
+                month = hr.Month,
+                Hours = hr.Hours
+            });
             return await CheckAProject(project);
+        }
+
+        public async Task<ProjectStatus> PatchStatus(string project, string status)
+        {
+            var sql = @"
+                update ProjectStatus
+                set Status = @Status
+                where Id = (select Id from Projects where Title = @Title);
+
+                update Projects
+                set UpdatedAt = SYSUTCDATETIME()
+                where Title = @Title;
+            ";
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            await connection.ExecuteAsync(sql, new { Title = project, Status = status });
+            return await GetActivatedProjectsWhere(project);
         }
 
 
