@@ -20,7 +20,7 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<Skill>> GetAllSkills()
         {
             var sql = @"
-                SELECT S.Id, S.DisciplineId, S.Name AS 'SkillName',
+                SELECT S.Id, S.DisciplineId, S.Name,
 
                     (SELECT D.Name
                     FROM Disciplines D
@@ -75,21 +75,33 @@ namespace Web.API.Infrastructure.Data
         public async Task<Skill> GetASkill(string name)
         {
             var sql = @"
-                SELECT Id, DisciplineId, Name
-                FROM Skills
-                WHERE Name = @SkillName
+                SELECT S.Id, S.DisciplineId, S.Name, 
+                    
+                    (SELECT D.Name
+                    FROM Disciplines D
+                    WHERE D.Id = S.DisciplineId) AS 'DisciplineName',
+
+                    (SELECT Count(DISTINCT UHS.UserId)
+                        FROM UserHasSkills UHS
+                        WHERE UHS.SkillId = S.Id
+                            AND UHS.DisciplineId = S.DisciplineId
+                        GROUP BY UHS.SkillId
+                    ) AS 'NumberOfPeople'
+
+                FROM Skills S
+                WHERE S.Name = @Name
             ;";
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            return await connection.QueryFirstOrDefaultAsync<Skill>(sql, new { SkillName = name });
+            return await connection.QueryFirstOrDefaultAsync<Skill>(sql, new { Name = name });
         }
 
         public async Task<Skill> UpdateASkill(Skill skill)
         {
             var sql = @"
                 UPDATE Skills
-                SET Name = @SkillName
+                SET Name = @Name
                 WHERE Id = @Id 
                     AND DisciplineId = @DisciplineId
             ;";
@@ -100,7 +112,7 @@ namespace Web.API.Infrastructure.Data
             {
                 skill.Id,
                 skill.DisciplineId,
-                skill.SkillName
+                skill.Name
             });
             return result == 1 ? skill : null;
         }
@@ -109,7 +121,7 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 INSERT INTO Skills (Name, DisciplineId)
-                VALUES (@SkillName, 
+                VALUES (@Name, 
                     (SELECT D.Id
                     FROM Disciplines D
                     WHERE D.Name = @DisciplineName));
@@ -122,7 +134,7 @@ namespace Web.API.Infrastructure.Data
             var id = await connection.QuerySingleAsync<int>(sql, new
             {
                 skill.DisciplineName,
-                skill.SkillName
+                skill.Name
             });
             skill.Id = id;
             return skill;
@@ -133,13 +145,13 @@ namespace Web.API.Infrastructure.Data
             var skill = await GetASkill(name);
             var sql = @"
                 DELETE FROM Skills
-                WHERE Name = @SkillName
+                WHERE Name = @Name
             ;";
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
             var param = new { 
-                SkillName = name, 
+                Name = name, 
             };
             await connection.ExecuteAsync(sql, param);
             return skill;
