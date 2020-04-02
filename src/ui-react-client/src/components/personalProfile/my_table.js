@@ -54,13 +54,17 @@ const WTable = ({
     console.log('delete is clicked');
   };
 
-  const renderCheckBox = () => {
+  const renderCheckBox = projectName => {
     if (checkBox) {
       return (
         <td>
           <div style={{ width: '22px', height: '22px' }}>
             <label className="checkBoxContainer">
-              <input type="checkbox"></input>
+              <input
+                name={projectName}
+                className="searchCheckbox"
+                type="checkbox"
+              ></input>
               <span className="checkMark"></span>
             </label>
           </div>
@@ -164,8 +168,6 @@ const WTable = ({
                               'the index of the row is ',
                               index,
                             );
-                            if (renderModal) {
-                            }
                           }}
                         >
                           {item}
@@ -174,7 +176,7 @@ const WTable = ({
                     }
                   })}
                   {renderRemove(data, index)}
-                  {renderCheckBox()}
+                  {renderCheckBox(Object.values(data)[0])}
                   {renderDetail(data)}
                 </tr>
               </>
