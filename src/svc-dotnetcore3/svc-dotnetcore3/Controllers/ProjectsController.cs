@@ -71,7 +71,7 @@ namespace Web.API.Controllers
         {
             var response = await projectsRepository.UpdateProjectStatus(project, uu);
             var viewModel = mapper.Map<ProjectStatus>(response);
-            return Accepted(viewModel);
+            return Ok(viewModel);
         }
 
         [HttpDelete]
