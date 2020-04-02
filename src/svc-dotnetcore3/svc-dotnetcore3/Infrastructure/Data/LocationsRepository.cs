@@ -20,10 +20,14 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<Location>> GetAllLocations()
         {
             var sql = @"
-                select
-                    Id, Code, [Name]
-                from
-                    Locations
+                SELECT *,
+                    (SELECT Count(DISTINCT Id)
+                        FROM Users
+                        WHERE LocationId = L.Id
+                        GROUP BY LocationId
+                    ) AS 'NumberOfPeople'
+                FROM Locations L
+                ORDER BY L.Name
             ;";
 
             using var connection = new SqlConnection(connectionString);

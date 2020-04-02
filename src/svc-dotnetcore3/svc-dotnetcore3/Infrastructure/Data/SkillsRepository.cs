@@ -20,8 +20,15 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<Skill>> GetAllSkills()
         {
             var sql = @"
-                SELECT Id, DisciplineId, Name
-                FROM Skills
+                SELECT *,
+                    (SELECT Count(DISTINCT UHS.UserId)
+                        FROM UserHasSkills UHS
+                        WHERE UHS.SkillId = S.Id
+                            AND UHS.DisciplineId = S.DisciplineId
+                        GROUP BY UHS.SkillId
+                    ) AS 'NumberOfPeople'
+                FROM Skills S
+                ORDER BY S.DisciplineId, S.Id
             ;";
 
             using var connection = new SqlConnection(connectionString);

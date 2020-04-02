@@ -20,8 +20,13 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<Discipline>> GetAllDisciplines()
         {
             var sql = @"
-                SELECT Id, Name
-                FROM dbo.Disciplines
+                SELECT *,
+                (SELECT Count(DISTINCT UWD.UserId)
+                    FROM UserWorksDiscipline UWD
+                    WHERE UWD.DisciplineId = D.Id
+                    GROUP BY UWD.DisciplineId
+                ) AS 'NumberOfPeople'
+            FROM Disciplines D
             ;";
 
             using var connection = new SqlConnection(connectionString);
