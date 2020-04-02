@@ -164,5 +164,14 @@ namespace Web.API.Controllers
             var viewModel = mapper.Map<IEnumerable<ProjectStatus>>(response);
             return Ok(viewModel);
         }
+        [HttpPatch]
+        [Route("/projectstatus/status/{project}/{status}")]
+        public async Task<ActionResult<ProjectStatus>> PatchStatus([FromRoute] string project,
+            string status)
+        {
+            var response = await projectsRepository.PatchStatus(project, status);
+            var viewModel = mapper.Map<ProjectStatus>(response);
+            return Ok(viewModel);
+        }
     }
 }
