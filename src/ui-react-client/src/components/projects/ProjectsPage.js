@@ -5,6 +5,9 @@ import {
   loadDetails,
   createProject,
   deleteProject,
+  editProjectTotal,
+  editProjectUser,
+  updateProjectStatus,
 } from '../../redux/actions/projectsActions';
 import { addFeedback } from '../../redux/actions/feedbackAction';
 import { connect } from 'react-redux';
@@ -17,6 +20,9 @@ const ProjectsPage = ({
   createProject,
   deleteProject,
   addFeedback,
+  editProjectTotal,
+  editProjectUser,
+  updateProjectStatus,
 }) => {
   useEffect(() => {
     if (!projects.projects) {
@@ -36,6 +42,30 @@ const ProjectsPage = ({
     let tempYear = document.getElementById('select-year').value;
     console.log(tempYear);
     setYear(tempYear - firstYear);
+  };
+  const changeProjectStatus = projectName => {
+    let tempProjectStatus = document.getElementById('projectStatus')
+      .value;
+    // console.log(
+    //   'the project name is ',
+    //   projectName,
+    //   tempProjectStatus,
+    // );
+    updateProjectStatus(projectName, tempProjectStatus)
+      .then(() => {
+        addFeedback({
+          type: 'success',
+          data: 'status changed successfully',
+          show: true,
+        });
+      })
+      .catch(error => {
+        addFeedback({
+          type: 'error',
+          data: 'status Location unsuccessfully',
+          show: true,
+        });
+      });
   };
   let firstYear, secondYear;
   const deleteProjectButton = projectName => {
@@ -59,6 +89,9 @@ const ProjectsPage = ({
   };
   const renderSecondYear = () => {
     if (secondYear) return <option>{secondYear}</option>;
+  };
+  const edit = resource => {
+    console.log('the resource is ', resource);
   };
   const renderDetail = year => {
     if (projects.details) {
@@ -112,7 +145,7 @@ const ProjectsPage = ({
         //choose year to display
         if (!detailTableHead) {
           detailTableHead = Object.keys(firstYearObject);
-          detailTableHead = ['resource'].concat(detailTableHead);
+          detailTableHead = ['Resource'].concat(detailTableHead);
           detailTableHead.push('Edit');
           detailTableHead.push('Submit');
           //detailTable = Object.values(firstYearObject);
@@ -128,7 +161,7 @@ const ProjectsPage = ({
         return data;
       });
       console.log(detailTableHead);
-      console.log(detailTable);
+      console.log('detailTable', detailTable);
       detailTable = detailTable.map(item => {
         return item[year];
       });
@@ -232,6 +265,9 @@ const ProjectsPage = ({
                               padding: 5,
                             }}
                             className="btn-orange"
+                            onClick={() =>
+                              edit(Object.values(data)[0])
+                            }
                           >
                             Edit
                           </div>
@@ -384,6 +420,101 @@ const ProjectsPage = ({
                           <tr key={index}>
                             {Object.values(data).map(
                               (item, index) => {
+                                if (
+                                  item === 'Inactive' ||
+                                  item === 'Active' ||
+                                  item === 'Forecast'
+                                ) {
+                                  switch (item) {
+                                    case 'Inactive':
+                                      return (
+                                        <td>
+                                          <select
+                                            style={{ height: '30px' }}
+                                            id="projectStatus"
+                                            onChange={() =>
+                                              changeProjectStatus(
+                                                Object.values(
+                                                  data,
+                                                )[0],
+                                              )
+                                            }
+                                          >
+                                            <option value="Forecast">
+                                              Forecast
+                                            </option>
+                                            <option
+                                              value="Inactive"
+                                              selected
+                                            >
+                                              Inactive
+                                            </option>
+                                            <option value="Active">
+                                              Active
+                                            </option>
+                                          </select>
+                                        </td>
+                                      );
+                                    case 'Active':
+                                      return (
+                                        <td>
+                                          <select
+                                            style={{ height: '30px' }}
+                                            id="projectStatus"
+                                            onChange={() =>
+                                              changeProjectStatus(
+                                                Object.values(
+                                                  data,
+                                                )[0],
+                                              )
+                                            }
+                                          >
+                                            <option value="Forecast">
+                                              Forecast
+                                            </option>
+                                            <option value="Inactive">
+                                              Inactive
+                                            </option>
+                                            <option
+                                              value="Active"
+                                              selected
+                                            >
+                                              Active
+                                            </option>
+                                          </select>
+                                        </td>
+                                      );
+                                    case 'Forecast':
+                                      return (
+                                        <td>
+                                          <select
+                                            style={{ height: '30px' }}
+                                            id="projectStatus"
+                                            onChange={() =>
+                                              changeProjectStatus(
+                                                Object.values(
+                                                  data,
+                                                )[0],
+                                              )
+                                            }
+                                          >
+                                            <option
+                                              value="Forecast"
+                                              selected
+                                            >
+                                              Forecast
+                                            </option>
+                                            <option value="Inactive">
+                                              Inactive
+                                            </option>
+                                            <option value="Active">
+                                              Active
+                                            </option>
+                                          </select>
+                                        </td>
+                                      );
+                                  }
+                                }
                                 return <td key={index}>{item}</td>;
                               },
                             )}
@@ -457,6 +588,9 @@ const mapDispatchToProps = {
   createProject: createProject,
   deleteProject: deleteProject,
   addFeedback: addFeedback,
+  editProjectTotal: editProjectTotal,
+  editProjectUser: editProjectUser,
+  updateProjectStatus: updateProjectStatus,
 };
 
 export default connect(

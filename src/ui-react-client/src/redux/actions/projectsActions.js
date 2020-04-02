@@ -119,6 +119,70 @@ export const updateProject = () => {
   };
 };
 
+export const updateProjectStatus = (projectName, status) => {
+  return dispatch => {
+    let URL = `${SVC_ROOT}projectstatus/status/${projectName}/${status}`;
+    return axios
+      .patch(URL, { headers })
+      .then(response => {
+        console.log('update project status reposen', response);
+        dispatch(updateProjectStatusAction(projectName, status));
+      })
+      .catch(error => {
+        throw error;
+      });
+  };
+};
+
+export const updateProjectStatusAction = (projectName, status) => {
+  let payload = { projectName: projectName, status: status };
+  return {
+    type: types.UPDATE_PROJECT_STATUS,
+    payload: payload,
+  };
+};
+export const editProjectTotal = (projectName, data) => {
+  return dispatch => {
+    let URL = `${SVC_ROOT}projectstatus/${projectName}`;
+    return axios
+      .put(URL, { headers }, { data: data })
+      .then(response => {
+        dispatch(editProjectTotalAction());
+      })
+      .catch(error => {
+        throw error;
+      });
+  };
+};
+
+export const editProjectTotalAction = () => {
+  return {
+    type: types.EDIT_PROJECT_TOTAL,
+    payload: '',
+  };
+};
+
+export const editProjectUser = (userName, projectName, data) => {
+  return dispatch => {
+    let URL = `${SVC_ROOT}userproject/${userName}/${projectName}`;
+    return axios
+      .put(URL, { headers }, { data: data })
+      .then(response => {
+        dispatch(editProjectUserAction());
+      })
+      .catch(error => {
+        throw error;
+      });
+  };
+};
+
+export const editProjectUserAction = () => {
+  return {
+    type: types.EDIT_PROJECT_USER,
+    payload: '',
+  };
+};
+
 export const deleteProject = name => {
   return dispatch => {
     let URL = `${SVC_ROOT}projects/${name}`;
@@ -171,32 +235,32 @@ export const loadDetailAction = (
       projectName: projectName,
       year: [
         {
-          jan: item.jan,
-          feb: item.feb,
-          mar: item.mar,
-          apr: item.apr,
-          may: item.may,
-          jun: item.jun,
-          jul: item.jul,
-          aug: item.aug,
-          sep: item.sep,
-          oct: item.oct,
-          nov: item.nov,
-          dec: item.dec,
+          Jan: item.jan,
+          Feb: item.feb,
+          Mar: item.mar,
+          Apr: item.apr,
+          May: item.may,
+          Jun: item.jun,
+          Jul: item.jul,
+          Aug: item.aug,
+          Sep: item.sep,
+          Oct: item.oct,
+          Nov: item.nov,
+          Dec: item.dec,
         },
         {
-          jan: item.jan2,
-          feb: item.feb2,
-          mar: item.mar2,
-          apr: item.apr2,
-          may: item.may2,
-          jun: item.jun2,
-          jul: item.jul2,
-          aug: item.aug2,
-          sep: item.sep2,
-          oct: item.oct2,
-          nov: item.nov2,
-          dec: item.dec2,
+          Jan: item.jan2,
+          Feb: item.feb2,
+          Mar: item.mar2,
+          Apr: item.apr2,
+          May: item.may2,
+          Jun: item.jun2,
+          Jul: item.jul2,
+          Aug: item.aug2,
+          Sep: item.sep2,
+          Oct: item.oct2,
+          Nov: item.nov2,
+          Dec: item.dec2,
         },
       ],
     };

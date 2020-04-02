@@ -37,6 +37,15 @@ const executeLoadDetails = (state, action) => {
 
   return { ...state };
 };
+
+const executeUpdateProjectStatus = (state, action) => {
+  state.projects.map(project => {
+    if (project.Name === action.payload.projectName) {
+      project.Status = action.payload.status;
+    }
+  });
+  return { ...state };
+};
 export const projectsReducer = (
   state = initialState.projects,
   action,
@@ -54,6 +63,8 @@ export const projectsReducer = (
       return executeDeleteProjectData(state, action);
     case types.LOAD_DETAILS:
       return executeLoadDetails(state, action);
+    case types.UPDATE_PROJECT_STATUS:
+      return executeUpdateProjectStatus(state, action);
     default:
       return state;
   }
