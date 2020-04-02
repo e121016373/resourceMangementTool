@@ -71,19 +71,19 @@ namespace Web.API.Infrastructure.Data
             var sql = @"
                 SELECT Id, DisciplineId, Name
                 FROM Skills
-                WHERE Name = @Name
+                WHERE Name = @SkillName
             ;";
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            return await connection.QueryFirstOrDefaultAsync<Skill>(sql, new { Name = name });
+            return await connection.QueryFirstOrDefaultAsync<Skill>(sql, new { SkillName = name });
         }
 
         public async Task<Skill> UpdateASkill(Skill skill)
         {
             var sql = @"
                 UPDATE Skills
-                SET Name = @Name
+                SET Name = @SkillName
                 WHERE Id = @Id 
                     AND DisciplineId = @DisciplineId
             ;";
@@ -94,7 +94,7 @@ namespace Web.API.Infrastructure.Data
             {
                 skill.Id,
                 skill.DisciplineId,
-                skill.Name
+                skill.SkillName
             });
             return result == 1 ? skill : null;
         }
@@ -102,8 +102,12 @@ namespace Web.API.Infrastructure.Data
         public async Task<Skill> AddASkill(Skill skill)
         {
             var sql = @"
-                INSERT INTO Skills ([Name], [DisciplineId])
-                VALUES (@Name, @DisciplineId);
+                INSERT INTO Skills (Name, DisciplineId)
+                VALUES (@SkillName, 
+                    (SELECT D.Id
+                    FROM Disciplines D
+                    WHERE D.Name = @DisciplineName));
+
                 select cast(scope_identity() as int);
             ;";
 
@@ -111,8 +115,8 @@ namespace Web.API.Infrastructure.Data
             connection.Open();
             var id = await connection.QuerySingleAsync<int>(sql, new
             {
-                skill.DisciplineId,
-                skill.Name
+                skill.DisciplineName,
+                skill.SkillName
             });
             skill.Id = id;
             return skill;
@@ -123,13 +127,13 @@ namespace Web.API.Infrastructure.Data
             var skill = await GetASkill(name);
             var sql = @"
                 DELETE FROM Skills
-                WHERE Name = @Name
+                WHERE Name = @SkillName
             ;";
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
             var param = new { 
-                Name = name, 
+                SkillName = name, 
             };
             await connection.ExecuteAsync(sql, param);
             return skill;
