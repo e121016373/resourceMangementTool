@@ -58,6 +58,14 @@
     background-color: darken($purple-color, 1%);
   }
 }
+.btn-cancel {
+  @extend %btn;
+  background-color: $cancel-color;
+  color: white;
+  &:hover {
+    background-color: darken($cancel-color, 1%);
+  }
+}
 .swipe-button {
   height: 23px;
   overflow: hidden;
@@ -85,6 +93,12 @@
       margin: 0;
     }
     .btn-blue {
+      padding: 0px 10px;
+      text-align: center;
+      align-content: center;
+      margin: 0;
+    }
+    .btn-cancel {
       padding: 0px 10px;
       text-align: center;
       align-content: center;

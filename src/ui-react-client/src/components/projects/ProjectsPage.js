@@ -8,11 +8,13 @@ import {
   editProjectTotal,
   editProjectUser,
   updateProjectStatus,
+  forecastProject,
 } from '../../redux/actions/projectsActions';
 import { addFeedback } from '../../redux/actions/feedbackAction';
 import { connect } from 'react-redux';
 import Loading from '../loading/loading';
 import { CreateProjectModal, SearchModal } from './modal';
+import WButton from '../personalProfile/button';
 const ProjectsPage = ({
   loadProjects,
   projects,
@@ -20,9 +22,8 @@ const ProjectsPage = ({
   createProject,
   deleteProject,
   addFeedback,
-  editProjectTotal,
-  editProjectUser,
   updateProjectStatus,
+  forecastProject,
 }) => {
   useEffect(() => {
     if (!projects.projects) {
@@ -33,10 +34,13 @@ const ProjectsPage = ({
   }, [projects.projects]);
 
   const showDetail = (projectName, fromDate, toDate) => {
-    console.log(projectName, fromDate, toDate);
+    console.log('in showDetail', projectName, fromDate, toDate);
     loadDetails(projectName, fromDate, toDate);
   };
-
+  const [projectName, setProjectName] = useState('');
+  const [fromDate, setFromDate] = useState('');
+  const [toDate, setToDate] = useState('');
+  const [detailTableHead, setDetailTableHead] = useState([]);
   const [year, setYear] = useState(0);
   const changeYear = () => {
     let tempYear = document.getElementById('select-year').value;
@@ -91,17 +95,62 @@ const ProjectsPage = ({
     if (secondYear) return <option>{secondYear}</option>;
   };
   const edit = resource => {
-    console.log('the resource is ', resource);
+    //console.log('the resource is ', resource);
+    let datas = document.querySelectorAll(`.${resource}`);
+    datas.forEach(data => {
+      data.style.border = 'solid';
+      data.style.borderWidth = '1px';
+      data.style.borderColor = 'black';
+      data.disabled = false;
+    });
   };
-  const [projectName, setProjectName] = useState('');
-  const [fromDate, setFromDate] = useState('');
-  const [toDate, setToDate] = useState('');
+  const submit = resource => {
+    console.log('the resource is ', resource);
+    let datas = document.querySelectorAll(`.${resource}`);
+    let year = document.getElementById('select-year').value;
+    let data = { year: parseInt(year) };
+    let parsedMonth = [...detailTableHead];
+    parsedMonth.pop();
+    parsedMonth.pop();
+    parsedMonth = parsedMonth.slice(1);
+    console.log('in submit', parsedMonth);
+    for (let a = 0; a < parsedMonth.length; a++) {
+      //console.log(datas[a].placeholder, datas[a].value);
+      data[parsedMonth[a]] =
+        datas[a].value === ''
+          ? parseInt(datas[a].placeholder)
+          : parseInt(datas[a].value);
+    }
+    console.log('the data is', data);
+    forecastProject(projectName, resource, data).then(() => {
+      // for (let a = 0; a < datas.length; a++) {
+      //   //datas.forEach(data => {
+      //   datas[a].style.border = 'none';
+      //   datas[a].disabled = true;
+      //   if (!datas[a].value === '') {
+      //     datas[a].placeholder = datas[a].value;
+      //     datas[a].value = '';
+      //   }
+      //   //});
+      // }
+      showDetail('Ab vero aut atque laborum.', fromDate, toDate);
+    });
+  };
+  const cancel = resource => {
+    let datas = document.querySelectorAll(`.${resource[0]}`);
+    for (let a = 0; a < datas.length; a++) {
+      //datas.forEach(data => {
+      datas[a].style.border = 'none';
+      datas[a].disabled = true;
+      datas[a].value = '';
+      datas[a].placeholder = resource[a + 1];
+      //});
+    }
+  };
 
   const renderDetail = year => {
     if (projects.details) {
       let details = projects.details;
-
-      let detailTableHead;
       let detailTable = details.map(detail => {
         let resource = detail.resource;
         let DetailTableHead = details[0].projectName;
@@ -154,12 +203,12 @@ const ProjectsPage = ({
         );
 
         //choose year to display
-        if (!detailTableHead) {
-          detailTableHead = Object.keys(firstYearObject);
-          detailTableHead = ['Resource'].concat(detailTableHead);
-          detailTableHead.push('Edit');
-          detailTableHead.push('Submit');
-          //detailTable = Object.values(firstYearObject);
+        if (!(projectName === detail.projectName)) {
+          let tempHead = Object.keys(firstYearObject);
+          tempHead = ['Resource'].concat(tempHead);
+          tempHead.push('Edit');
+          tempHead.push('Submit');
+          setDetailTableHead(tempHead);
         }
 
         let data = [];
@@ -268,21 +317,37 @@ const ProjectsPage = ({
                     <>
                       <tr key={index}>
                         {Object.values(data).map((item, index) => {
-                          return <td key={index}>{item}</td>;
+                          if (typeof item === 'string') {
+                            return <td key={index}>{item}</td>;
+                          }
+                          return (
+                            <td key={index}>
+                              <input
+                                className={Object.values(data)[0]}
+                                style={{
+                                  border: 'none',
+                                  width: '45px',
+                                  color: '#32A8FF',
+                                }}
+                                //id="location"
+                                placeholder={item}
+                                disabled={true}
+                              ></input>
+                            </td>
+                          );
                         })}
                         <td>
-                          <div
-                            style={{
-                              //width: '7vw',
-                              padding: 5,
-                            }}
-                            className="btn-orange"
-                            onClick={() =>
+                          <WButton
+                            buttonNameOne={'Edit'}
+                            buttonNameTwo={'Cancel'}
+                            id={Object.values(data)[0]}
+                            onClickButtonOne={() =>
                               edit(Object.values(data)[0])
                             }
-                          >
-                            Edit
-                          </div>
+                            onClickButtonTwo={() =>
+                              cancel(Object.values(data))
+                            }
+                          />
                         </td>
                         <td>
                           <div
@@ -291,6 +356,9 @@ const ProjectsPage = ({
                               padding: 5,
                             }}
                             className="btn-blue"
+                            onClick={() =>
+                              submit(Object.values(data)[0])
+                            }
                           >
                             Submit
                           </div>
@@ -608,6 +676,7 @@ const mapDispatchToProps = {
   editProjectTotal: editProjectTotal,
   editProjectUser: editProjectUser,
   updateProjectStatus: updateProjectStatus,
+  forecastProject: forecastProject,
 };
 
 export default connect(

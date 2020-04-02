@@ -228,8 +228,8 @@ const ProfileMain = ({
                 />
                 <div style={{ float: 'left' }}>
                   <WButton
-                    buttonNameOne={'add'}
-                    buttonNameTwo={'submit'}
+                    buttonNameOne={'Add'}
+                    buttonNameTwo={'Cancel'}
                     id={'addDiscipline'}
                     onClickButtonOne={addDisciplineButton}
                     onClickButtonTwo={cancelAddDiscipline}
@@ -304,8 +304,8 @@ const ProfileMain = ({
                   }
                 />
                 <WButton
-                  buttonNameOne={'add'}
-                  buttonNameTwo={'submit'}
+                  buttonNameOne={'Add'}
+                  buttonNameTwo={'Cancel'}
                   id={'addSkill'}
                   onClickButtonOne={addSkillButton}
                   onClickButtonTwo={cancelAddSkill}

@@ -183,6 +183,30 @@ export const editProjectUserAction = () => {
   };
 };
 
+export const forecastProject = (projectName, resource, data) => {
+  return dispatch => {
+    let TotalURL = `${SVC_ROOT}projectstatus/${projectName}`;
+    let UerURL = `${SVC_ROOT}userprojects/${resource}/${projectName}`;
+    let url;
+    if (resource === 'Total') {
+      url = TotalURL;
+    } else {
+      url = UerURL;
+    }
+    console.log('the URL is', url, 'data is ', JSON.stringify(data));
+
+    return axios
+      .put(url, { data: JSON.stringify(data) })
+      .then(response => {
+        console.log('forecast result is ', response);
+        //loadDetails('Ab vero aut atque laborum.', fromDate, toDate);
+      })
+      .catch(error => {
+        throw error;
+      });
+  };
+};
+
 export const deleteProject = name => {
   return dispatch => {
     let URL = `${SVC_ROOT}projects/${name}`;
