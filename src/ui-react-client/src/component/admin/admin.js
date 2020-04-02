@@ -5,6 +5,7 @@ import SkillTable from '../subComponents/SkillTable';
 import DisciplineTable from '../subComponents/DisciplineTable';
 import '../../css/admin.css';
 import Sidebar from "../subComponents/Sidebar";
+import ShowFeedbackMsg from "../subComponents/feedbackMsg";
 
 export default class Admin extends React.Component{
 
@@ -33,15 +34,14 @@ export default class Admin extends React.Component{
 
     return (
         <div className="adminMain">
-          <Sidebar table={this.setTable}/>
-          <div className= "dataTable">
-            {table}
-          </div>
+        <ShowFeedbackMsg/>
+        <Sidebar table={this.setTable}/>
+    <div className= "dataTable">
+        {table}
         </div>
-    );
+        </div>
+  );
   }
 
 }
-
-//hello
 

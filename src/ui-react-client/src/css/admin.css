@@ -42,6 +42,14 @@
   opacity: 0.6;
 }
 
+.created-block {
+  margin: 10px;
+  color: black;
+  border: 1px red;
+  background-color: #5BEF99;
+  opacity: 0.6;
+}
+
 
 .myButton {
   background-color: #007bff; /* Green */
@@ -58,6 +66,7 @@
 }
 a:hover {
   background-color: #2E86BA;}
+
 
 
 

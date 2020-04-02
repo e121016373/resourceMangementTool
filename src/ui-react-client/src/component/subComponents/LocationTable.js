@@ -7,6 +7,7 @@ import React, {useEffect, useState} from 'react';
 import Button from "react-bootstrap/Button";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import LocationModal from "./LocationModal";
+import {addFeedback} from "../../redux/actions/feedbackAction";
 
 
 
@@ -22,33 +23,50 @@ const LocationTable = ({
         }
     }, [locations, loadLocations]);
     const [modalShow, setModalShow] = React.useState(false);
-    const [locToBeDel, setLocName] = useState ({
+    const [locToBeDel, setLocCode] = useState ({
         code:'',
     });
+    const [locToBeDelName, setLocName] = useState ({
+        name:'',
+    });
     const dispatch = useDispatch();
-
 
     function onRowSelect(row, isSelected, e) {
 
         const val = row.code;
-        setLocName(prevState => {
+        const locname = row.name;
+        setLocCode(prevState => {
             return {...prevState, code:val}
+        });
+        setLocName(prevState => {
+            return {...prevState, name:locname};
         });
 
     }
 
     function onSelectAll(isSelected, rows) {
-        if (isSelected) {
-            alert('The selection only work on key which less than 3');
-            return locations.map(p => p.id).filter(id => id < 3);
-        }
+
     }
 
     function handleDelete(e) {
         e.preventDefault();
 
         if(locToBeDel.code) {
-            dispatch(deleteALocation(locToBeDel));
+            dispatch(deleteALocation(locToBeDel))
+                .then(() => {
+                    dispatch(addFeedback({
+                        type: 'success',
+                        data: locToBeDelName.name + ' removed successfully',
+                        show: true,
+                    }));
+                })
+                .catch(error => {
+                    dispatch(addFeedback({
+                        type: 'success',
+                        data: locToBeDelName.name + ' removed unsuccessfully',
+                        show: true,
+                    }));
+                });
         }
     }
 
@@ -63,27 +81,27 @@ const LocationTable = ({
 
     return (
         <div>
-            <ButtonToolbar>
-                <Button variant="primary" onClick={() => setModalShow(true)}>
-                    Add Location
-                </Button>
+        <ButtonToolbar>
+        <Button variant="primary" onClick={() => setModalShow(true)}>
+    Add Location
+    </Button>
 
-                <LocationModal
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
-                />
-                <div className="divider"/>
-                <Button variant="danger" onClick={handleDelete}>Remove Location</Button>
-            </ButtonToolbar>
+    <LocationModal
+    show={modalShow}
+    onHide={() => setModalShow(false)}
+    />
+    <div className="divider"/>
+        <Button variant="danger" onClick={handleDelete}>Remove Location</Button>
+    </ButtonToolbar>
 
-            <BootstrapTable data={ locations } search = {true} pagination = {true} selectRow ={selectRowProp} striped hover condensed>
-                <TableHeaderColumn width="150" dataField='id' isKey>Location id</TableHeaderColumn>
-                <TableHeaderColumn width="150" dataField='code'> Location Code</TableHeaderColumn>
-                <TableHeaderColumn width="150" dataField='name' >Location Name</TableHeaderColumn>
-                <TableHeaderColumn width="150" dataField='numberOfPeople'> Number of People</TableHeaderColumn>
-            </BootstrapTable>
-        </div>
-    );
+    <BootstrapTable data={ locations } search = {true} pagination = {true} selectRow ={selectRowProp} striped hover condensed>
+    <TableHeaderColumn width="150" dataField='id' isKey>Location id</TableHeaderColumn>
+    <TableHeaderColumn width="150" dataField='code'> Location Code</TableHeaderColumn>
+    <TableHeaderColumn width="150" dataField='name' >Location Name</TableHeaderColumn>
+    <TableHeaderColumn width="150" dataField='numberOfPeople'> Number of People</TableHeaderColumn>
+    </BootstrapTable>
+    </div>
+);
 };
 
 const mapStateToProps = state => {

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import "../../css/admin.css";
 import {createDiscipline} from "../../redux/actions/disciplinesActions";
 import {createSkill} from "../../redux/actions/skillsAction";
+import {addFeedback} from "../../redux/actions/feedbackAction";
 
 
 function DisciplineModal(props) {
@@ -13,7 +14,13 @@ function DisciplineModal(props) {
         name: '',
     });
 
+    const initialState = {
+        name: '',
+    };
+
     const [submitted, setSubmitted] = useState(false);
+    const [created, setCreated] = useState(false);
+    const [createdWrong, setCreatedWrong] = useState(false);
     const dispatch = useDispatch();
 
     function handleChange(e) {
@@ -25,8 +32,30 @@ function DisciplineModal(props) {
 
         setSubmitted(true);
         if(discipline.name) {
-            dispatch(createDiscipline(discipline));
+            dispatch(createDiscipline(discipline))
+                .then(() => {
+                    dispatch(addFeedback({
+                        type: 'success',
+                        data: '  :'+ discipline.name + ' created successfully',
+                        show: true,
+                    }));
+                    closing();
+                })
+                .catch(error => {
+                    setCreatedWrong(true);
+                });
         }
+    }
+
+    function closing(){
+        setInitialState();
+        props.onHide();
+    }
+
+    function setInitialState() {
+        setSubmitted(false);
+        setCreatedWrong(false);
+        setDiscipline({...initialState});
     }
     return (
         <Modal
@@ -38,7 +67,11 @@ function DisciplineModal(props) {
     <Modal.Header closeButton>
     <Modal.Title id="contained-modal-title-vcenter">
         Create New Skill
-    </Modal.Title>
+
+    {submitted && createdWrong &&
+    <div className="help-block">Discipline is unsuccessfully created. Check your discipline name.</div>
+    }
+</Modal.Title>
     </Modal.Header>
     <Modal.Body>
     <form name="form" onSubmit={handleSubmit}>
@@ -52,10 +85,13 @@ function DisciplineModal(props) {
     </form>
 
     </Modal.Body>
-    <Modal.Footer><Button variant="secondary" onClick={props.onHide}>
-        Close
-        </Button>
-        <Button variant="primary" onClick={handleSubmit}>
+    <Modal.Footer><Button variant="secondary" onClick={() => {
+        setInitialState();
+        props.onHide();
+    }}>
+    Close
+    </Button>
+    <Button variant="primary" onClick={handleSubmit}>
         Create Discipline
     </Button>
     </Modal.Footer>

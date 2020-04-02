@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import UserModal from "./UserModal";
 import {deleteAUser} from "../../redux/actions/usersActions";
+import {addFeedback} from "../../redux/actions/feedbackAction";
 
 
 const UserTable = ({
@@ -49,17 +50,27 @@ const UserTable = ({
     }
 
     function onSelectAll(isSelected, rows) {
-        if (isSelected) {
-            alert('The selection only work on key which less than 3');
-            return users.map(p => p.id).filter(id => id < 3);
-        }
+
     }
 
     function handleDelete(e) {
         e.preventDefault();
-
         if(userToBeDel.username) {
-            dispatch(deleteAUser(userToBeDel));
+            dispatch(deleteAUser(userToBeDel))
+                .then(() => {
+                    dispatch(addFeedback({
+                        type: 'success',
+                        data: userToBeDel.username + ' removed successfully',
+                        show: true,
+                    }));
+                })
+                .catch(error => {
+                    dispatch(addFeedback({
+                        type: 'success',
+                        data: userToBeDel.username + ' removed unsuccessfully',
+                        show: true,
+                    }));
+                });
         }
     }
 
@@ -86,6 +97,7 @@ const UserTable = ({
                     onHide={() => setModalShow(false)}
                 />
             </ButtonToolbar>
+            <feedbackMsg/>
             <BootstrapTable data={ users } search ={true} pagination = {true} selectRow={ selectRowProp} striped hover condensed>
                 <TableHeaderColumn width="150" dataField='id' isKey>Id</TableHeaderColumn>
                 <TableHeaderColumn width="150" dataField='firstName'>First Name</TableHeaderColumn>
@@ -119,6 +131,8 @@ const mapDispatchToProps = {
     loadUsers,
     loadLocations,
     createAUser,
+    addFeedback: addFeedback,
+    deleteAUser,
 };
 
 export default connect(

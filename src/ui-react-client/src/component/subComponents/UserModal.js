@@ -5,6 +5,7 @@ import {createAUser} from "../../redux/actions/usersActions";
 import {useState, useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import "../../css/admin.css";
+import {addFeedback} from "../../redux/actions/feedbackAction";
 
 
 
@@ -18,7 +19,17 @@ function UserModal(props) {
         type: '',
     });
 
+    const initialState = {
+        id: 1,
+        firstName: '',
+        lastName: '',
+        username: '',
+        location: '',
+        type: '',
+    };
+
     const [submitted, setSubmitted] = useState(false);
+    const [createdWrong, setCreatedWrong] = useState(false);
     const dispatch = useDispatch();
 
     function handleChange(e) {
@@ -26,12 +37,34 @@ function UserModal(props) {
         setUser(user => ({...user, [name]: value}));
     }
     function handleSubmit(e) {
-        e.preventDefault();
+        //e.preventDefault();
 
         setSubmitted(true);
         if(user.firstName && user.lastName && user.location && user.type && user.username) {
-            dispatch(createAUser(user));
+            dispatch(createAUser(user))
+                .then(() => {
+                    dispatch(addFeedback({
+                        type: 'success',
+                        data: '  :'+ user.username + ' created successfully',
+                        show: true,
+                    }));
+                    closing();
+                })
+                .catch(error => {
+                    setCreatedWrong(true);
+                });
         }
+    }
+
+    function closing(){
+        setInitialState();
+        props.onHide();
+    }
+
+    function setInitialState() {
+        setSubmitted(false);
+        setCreatedWrong(false);
+        setUser({...initialState});
     }
     return (
         <Modal
@@ -43,6 +76,9 @@ function UserModal(props) {
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
                     Create New User
+                    {submitted && createdWrong &&
+                    <div className="help-block">User is unsuccessfully created. Check your user name.</div>
+                    }
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -89,10 +125,15 @@ function UserModal(props) {
                     </div>
                 </form>
             </Modal.Body>
-            <Modal.Footer><Button variant="secondary" onClick={props.onHide}>
+            <Modal.Footer><Button variant="secondary" onClick={() => {
+                setInitialState();
+                props.onHide();
+            }}>
                 Close
             </Button>
-                <Button variant="primary" onClick = {handleSubmit}>
+                <Button variant="primary" onClick = {() => {
+                    handleSubmit();
+                }}>
                     Create User
                 </Button>
             </Modal.Footer>

@@ -1,102 +1,117 @@
-import {BootstrapTable, TableHeaderColumn} from "react-bootstrap-table";
-import "../../css/admin.css"
-import "bootstrap/dist/css/bootstrap.min.css";
-import { loadSkills } from '../../redux/actions/skillsAction'
-import {connect, useDispatch} from 'react-redux';
-import React, {useEffect, useState} from 'react';
-import {Button} from "react-bootstrap";
-import ButtonToolbar from "react-bootstrap/ButtonToolbar";
-import SkillModal from "./SkillModal";
-import {deleteASkill} from "../../redux/actions/skillsAction";
+import Modal from 'react-bootstrap/Modal';
+import React from "react";
+import Button from "react-bootstrap/Button";
+import {useState, useEffect} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import "../../css/admin.css";
+import {createSkill} from "../../redux/actions/skillsAction";
+import {addFeedback} from "../../redux/actions/feedbackAction";
 
-const SkillTable = ({
-                        skills,
-                        loadSkills,
-                    }) => {
-    useEffect(() => {
-        if (skills.length === 0) {
-            loadSkills().catch(error => {
-                alert('Loading skills failed' + error);
-            });
-        }
-    }, [skills, loadSkills]);
 
-    const [modalShow, setModalShow] = React.useState(false);
-    const [skillToBeDel, setSkillName] = useState ({
-        name:'',
+function SkillModal(props) {
+
+    const [skill, setSkill] = useState({
+        disciplineId: '',
+        name: '',
     });
+
+    const initialState = {
+        disciplineId: '',
+        name: '',
+    };
+
+    const [submitted, setSubmitted] = useState(false);
+    const [created, setCreated] = useState(false);
+    const [createdWrong, setCreatedWrong] = useState(false);
     const dispatch = useDispatch();
 
-
-    function onRowSelect(row, isSelected, e) {
-
-        const val = row.name;
-        setSkillName(prevState => {
-            return {...prevState, name:val}
-        });
-
-    }
-
-    function onSelectAll(isSelected, rows) {
-        if (isSelected) {
-            alert('The selection only work on key which less than 3');
-            return skills.map(p => p.id).filter(id => id < 3);
+    function handleChange(e) {
+        let {name, value} = e.target;
+        if(name === "disciplineId"){
+            value = Number(value);
         }
+        setSkill(skill => ({...skill, [name]: value}));
     }
-
-    function handleDelete(e) {
+    function handleSubmit(e) {
         e.preventDefault();
 
-        if(skillToBeDel.name) {
-            dispatch(deleteASkill(skillToBeDel));
+        setSubmitted(true);
+        if(skill.disciplineId && skill.name) {
+            dispatch(createSkill(skill))
+                .then(() => {
+                    dispatch(addFeedback({
+                        type: 'success',
+                        data: '  :'+ skill.name + ' created successfully',
+                        show: true,
+                    }));
+                    closing();
+                })
+                .catch(error => {
+                    setCreatedWrong(true);
+                });
         }
     }
 
-    const selectRowProp = {
-        mode: 'checkbox',
-        clickToSelect: true,
-        onSelect: onRowSelect,
-        onSelectAll: onSelectAll
-    };
+    function closing(){
+        setInitialState();
+        props.onHide();
+    }
 
-
+    function setInitialState() {
+        setSubmitted(false);
+        setCreatedWrong(false);
+        setSkill({...initialState});
+    }
 
     return (
-        <div>
-            <ButtonToolbar>
-                <Button variant="primary" onClick={() => setModalShow(true)}>
-                    Add Skill
+        <Modal
+            {...props}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+        >
+            <Modal.Header closeButton>
+                <Modal.Title id="contained-modal-title-vcenter">
+                    Create New Skill
+                    {submitted && created &&
+                    <div className="created-block">Skill is successfully created.</div>
+                    }
+                    {submitted && createdWrong &&
+                    <div className="help-block">Skill is unsuccessfully created. Check your skill name.</div>
+                    }
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <form name="form" onSubmit={handleSubmit}>
+                    <div className={'form-group' + (submitted && !skill.name ? ' has-error' : '')}>
+                        <label>Skill Name</label>
+                        <input type="text" name="name" defaultvalue={skill.name} onChange={handleChange} className={'form-control'} />
+                        {submitted && !skill.name &&
+                        <div className="help-block">Skill Name is required</div>
+                        }
+                    </div>
+                    <div className={'form-group' + (submitted && skill.disciplineId ? ' has-error' : '')}>
+                        <label>Discipline ID</label>
+                        <input type="text" name="disciplineId" defaultvalue={skill.disciplineId} onChange={handleChange} className={'form-control'} />
+                        {submitted && !skill.disciplineId &&
+                        <div className="help-block">Discipline ID is required</div>
+                        }
+                    </div>
+                </form>
+
+            </Modal.Body>
+            <Modal.Footer><Button variant="secondary" onClick={() => {
+                setInitialState();
+                props.onHide();
+            }}>
+                Close
+            </Button>
+                <Button variant="primary" onClick={handleSubmit}>
+                    Create SKill
                 </Button>
-
-                <SkillModal
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
-                />
-
-                <div className="divider"/>
-                <Button variant="danger" onClick={handleDelete}>Remove Skill</Button>
-            </ButtonToolbar>
-            <BootstrapTable data={ skills } search = {true} pagination = {true} selectRow={ selectRowProp} striped hover condensed>
-                <TableHeaderColumn width="150" dataField='id' isKey>Id</TableHeaderColumn>
-                <TableHeaderColumn width="150" dataField='disciplineId'> Discipline Id</TableHeaderColumn>
-                <TableHeaderColumn width="150" dataField='name'> Skill Name</TableHeaderColumn>
-                <TableHeaderColumn width="150" dataField='TODO'> Number of People</TableHeaderColumn>
-            </BootstrapTable>
-        </div>
+            </Modal.Footer>
+        </Modal>
     );
-};
+}
 
-const mapStateToProps = state => {
-    return {
-        skills: state.skills,
-    };
-};
-
-const mapDispatchToProps = {
-    loadSkills,
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(SkillTable);
+export default SkillModal;
