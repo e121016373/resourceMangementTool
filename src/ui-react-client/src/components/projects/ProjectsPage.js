@@ -1,5 +1,7 @@
 import React, { Component, useState, useEffect } from 'react';
 import WTable from '../personalProfile/my_table';
+import AEicon from '../icons/associated-engineering-logo-png-transparent.png';
+
 import {
   loadProjects,
   loadDetails,
@@ -34,9 +36,17 @@ const ProjectsPage = ({
   }, [projects.projects]);
 
   const showDetail = (projectName, fromDate, toDate) => {
+    setIsRenderDetail(true);
     console.log('in showDetail', projectName, fromDate, toDate);
-    loadDetails(projectName, fromDate, toDate);
+    loadDetails(projectName, fromDate, toDate)
+      .then(() => {
+        return setIsRenderDetail(false);
+      })
+      .catch(() => {
+        return setIsRenderDetail(false);
+      });
   };
+  const [isRenderDetail, setIsRenderDetail] = useState(false);
   const [projectName, setProjectName] = useState('');
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
@@ -106,6 +116,7 @@ const ProjectsPage = ({
   };
   const submit = resource => {
     console.log('the resource is ', resource);
+    setIsRenderDetail(true);
     let datas = document.querySelectorAll(`.${resource}`);
     let year = document.getElementById('select-year').value;
     let data = { year: parseInt(year) };
@@ -150,6 +161,18 @@ const ProjectsPage = ({
   };
 
   const renderDetail = year => {
+    if (isRenderDetail) {
+      return (
+        <div style={{ height: '60%' }}>
+          <div style={{ height: '100%' }} className="loading">
+            <div>
+              <img src={AEicon}></img>
+              <div className="loading-bar"></div>
+            </div>
+          </div>
+        </div>
+      );
+    }
     if (projects.details) {
       let details = projects.details;
       let detailTable = details.map(detail => {
