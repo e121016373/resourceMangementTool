@@ -20,13 +20,17 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<Project>> GetAllProjects()
         {
             var sql = @"
-                select
+                SELECT
                     P.Id, P.Number, P.Title, L.Name as Location, P.CreatedAt, 
-                    P.UpdatedAt
-                from
+                    P.UpdatedAt,
+                    (SELECT Count(DISTINCT UserId)
+                        FROM UserHours
+                        WHERE ProjectId = P.Id
+                        GROUP BY ProjectId
+                    ) AS 'NumberOfPeople'
+                FROM
                     Projects P
-                INNER JOIN Locations L
-                on L.Id = P.LocationId
+                    INNER JOIN Locations L ON L.Id = P.LocationId
             ;";
 
             using var connection = new SqlConnection(connectionString);
