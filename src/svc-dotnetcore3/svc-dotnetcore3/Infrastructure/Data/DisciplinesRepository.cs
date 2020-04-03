@@ -67,10 +67,14 @@ namespace Web.API.Infrastructure.Data
 
         public async Task<Discipline> AddADiscipline(Discipline discipline)
         {
+            if (discipline.Name?.Trim() == "") {
+                throw new ArgumentNullException(nameof(discipline));
+            }
+
             var sql = @"
                 INSERT INTO Disciplines ([Name])
                 VALUES (@Name);
-                SELECT cast(scope_identity() as int);
+                SELECT cast(scope_identity() as int)
             ;";
 
             using var connection = new SqlConnection(connectionString);
