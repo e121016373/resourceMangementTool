@@ -171,7 +171,6 @@ const Search = ({
   };
   const [searchState, setSearchState] = useState('notSearching');
   const search = () => {
-    setSearchState('searching');
     let content = {
       discipline: undefined,
       yoe: undefined,
@@ -186,8 +185,18 @@ const Search = ({
       document.getElementById('search-discipline').value === ''
         ? undefined
         : document.getElementById('search-discipline').value;
+    if (!content.discipline) {
+      let discipline = document.getElementById('search-discipline');
+      console.log('in dicipline');
+      discipline.parentElement.style.borderColor = 'red';
+    } else {
+      let discipline = document.getElementById('search-discipline');
+
+      discipline.parentElement.style.borderColor = '#ccc';
+    }
     let tempExperience = document.getElementById('search-experience')
       .value;
+
     //console.log(tempExperience);
     switch (tempExperience) {
       case '0':
@@ -226,6 +235,26 @@ const Search = ({
         : parseInt(
             document.getElementById('search-availability').value,
           );
+    console.log('serach content is ', content);
+
+    if (!content.fromDate) {
+      let fromDate = document.getElementById('search-fromDate');
+      fromDate.style.borderColor = 'red';
+    } else {
+      let fromDate = document.getElementById('search-fromDate');
+      fromDate.style.borderColor = '#ccc';
+    }
+    if (!content.toDate) {
+      let toDate = document.getElementById('search-toDate');
+      toDate.style.borderColor = 'red';
+    } else {
+      let toDate = document.getElementById('search-toDate');
+      toDate.style.borderColor = '#ccc';
+    }
+    if (!(content.discipline && content.fromDate && content.toDate)) {
+      return;
+    }
+    setSearchState('searching');
     searchUsers(content)
       .then(() => {
         //setTimeout(1000);
@@ -312,7 +341,7 @@ const Search = ({
                     <td>
                       <div className="title">
                         <i className="fas fa-user-graduate mr-4 fa-lg"></i>
-                        Discipline
+                        Discipline*
                       </div>
                     </td>
                     <td>
@@ -359,21 +388,28 @@ const Search = ({
                     <td>
                       <div className="title">
                         <i className="fas fa-calendar-day mr-4 fa-lg"></i>
-                        Date
+                        FromDate*
                       </div>
                     </td>
                     <td>
                       <input
                         id="search-fromDate"
-                        placeholder="MM/DD/YYYY"
-                        type="date"
+                        placeholder="YYYY-MM-DD"
                         className="searchBox"
                       ></input>
-                      To
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div className="title">
+                        <i className="fas fa-calendar-day mr-4 fa-lg"></i>
+                        ToDate*
+                      </div>
+                    </td>
+                    <td>
                       <input
                         id="search-toDate"
-                        placeholder="MM/DD/YYYY"
-                        type="date"
+                        placeholder="YYYY-MM-DD"
                         className="searchBox"
                       ></input>
                     </td>
