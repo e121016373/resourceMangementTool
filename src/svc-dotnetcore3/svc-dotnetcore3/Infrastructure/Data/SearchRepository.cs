@@ -48,13 +48,27 @@ namespace Web.API.Infrastructure.Data
                     GROUP BY UH.UserId) AS 'Availability'";
             }
 
-            sql += @" FROM 
+            sql += @"
+                    FROM 
                         Users U
-                        INNER JOIN UserWorksDiscipline UWD ON U.Id = UWD.UserId
-                        INNER JOIN UserHasSkills UHS ON U.Id = UHS.UserId
-                        INNER JOIN Locations L ON U.LocationId = L.Id
-                        INNER JOIN Disciplines D ON UWD.DisciplineId = D.Id
-                        INNER JOIN Skills S ON UHS.SkillId = S.Id 
+                        LEFT JOIN UserWorksDiscipline UWD ON U.Id = UWD.UserId";
+
+            if (search.Skill != null) {
+                sql += " LEFT JOIN UserHasSkills UHS ON U.Id = UHS.UserId";
+            } else {
+                sql += @"
+                    LEFT JOIN (
+                        SELECT UHS.UserId, MIN(UHS.SkillId) AS 'SkillId'
+                        FROM UserHasSkills UHS
+                        GROUP BY UHS.UserId
+                        ) UHS ON UHS.UserId = U.Id
+            ";
+            }
+
+            sql += @"
+                        LEFT JOIN Locations L ON U.LocationId = L.Id
+                        LEFT JOIN Disciplines D ON UWD.DisciplineId = D.Id
+                        LEFT JOIN Skills S ON UHS.SkillId = S.Id 
                     WHERE 
                         S.DisciplineId = D.Id";
 
