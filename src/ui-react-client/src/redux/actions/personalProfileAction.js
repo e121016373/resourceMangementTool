@@ -106,6 +106,10 @@ export const loadPersonalProfile = () => {
                           axios
                             .get(URL, { headers })
                             .then(utilResponse => {
+                              console.log(
+                                'the util reponse is ',
+                                utilResponse,
+                              );
                               dispatch(
                                 loadUserProfile(
                                   response.data,

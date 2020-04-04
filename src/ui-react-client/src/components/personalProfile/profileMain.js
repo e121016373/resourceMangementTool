@@ -102,7 +102,7 @@ const ProfileMain = ({
     else return 'rgba(255,99,132)';
   };
   const renderUtil = number => {
-    if (util) {
+    if (util.length !== 0) {
       const data = {
         labels: [
           'January',
