@@ -62,53 +62,53 @@ function LocationModal(props) {
 
     return (
         <Modal
-    {...props}
-    size="lg"
-    aria-labelledby="contained-modal-title-vcenter"
-    centered
-    >
-    <Modal.Header closeButton>
-    <Modal.Title id="contained-modal-title-vcenter">
-        Create New Skill
-    {submitted && created &&
-    <div className="created-block">Location is successfully created.</div>
-    }
-    {submitted && createdWrong &&
-    <div className="help-block">Location is unsuccessfully created. Check your Location code.</div>
-    }
-</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-    <form name="form" onSubmit={handleSubmit}>
-        <div className={'form-group' + (submitted && !location.name ? ' has-error' : '')}>
-        <label>Location Name</label>
-    <input type="text" name="name" value={location.name} onChange={handleChange} className={'form-control'} />
-    {submitted && !location.name &&
-    <div className="help-block">Location Name is required</div>
-    }
-</div>
-    <div className={'form-group' + (submitted && location.code ? ' has-error' : '')}>
-        <label>Location Code</label>
-    <input type="text" name="code" value={location.code} onChange={handleChange} className={'form-control'} />
-    {submitted && !location.code &&
-    <div className="help-block">Location Code is required</div>
-    }
-</div>
-    </form>
+            {...props}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+        >
+            <Modal.Header closeButton>
+                <Modal.Title id="contained-modal-title-vcenter">
+                    Create New Skill
+                    {submitted && created &&
+                    <div className="created-block">Location is successfully created.</div>
+                    }
+                    {submitted && createdWrong &&
+                    <div className="help-block">Location is unsuccessfully created. Check your Location code.</div>
+                    }
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <form name="form" onSubmit={handleSubmit}>
+                    <div className={'form-group' + (submitted && !location.name ? ' has-error' : '')}>
+                        <label>Location Name</label>
+                        <input type="text" name="name" value={location.name} onChange={handleChange} className={'form-control'} />
+                        {submitted && !location.name &&
+                        <div className="help-block">Location Name is required</div>
+                        }
+                    </div>
+                    <div className={'form-group' + (submitted && location.code ? ' has-error' : '')}>
+                        <label>Location Code</label>
+                        <input type="text" name="code" value={location.code} onChange={handleChange} className={'form-control'} />
+                        {submitted && !location.code &&
+                        <div className="help-block">Location Code is required</div>
+                        }
+                    </div>
+                </form>
 
-    </Modal.Body>
-    <Modal.Footer><Button variant="secondary" onClick={() => {
-        setInitialState();
-        props.onHide();
-    }}>
-    Close
-    </Button>
-    <Button variant="primary" onClick={handleSubmit}>
-        Create Location
-    </Button>
-    </Modal.Footer>
-    </Modal>
-);
+            </Modal.Body>
+            <Modal.Footer><Button variant="secondary" onClick={() => {
+                setInitialState();
+                props.onHide();
+            }}>
+                Close
+            </Button>
+                <Button variant="primary" onClick={handleSubmit}>
+                    Create Location
+                </Button>
+            </Modal.Footer>
+        </Modal>
+    );
 }
 
 export default LocationModal;

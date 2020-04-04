@@ -17,6 +17,7 @@ function UserModal(props) {
         username: '',
         location: '',
         type: '',
+        organization:'',
     });
 
     const initialState = {
@@ -26,6 +27,7 @@ function UserModal(props) {
         username: '',
         location: '',
         type: '',
+        organization:'',
     };
 
     const [submitted, setSubmitted] = useState(false);
@@ -40,7 +42,7 @@ function UserModal(props) {
         //e.preventDefault();
 
         setSubmitted(true);
-        if(user.firstName && user.lastName && user.location && user.type && user.username) {
+        if(user.firstName && user.lastName && user.location && user.type && user.username && user.organization) {
             dispatch(createAUser(user))
                 .then(() => {
                     dispatch(addFeedback({
@@ -83,6 +85,13 @@ function UserModal(props) {
             </Modal.Header>
             <Modal.Body>
                 <form name="form" onSubmit={handleSubmit}>
+                    <div className={'form-group' + (submitted && !user.organization ? ' has-error' : '')}>
+                        <label>Organization</label>
+                        <input type="text" name="organization" value={user.organization} onChange={handleChange} className={'form-control'} />
+                        {submitted && !user.organization &&
+                        <div className="help-block">Organization Name is required</div>
+                        }
+                    </div>
                     <div className={'form-group' + (submitted && !user.firstName ? ' has-error' : '')}>
                         <label>First Name</label>
                         <input type="text" name="firstName" value={user.firstName} onChange={handleChange} className={'form-control'} />

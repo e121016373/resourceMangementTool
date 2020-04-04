@@ -14,8 +14,8 @@ const executeDeleteDisciplineData = (state, action) => {
 };
 
 export const disciplinesReducer = (
-    state = initialState.disciplines,
-    action,
+  state = initialState.disciplines,
+  action,
 ) => {
   switch (action.type) {
     case types.DELETE_DISCIPLINE:

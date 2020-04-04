@@ -14,8 +14,8 @@ const executeDeleteLocationData = (state, action) => {
 };
 
 export const locationsReducer = (
-    state = initialState.locations,
-    action,
+  state = initialState.locations,
+  action,
 ) => {
   switch (action.type) {
     case types.DELETE_LOCATION:

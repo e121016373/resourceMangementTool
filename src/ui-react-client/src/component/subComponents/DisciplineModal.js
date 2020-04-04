@@ -59,44 +59,44 @@ function DisciplineModal(props) {
     }
     return (
         <Modal
-    {...props}
-    size="lg"
-    aria-labelledby="contained-modal-title-vcenter"
-    centered
-    >
-    <Modal.Header closeButton>
-    <Modal.Title id="contained-modal-title-vcenter">
-        Create New Skill
+            {...props}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+        >
+            <Modal.Header closeButton>
+                <Modal.Title id="contained-modal-title-vcenter">
+                    Create New Skill
 
-    {submitted && createdWrong &&
-    <div className="help-block">Discipline is unsuccessfully created. Check your discipline name.</div>
-    }
-</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-    <form name="form" onSubmit={handleSubmit}>
-        <div className={'form-group' + (submitted && !discipline.name ? ' has-error' : '')}>
-        <label>Discipline Name</label>
-    <input type="text" name="name" value={discipline.name} onChange={handleChange} className={'form-control'} />
-    {submitted && !discipline.name &&
-    <div className="help-block">Discipline Name is required</div>
-    }
-</div>
-    </form>
+                    {submitted && createdWrong &&
+                    <div className="help-block">Discipline is unsuccessfully created. Check your discipline name.</div>
+                    }
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <form name="form" onSubmit={handleSubmit}>
+                    <div className={'form-group' + (submitted && !discipline.name ? ' has-error' : '')}>
+                        <label>Discipline Name</label>
+                        <input type="text" name="name" value={discipline.name} onChange={handleChange} className={'form-control'} />
+                        {submitted && !discipline.name &&
+                        <div className="help-block">Discipline Name is required</div>
+                        }
+                    </div>
+                </form>
 
-    </Modal.Body>
-    <Modal.Footer><Button variant="secondary" onClick={() => {
-        setInitialState();
-        props.onHide();
-    }}>
-    Close
-    </Button>
-    <Button variant="primary" onClick={handleSubmit}>
-        Create Discipline
-    </Button>
-    </Modal.Footer>
-    </Modal>
-);
+            </Modal.Body>
+            <Modal.Footer><Button variant="secondary" onClick={() => {
+                setInitialState();
+                props.onHide();
+            }}>
+                Close
+            </Button>
+                <Button variant="primary" onClick={handleSubmit}>
+                    Create Discipline
+                </Button>
+            </Modal.Footer>
+        </Modal>
+    );
 }
 
 export default DisciplineModal;

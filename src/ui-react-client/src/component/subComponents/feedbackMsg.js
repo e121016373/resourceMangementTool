@@ -11,23 +11,23 @@ const ShowFeedbackMsg = ({
                          }) => {
     return (
         <ul className="msgContainer">
-        {feedbacks.map((msg, index) => (
+            {feedbacks.map((msg, index) => (
                 <li style={{ 'list-style-type': 'none' }}>
-<div class={msg.type}>
-        <span
-class="closebtn"
-    onClick={() => {
-        deleteFeedback(index);
-    }}
->
-&times;
-</span>
-    <strong>{msg.type}</strong> {msg.data}
-    </div>
-    </li>
-))}
-</ul>
-);
+                    <div className={msg.type}>
+            <span
+                className="closebtn"
+                onClick={() => {
+                    deleteFeedback(index);
+                }}
+            >
+              &times;
+            </span>
+                        <strong>{msg.type}</strong> {msg.data}
+                    </div>
+                </li>
+            ))}
+        </ul>
+    );
 };
 
 const mapStateToProps = state => ({

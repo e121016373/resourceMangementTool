@@ -22,3 +22,8 @@ export const LOAD_PROJECTS_MOST_RECENT = 'LOAD_PROJECTS_MOST_RECENT';
 
 export const ADD_FEEDBACK = 'ADD_FEEDBACK';
 export const DELETE_FEEDBACK = 'DELETE_FEEDBACK';
+
+export const GET_ADMIN = 'GET_ADMIN';
+export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
+export const LOG_OUT = 'LOG_OUT';
+export const UPDATE_PASSWORD = 'UPDATED_PASSWORD';

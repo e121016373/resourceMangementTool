@@ -8,49 +8,61 @@ import {
   Redirect,
   Switch
 } from "react-router-dom";
+import {connect} from "react-redux";
 
-// const [user, setUser] = useState("");
-// const [password, setPassword] = useState("");
+const App = ({
+              admin,
+          }) => {
 
-function App() {
-  const [authenticate, setAuthenticate] = useState(false);
-  const [loadLoginResult, setloadLoginResult] = useState(true);
-  const PrivateRoute = ({ component: Component, ...rest }) => (
-    <Route
-      {...rest}
-      render={props =>
-        authenticate === true ? (
-          <Component {...props} />
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/"
-            }}
-          />
-        )
-      }
-    />
-  );
-  return (
-    <div className="App">
-      <Router>
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={props => (
-              <Login
-                {...props}
-                setAuthenticate={setAuthenticate}
-                authenticate={authenticate}
-              />
-            )}
-          />
-          <PrivateRoute path="/admin" component={Admin} />
-        </Switch>
-      </Router>
-    </div>
-  );
+
+    const PrivateRoute = ({ component: Component, ...rest }) => (
+        <Route
+            {...rest}
+            render={props =>
+                admin.authenticate === true ? (
+                    <Component {...props} />
+                ) : (
+                    <Redirect
+                        to={{
+                            pathname: "/"
+                        }}
+                    />
+                )
+            }
+        />
+    );
+
+    return (
+        <div className="App">
+            <Router>
+                <Switch>
+                    <Route
+                        exact
+                        path="/"
+                        render={props => (
+                            <Login
+                                {...props}
+
+                            />
+                        )}
+                    />
+                    <PrivateRoute path="/admin" component={Admin} />
+                </Switch>
+            </Router>
+        </div>
+    );
 }
 
-export default App;
+const mapStateToProps = state => {
+    return {
+        admin: state.admin,
+    };
+};
+
+export default connect(
+    mapStateToProps,
+)(App);
+
+
+
+
