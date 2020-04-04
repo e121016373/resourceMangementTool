@@ -3,13 +3,11 @@ import { Bar } from 'react-chartjs-2';
 import Posts from './post';
 // import Table from './table';
 import * as msg from '../feedbackMsg/feedbackMsg';
-import { Modal } from './modal';
 import personImage from '../../image/person.png';
 import WTable from './my_table';
 import { headers } from '../../config/adalConfig';
 import WButton from './button';
 import AutoComplete from '../autocomplete/autocomplete';
-
 
 const ProfileMain = ({
   personalProfileUser,
