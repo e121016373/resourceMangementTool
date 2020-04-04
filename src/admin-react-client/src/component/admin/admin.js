@@ -34,14 +34,15 @@ export default class Admin extends React.Component{
 
     return (
         <div className="adminMain">
-        <ShowFeedbackMsg/>
-        <Sidebar table={this.setTable}/>
-    <div className= "dataTable">
-        {table}
+          <ShowFeedbackMsg/>
+          <Sidebar table={this.setTable}/>
+          <div className= "dataTable">
+            {table}
+          </div>
         </div>
-        </div>
-  );
+    );
   }
 
 }
+
 

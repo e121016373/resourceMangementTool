@@ -85,14 +85,14 @@ function SkillModal(props) {
                 <form name="form" onSubmit={handleSubmit}>
                     <div className={'form-group' + (submitted && !skill.name ? ' has-error' : '')}>
                         <label>Skill Name</label>
-                        <input type="text" name="name" defaultvalue={skill.name} onChange={handleChange} className={'form-control'} />
+                        <input type="text" name="name" value={skill.name} onChange={handleChange} className={'form-control'} />
                         {submitted && !skill.name &&
                         <div className="help-block">Skill Name is required</div>
                         }
                     </div>
                     <div className={'form-group' + (submitted && skill.disciplineId ? ' has-error' : '')}>
                         <label>Discipline ID</label>
-                        <input type="text" name="disciplineId" defaultvalue={skill.disciplineId} onChange={handleChange} className={'form-control'} />
+                        <input type="text" name="disciplineId" value={skill.disciplineId} onChange={handleChange} className={'form-control'} />
                         {submitted && !skill.disciplineId &&
                         <div className="help-block">Discipline ID is required</div>
                         }

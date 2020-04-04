@@ -31,7 +31,7 @@ namespace Web.API.Infrastructure.Data
                  and PS.Status = 'Active'
                  where UP.UserId = (select Id from Users where Username = @Username) and
 				    (UP.Year = YEAR(GETDATE()) or UP.Year = YEAR(GETDATE()) + 1);
-					if ((select year from @table where year  = YEAR(GETDATE())) = null)
+					if ((select top 1 year from @table where year  = YEAR(GETDATE())) is null)
 					BEGIN
 							insert into @table
 						    (year, month, hours)
@@ -70,7 +70,7 @@ namespace Web.API.Infrastructure.Data
 						    (year, month, hours)
 					        values(YEAR(GETDATE()), 12, 0);
 				END
-				 if ((select year from @table where year  = YEAR(GETDATE())+1) = null)
+				 if ((select top 1 year from @table where year  = YEAR(GETDATE())+1) is null)
 				BEGIN
 							insert into @table
 						    (year, month, hours)
