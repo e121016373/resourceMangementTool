@@ -15,7 +15,8 @@ import {
 import { addFeedback } from '../../redux/actions/feedbackAction';
 import { connect } from 'react-redux';
 import Loading from '../loading/loading';
-import { CreateProjectModal, SearchModal } from './modal';
+import { SearchModal } from './modal';
+import CreateProjectModal from "./modal";
 import WButton from '../personalProfile/button';
 const ProjectsPage = ({
   loadProjects,
@@ -459,6 +460,7 @@ const ProjectsPage = ({
       );
     }
   };
+
 
   const createProjectButton = () => {
     let modal = document.getElementById('createProjectModal');

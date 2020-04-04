@@ -4,6 +4,8 @@ import { SVC_ROOT } from '../../config/config';
 import axios from 'axios';
 import { headers } from '../../config/adalConfig';
 import { authContext } from '../../config/adalConfig';
+
+
 export const Modal = () => {
   const user = authContext.getCachedUser().userName.split('@')[0];
   const close = () => {
