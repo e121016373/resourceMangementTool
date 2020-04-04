@@ -30,11 +30,11 @@ import AutoComplete from '../autocomplete/autocomplete';
   };
 
   const [project, setProject] = useState({
-    number: '',
-    title: '',
-    location: '',
-    fromDate: '',
-    toDate: '',
+    Number: '',
+    Title: '',
+    Location: '',
+    FromDate: '',
+    ToDate: '',
   });
 
 
@@ -52,14 +52,22 @@ import AutoComplete from '../autocomplete/autocomplete';
     e.preventDefault();
 
     setSubmitted(true);
-    if(project.number && project.title && project.location && project.fromDate && project.toDate) {
+    if(project.Number && project.Title && project.Location && project.FromDate && project.ToDate) {
 
-      dispatch(createProject(project))
+      createProject(project)
           .then(() => {
-            setCreated(true);
+            addFeedback({
+              type: 'success',
+              data: '  :project is created successfully',
+              show: true,
+            });
           })
           .catch(error => {
-            setCreatedWrong(true);
+            addFeedback({
+              type: 'error',
+              data: '  :project is created unsuccessfully',
+              show: true,
+            });
           });
     }
 
@@ -72,7 +80,7 @@ import AutoComplete from '../autocomplete/autocomplete';
           <span className="close" onClick={close}>
             &times;
           </span>
-          <h5>Create Project</h5>
+          <div><h5>Create Project</h5></div>
           {submitted && created &&
           <div className="created-block">Project is successfully created.</div>
           }
@@ -82,38 +90,38 @@ import AutoComplete from '../autocomplete/autocomplete';
         </div>
         <div className="content-add">
             <form name="form" onSubmit={handleSubmit}>
-              <div className={'input-content' + (submitted && !project.number ? ' has-error' : '')}>
+              <div className={'input-content' + (submitted && !project.Number ? ' has-error' : '')}>
                 <label className="input-name">Number</label>
-                <input type="text" name="number" value={project.number} onChange={handleChange}  />
-                {submitted && !project.number &&
+                <input type="text" name="Number" value={project.Number} onChange={handleChange}  />
+                {submitted && !project.Number &&
                 <div className="help-block">Number is required</div>
                 }
               </div>
-              <div className={'input-content' + (submitted && !project.title ? ' has-error' : '')}>
+              <div className={'input-content' + (submitted && !project.Title ? ' has-error' : '')}>
                 <label className="input-name">Project Title</label>
-                <input type="text" name="title" value={project.title} onChange={handleChange}  />
-                {submitted && !project.title &&
+                <input type="text" name="Title" value={project.Title} onChange={handleChange}  />
+                {submitted && !project.Title &&
                 <div className="help-block">Project Title is required</div>
                 }
               </div>
-              <div className={'input-content' + (submitted && !project.location ? ' has-error' : '')}>
+              <div className={'input-content' + (submitted && !project.Location ? ' has-error' : '')}>
                 <label className="input-name">Location</label>
-                <input type="text" name="location" value={project.location} onChange={handleChange}  />
-                {submitted && !project.location &&
+                <input type="text" name="Location" value={project.Location} onChange={handleChange}  />
+                {submitted && !project.Location &&
                 <div className="help-block">Location is required</div>
                 }
               </div>
-              <div className={'input-content' + (submitted && !project.fromDate ? ' has-error' : '')}>
+              <div className={'input-content' + (submitted && !project.FromDate ? ' has-error' : '')}>
                 <label className="input-name">Start Date</label>
-                <input type="text" name="fromDate" value={project.fromDate} onChange={handleChange}  />
-                {submitted && !project.fromDate &&
+                <input type="text" name="FromDate" value={project.FromDate} onChange={handleChange}  />
+                {submitted && !project.FromDate &&
                 <div className="help-block">Start Date is required</div>
                 }
               </div>
-              <div className={'input-content' + (submitted && !project.toDate ? ' has-error' : '')}>
+              <div className={'input-content' + (submitted && !project.ToDate ? ' has-error' : '')}>
                 <label className="input-name">Finish Date</label>
-                <input type="location" name="toDate" value={project.toDate} onChange={handleChange} />
-                {submitted && !project.toDate &&
+                <input type="location" name="ToDate" value={project.ToDate} onChange={handleChange} />
+                {submitted && !project.ToDate &&
                 <div className="help-block">Finish Date is required</div>
                 }
               </div>

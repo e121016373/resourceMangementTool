@@ -85,10 +85,11 @@ export const createProject = project => {
   return dispatch => {
     let URL = `${SVC_ROOT}projects`;
     //console.log('url is ', URL);
+    console.log(project);
     return axios
-      .post(baseURL, { headers }, { data: project })
+      .post(baseURL, project )
       .then(response => {
-        //console.log('createProJECT RESPOSE is ', response);
+        console.log('createProJECT RESPOSE is ', response);
         let item = response.data;
         response = {
           Name: item.project,
