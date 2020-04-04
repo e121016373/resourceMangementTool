@@ -16,7 +16,7 @@ import { addFeedback } from '../../redux/actions/feedbackAction';
 import { connect } from 'react-redux';
 import Loading from '../loading/loading';
 import { SearchModal } from './modal';
-import CreateProjectModal from "./modal";
+import CreateProjectModal from './modal';
 import WButton from '../personalProfile/button';
 const ProjectsPage = ({
   loadProjects,
@@ -51,7 +51,10 @@ const ProjectsPage = ({
   const [projectName, setProjectName] = useState('');
   // const [fromDate, setFromDate] = useState('');
   // const [toDate, setToDate] = useState('');
-  //const [detailTableHead, setDetailTableHead] = useState([]);
+  const [
+    currentDetailTableHead,
+    setCurrentDetailTableHead,
+  ] = useState('');
   let detailTableHead = [];
   const [year, setYear] = useState(0);
   const changeYear = () => {
@@ -105,6 +108,8 @@ const ProjectsPage = ({
       });
   };
   const renderSecondYear = () => {
+    if (secondYear && year == 1)
+      return <option selected>{secondYear}</option>;
     if (secondYear) return <option>{secondYear}</option>;
   };
   const edit = resource => {
@@ -121,9 +126,10 @@ const ProjectsPage = ({
     //console.log('the resource is ', resource);
     setIsRenderDetail(true);
     let datas = document.querySelectorAll(`.${resource}`);
-    let year = document.getElementById('select-year').value;
-    let data = { year: parseInt(year) };
-    let parsedMonth = [...detailTableHead[year]];
+    let selectYear = document.getElementById('select-year').value;
+    let data = { year: parseInt(selectYear) };
+    //console.log('in submit', year);
+    let parsedMonth = [...currentDetailTableHead[year]];
     parsedMonth.pop();
     parsedMonth.pop();
     parsedMonth = parsedMonth.slice(1);
@@ -153,8 +159,9 @@ const ProjectsPage = ({
   };
 
   const renderDetail = year => {
-    console.log('the year is ', year);
+    //console.log('the year is ', year);
     if (isRenderDetail) {
+      //console.log('loading');
       return (
         <div style={{ height: '60%' }}>
           <div style={{ height: '100%' }} className="loading">
@@ -165,8 +172,9 @@ const ProjectsPage = ({
           </div>
         </div>
       );
-    }
-    if (projects.details) {
+    } else if (projects.details) {
+      let project = projects;
+      //console.log('the detail is ', project.details);
       let today = new Date();
       let date =
         today.getFullYear() +
@@ -176,9 +184,13 @@ const ProjectsPage = ({
         today.getDate();
       //console.log(date);
       today = new Date(date);
-      let data = [];
-      let details = projects.details;
+
+      let details = project.details;
+      //console.log('details is ', details);
       let detailTable = details.map(detail => {
+        //console.log('details is ', detail);
+
+        let data = [];
         let resource = detail.resource;
         let DetailTableHead = details[0].projectName;
         // if (
@@ -189,16 +201,11 @@ const ProjectsPage = ({
         // ) {
         let tempFromDate = new Date(fromDate);
         let tempToDate = new Date(toDate);
-        // console.log(
-        //   'today and tempFromDate',
-        //   today,
-        //   'fromdATE IS ',
-        //   fromDate,
-        // );
+
         if (today < tempFromDate) {
         } else if (tempFromDate < today && today < tempToDate) {
           fromDate = date;
-        } else {
+        } else if (tempToDate < today) {
           firstYear = undefined;
           secondYear = undefined;
           data.push([resource]);
@@ -210,6 +217,7 @@ const ProjectsPage = ({
             //console.log(projectName, detail.projectName);
             setProjectName(detail.projectName);
           }
+
           return data;
         }
 
@@ -249,21 +257,9 @@ const ProjectsPage = ({
           0,
           toMonth + 1,
         );
-        //console.log(
-        //   'trimedSecondYearEntries is ',
-        //   trimedSecondYearEntries,
-        // );
         let secondYearObject = Object.fromEntries(
           trimedSecondYearEntries,
         );
-        //console.log('sdafasdfs', Object.keys(secondYearObject));
-        //choose year to display
-        // if (!(projectName === detail.projectName)) {
-        //   //if
-        //   console.log(
-        //     'projectName is not equal to detail.projectName',
-        //   );
-
         let firstYearHead = Object.keys(firstYearObject);
         firstYearHead = ['Resource'].concat(firstYearHead);
         firstYearHead.push('Edit');
@@ -279,12 +275,14 @@ const ProjectsPage = ({
         yearHeads.push(secondYearHead);
         //setDetailTableHead([...yearHeads]);
         detailTableHead = yearHeads;
-        console.log('yearHeads', yearHeads);
-        console.log(
-          'after yearsHeads, detailTablehead is ',
-          detailTableHead,
-        );
-        //}
+
+        if (!(projectName === detail.projectName)) {
+          //console.log(projectName, detail.projectName);
+          //console.log('current', currentDetailTableHead);
+
+          setCurrentDetailTableHead(yearHeads);
+          //console.log('current', currentDetailTableHead);
+        }
 
         firstYearObject = Object.values(firstYearObject);
         firstYearObject = [resource].concat(firstYearObject);
@@ -292,11 +290,11 @@ const ProjectsPage = ({
         secondYearObject = [resource].concat(secondYearObject);
         data.push(firstYearObject);
         data.push(secondYearObject);
-        //console.log(data);
+        //console.log('data is ', data);
         return data;
       });
       //console.log(detailTableHead);
-      console.log('line 278 detailTable', detailTable);
+      //console.log('line 278 detailTable', detailTable);
       detailTable = detailTable.map(item => {
         return item[year];
       });
@@ -305,9 +303,9 @@ const ProjectsPage = ({
         tableHead = detailTableHead[1];
       } else {
         tableHead = detailTableHead[0];
-        console.log('line 287 detailtable head is', detailTableHead);
+        //console.log('line 287 detailtable head is', detailTableHead);
       }
-      console.log('line 289 tablehead is ', tableHead);
+      //console.log('line 289 tablehead is ', tableHead);
       return (
         <div
           className="card"
@@ -460,7 +458,6 @@ const ProjectsPage = ({
       );
     }
   };
-
 
   const createProjectButton = () => {
     let modal = document.getElementById('createProjectModal');

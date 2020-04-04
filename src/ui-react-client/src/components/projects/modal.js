@@ -54,7 +54,7 @@ const CreateProjectModal = ({
       project.fromDate &&
       project.toDate
     ) {
-      dispatch(createProject(project))
+      createProject(project)
         .then(() => {
           setCreated(true);
         })

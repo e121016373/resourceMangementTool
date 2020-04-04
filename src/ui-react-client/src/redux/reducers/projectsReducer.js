@@ -53,6 +53,10 @@ const executeAddPeopleToProject = (state, action) => {
 
   return { ...state };
 };
+const executeForecastProject = (state, action) => {
+  state.details = action.payload;
+  return { ...state };
+};
 export const projectsReducer = (
   state = initialState.projects,
   action,
@@ -74,6 +78,8 @@ export const projectsReducer = (
       return executeUpdateProjectStatus(state, action);
     case types.ADD_PEOPLE_TO_PROJECT:
       return executeAddPeopleToProject(state, action);
+    case types.FORECAST_PROJECT:
+      return executeForecastProject(state, action);
     default:
       return state;
   }

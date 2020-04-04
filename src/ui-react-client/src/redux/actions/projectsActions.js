@@ -193,7 +193,7 @@ export const forecastProject = (projectName, resource, data) => {
     } else {
       url = UerURL;
     }
-    //console.log('the URL is', url, 'data is ', JSON.stringify(data));
+    console.log('the URL is', url, 'data is ', JSON.stringify(data));
 
     const options = {
       method: 'PUT',
@@ -204,12 +204,18 @@ export const forecastProject = (projectName, resource, data) => {
 
     return axios(options)
       .then(response => {
-        //console.log('forecast result is ', response);
-        //loadDetails('Ab vero aut atque laborum.', fromDate, toDate);
+        dispatch(forecastProjectAction());
       })
       .catch(error => {
         throw error;
       });
+  };
+};
+
+export const forecastProjectAction = () => {
+  return {
+    type: types.FORECAST_PROJECT,
+    payload: {},
   };
 };
 
