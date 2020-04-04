@@ -14,8 +14,8 @@ const executeDeleteSkillData = (state, action) => {
 };
 
 export const skillsReducer = (
-    state = initialState.skills,
-    action,
+  state = initialState.skills,
+  action,
 ) => {
   switch (action.type) {
     case types.DELETE_SKILL:

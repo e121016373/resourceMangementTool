@@ -71,7 +71,7 @@ const LocationTable = ({
     }
 
     const selectRowProp = {
-        mode: 'checkbox',
+        mode: 'radio',
         clickToSelect: true,
         onSelect: onRowSelect,
         onSelectAll: onSelectAll
@@ -81,27 +81,27 @@ const LocationTable = ({
 
     return (
         <div>
-        <ButtonToolbar>
-        <Button variant="primary" onClick={() => setModalShow(true)}>
-    Add Location
-    </Button>
+            <ButtonToolbar>
+                <Button variant="primary" onClick={() => setModalShow(true)}>
+                    Add Location
+                </Button>
 
-    <LocationModal
-    show={modalShow}
-    onHide={() => setModalShow(false)}
-    />
-    <div className="divider"/>
-        <Button variant="danger" onClick={handleDelete}>Remove Location</Button>
-    </ButtonToolbar>
+                <LocationModal
+                    show={modalShow}
+                    onHide={() => setModalShow(false)}
+                />
+                <div className="divider"/>
+                <Button variant="danger" onClick={handleDelete}>Remove Location</Button>
+            </ButtonToolbar>
 
-    <BootstrapTable data={ locations } search = {true} pagination = {true} selectRow ={selectRowProp} striped hover condensed>
-    <TableHeaderColumn width="150" dataField='id' isKey>Location id</TableHeaderColumn>
-    <TableHeaderColumn width="150" dataField='code'> Location Code</TableHeaderColumn>
-    <TableHeaderColumn width="150" dataField='name' >Location Name</TableHeaderColumn>
-    <TableHeaderColumn width="150" dataField='numberOfPeople'> Number of People</TableHeaderColumn>
-    </BootstrapTable>
-    </div>
-);
+            <BootstrapTable data={ locations } search = {true} selectRow ={selectRowProp} pagination>
+                <TableHeaderColumn width="150" dataField='id' isKey>Location id</TableHeaderColumn>
+                <TableHeaderColumn width="150" dataField='code'> Location Code</TableHeaderColumn>
+                <TableHeaderColumn width="150" dataField='name' >Location Name</TableHeaderColumn>
+                <TableHeaderColumn width="150" dataField='numberOfPeople'> Number of People</TableHeaderColumn>
+            </BootstrapTable>
+        </div>
+    );
 };
 
 const mapStateToProps = state => {

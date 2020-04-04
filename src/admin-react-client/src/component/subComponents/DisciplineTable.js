@@ -33,10 +33,10 @@ const DisciplineTable = ({
 
 
     function onRowSelect(row, isSelected, e) {
-        const val = row.name;
-        setDisName(prevState => {
-            return {...prevState, name: val}
-        });
+            const val = row.name;
+            setDisName(prevState => {
+                return {...prevState, name: val}
+            });
 
 
     }
@@ -68,7 +68,7 @@ const DisciplineTable = ({
     }
 
     const selectRowProp = {
-        mode: 'checkbox',
+        mode: 'radio',
         clickToSelect: true,
         onSelect: onRowSelect,
         onSelectAll: onSelectAll
@@ -78,26 +78,26 @@ const DisciplineTable = ({
 
     return (
         <div>
-        <ButtonToolbar>
-        <Button variant="primary" onClick={() => setModalShow(true)}>
-    Add Discipline
-    </Button>
+            <ButtonToolbar>
+                <Button variant="primary" onClick={() => setModalShow(true)}>
+                    Add Discipline
+                </Button>
 
-    <DisciplineModal
-    show={modalShow}
-    onHide={() => setModalShow(false)}
-    />
-    <div className="divider"/>
-        <Button variant="danger" onClick={handleDelete}>Remove Discipline</Button>
-    </ButtonToolbar>
+                <DisciplineModal
+                    show={modalShow}
+                    onHide={() => setModalShow(false)}
+                />
+                <div className="divider"/>
+                <Button variant="danger" onClick={handleDelete}>Remove Discipline</Button>
+            </ButtonToolbar>
 
-    <BootstrapTable data={ disciplines } search={true} pagination = {true} selectRow = {selectRowProp} striped hover condensed>
-    <TableHeaderColumn width="150" dataField='id' isKey>Id</TableHeaderColumn>
-    <TableHeaderColumn width="150" dataField='name'> Discipline Name</TableHeaderColumn>
-    <TableHeaderColumn width="150" dataField='TODO'> Number of People</TableHeaderColumn>
-    </BootstrapTable>
-    </div>
-);
+            <BootstrapTable data={ disciplines } search={true} selectRow = {selectRowProp} pagination>
+                <TableHeaderColumn width="150" dataField='id' isKey>Id</TableHeaderColumn>
+                <TableHeaderColumn width="150" dataField='name'> Discipline Name</TableHeaderColumn>
+                <TableHeaderColumn width="150" dataField='numberOfPeople'> Number of People</TableHeaderColumn>
+            </BootstrapTable>
+        </div>
+    );
 };
 
 const mapStateToProps = state => {

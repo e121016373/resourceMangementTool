@@ -17,6 +17,7 @@ const executeDeleteUserData = (state, action) => {
   return state.filter(user => user.username !== action.user.username);
 };
 
+
 export const usersReducer = (state = initialState.users, action) => {
   switch (action.type) {
     case types.DELETE_USER:

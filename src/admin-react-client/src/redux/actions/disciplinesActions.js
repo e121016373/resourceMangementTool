@@ -14,17 +14,17 @@ export const loadDisciplineAllData = disciplines => {
 };
 
 export const createDisciplineData = discipline => {
-  return {
-    type: types.CREATE_DISCIPLINE,
-    discipline: discipline,
-  };
+    return {
+        type: types.CREATE_DISCIPLINE,
+        discipline: discipline,
+    };
 };
 
 export const deleteDisciplineData = discipline => {
-  return {
-    type: types.DELETE_DISCIPLINE,
-    discipline: discipline,
-  };
+    return {
+        type: types.DELETE_DISCIPLINE,
+        discipline: discipline,
+    };
 };
 
 export const loadDisciplines = () => {
@@ -43,32 +43,32 @@ export const loadDisciplines = () => {
 };
 
 export const createDiscipline = discipline => {
-  return dispatch => {
-    return axios
-        .post(
-            baseURL,
-            discipline)
-        .then(response => {
-          return dispatch(createDisciplineData(response.data));
-        })
-        .catch(error => {
-          throw error;
-        });
-  };
+    return dispatch => {
+        return axios
+            .post(
+                baseURL,
+                discipline)
+            .then(response => {
+                return dispatch(createDisciplineData(response.data));
+            })
+            .catch(error => {
+                throw error;
+            });
+    };
 };
 
 export const deleteADiscipline = discipline => {
-  return dispatch => {
-    let disName = discipline.name;
-    return axios
-        .delete(`${baseURL}${disName}`, { headers })
-        .then(response => {
-          dispatch(deleteDisciplineData(response.data));
+    return dispatch => {
+        let disName = discipline.name;
+        return axios
+            .delete(`${baseURL}${disName}`, { headers })
+            .then(response => {
+                dispatch(deleteDisciplineData(response.data));
 
-        })
-        .catch(error => {
-          throw error;
-        });
-  };
+            })
+            .catch(error => {
+                throw error;
+            });
+    };
 };
 
