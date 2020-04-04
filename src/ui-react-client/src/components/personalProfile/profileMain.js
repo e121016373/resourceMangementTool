@@ -9,6 +9,8 @@ import WTable from './my_table';
 import { headers } from '../../config/adalConfig';
 import WButton from './button';
 import AutoComplete from '../autocomplete/autocomplete';
+
+
 const ProfileMain = ({
   personalProfileUser,
   AllDisciplines,
@@ -100,7 +102,7 @@ const ProfileMain = ({
     else return 'rgba(255,99,132)';
   };
   const renderUtil = number => {
-    if (util) {
+    if (util.length !== 0) {
       const data = {
         labels: [
           'January',
