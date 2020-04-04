@@ -1,28 +1,24 @@
 import '../../scss/modal.scss';
 import React, { useState, useEffect } from 'react';
 import Search from '../search/search';
-import {connect, useDispatch} from "react-redux";
-import {loadUsers} from "../../redux/actions/usersActions";
-import {loadLocations} from "../../redux/actions/locationsActions";
+import { connect, useDispatch } from 'react-redux';
+import { loadUsers } from '../../redux/actions/usersActions';
+import { loadLocations } from '../../redux/actions/locationsActions';
 import AutoComplete from '../autocomplete/autocomplete';
 
-
- const CreateProjectModal = ({
-                                      loadLocations,
-                                      locations,
-                                      createProject,
-                                      addFeedback,
+const CreateProjectModal = ({
+  loadLocations,
+  locations,
+  createProject,
+  addFeedback,
 }) => {
-
   useEffect(() => {
-
     if (Object.keys(locations).length === 0) {
       loadLocations().catch(error => {
         alert('Loading disciplines failed' + error);
       });
     }
   }, [locations, loadLocations]);
-
 
   const close = () => {
     let modal = document.getElementById('createProjectModal');
@@ -37,30 +33,34 @@ import AutoComplete from '../autocomplete/autocomplete';
     toDate: '',
   });
 
-
   const [submitted, setSubmitted] = useState(false);
   const [created, setCreated] = useState(false);
   const [createdWrong, setCreatedWrong] = useState(false);
   const dispatch = useDispatch();
 
   function handleChange(e) {
-    let {name, value} = e.target;
-    setProject(skill => ({...skill, [name]: value}));
+    let { name, value } = e.target;
+    setProject(skill => ({ ...skill, [name]: value }));
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
 
     setSubmitted(true);
-    if(project.number && project.title && project.location && project.fromDate && project.toDate) {
-
+    if (
+      project.number &&
+      project.title &&
+      project.location &&
+      project.fromDate &&
+      project.toDate
+    ) {
       dispatch(createProject(project))
-          .then(() => {
-            setCreated(true);
-          })
-          .catch(error => {
-            setCreatedWrong(true);
-          });
+        .then(() => {
+          setCreated(true);
+        })
+        .catch(error => {
+          setCreatedWrong(true);
+        });
     }
 
     // console.log(firstName, '  ', lastName);
@@ -73,52 +73,115 @@ import AutoComplete from '../autocomplete/autocomplete';
             &times;
           </span>
           <h5>Create Project</h5>
-          {submitted && created &&
-          <div className="created-block">Project is successfully created.</div>
-          }
-          {submitted && createdWrong &&
-          <div className="help-block">Project is unsuccessfully created. Check your inputs.</div>
-          }
+          {submitted && created && (
+            <div className="created-block">
+              Project is successfully created.
+            </div>
+          )}
+          {submitted && createdWrong && (
+            <div className="help-block">
+              Project is unsuccessfully created. Check your inputs.
+            </div>
+          )}
         </div>
         <div className="content-add">
-            <form name="form" onSubmit={handleSubmit}>
-              <div className={'input-content' + (submitted && !project.number ? ' has-error' : '')}>
-                <label className="input-name">Number</label>
-                <input type="text" name="number" value={project.number} onChange={handleChange}  />
-                {submitted && !project.number &&
+          <form name="form" onSubmit={handleSubmit}>
+            <div
+              className={
+                'input-content' +
+                (submitted && !project.number ? ' has-error' : '')
+              }
+            >
+              <label className="input-name">Number</label>
+              <input
+                placeholder="eg. 2020-VA3D-03"
+                type="text"
+                name="number"
+                value={project.number}
+                onChange={handleChange}
+              />
+              {submitted && !project.number && (
                 <div className="help-block">Number is required</div>
-                }
-              </div>
-              <div className={'input-content' + (submitted && !project.title ? ' has-error' : '')}>
-                <label className="input-name">Project Title</label>
-                <input type="text" name="title" value={project.title} onChange={handleChange}  />
-                {submitted && !project.title &&
-                <div className="help-block">Project Title is required</div>
-                }
-              </div>
-              <div className={'input-content' + (submitted && !project.location ? ' has-error' : '')}>
-                <label className="input-name">Location</label>
-                <input type="text" name="location" value={project.location} onChange={handleChange}  />
-                {submitted && !project.location &&
+              )}
+            </div>
+            <div
+              className={
+                'input-content' +
+                (submitted && !project.title ? ' has-error' : '')
+              }
+            >
+              <label className="input-name">Project Title</label>
+              <input
+                type="text"
+                name="title"
+                value={project.title}
+                onChange={handleChange}
+              />
+              {submitted && !project.title && (
+                <div className="help-block">
+                  Project Title is required
+                </div>
+              )}
+            </div>
+            <div
+              className={
+                'input-content' +
+                (submitted && !project.location ? ' has-error' : '')
+              }
+            >
+              <label className="input-name">Location</label>
+              <input
+                type="text"
+                name="location"
+                value={project.location}
+                onChange={handleChange}
+              />
+              {submitted && !project.location && (
                 <div className="help-block">Location is required</div>
-                }
-              </div>
-              <div className={'input-content' + (submitted && !project.fromDate ? ' has-error' : '')}>
-                <label className="input-name">Start Date</label>
-                <input type="text" name="fromDate" value={project.fromDate} onChange={handleChange}  />
-                {submitted && !project.fromDate &&
-                <div className="help-block">Start Date is required</div>
-                }
-              </div>
-              <div className={'input-content' + (submitted && !project.toDate ? ' has-error' : '')}>
-                <label className="input-name">Finish Date</label>
-                <input type="location" name="toDate" value={project.toDate} onChange={handleChange} />
-                {submitted && !project.toDate &&
-                <div className="help-block">Finish Date is required</div>
-                }
-              </div>
-            </form>
-          </div>
+              )}
+            </div>
+            <div
+              className={
+                'input-content' +
+                (submitted && !project.fromDate ? ' has-error' : '')
+              }
+            >
+              <label className="input-name">Start Date</label>
+              <input
+                placeholder="YYYY-MM-DD"
+                type="text"
+                name="fromDate"
+                value={project.fromDate}
+                onChange={handleChange}
+              />
+              {submitted && !project.fromDate && (
+                <div className="help-block">
+                  Start Date is required
+                </div>
+              )}
+            </div>
+            <div
+              className={
+                'input-content' +
+                (submitted && !project.toDate ? ' has-error' : '')
+              }
+            >
+              <label className="input-name">Finish Date</label>
+              <input
+                placeholder="YYYY-MM-DD"
+                type="location"
+                name="toDate"
+                value={project.toDate}
+                onChange={handleChange}
+              />
+              {submitted && !project.toDate && (
+                <div className="help-block">
+                  Finish Date is required
+                </div>
+              )}
+            </div>
+          </form>
+        </div>
         <div>
           <button onClick={handleSubmit}>submit</button>
         </div>
@@ -183,6 +246,6 @@ const mapDispatchToProps = {
 };
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  mapStateToProps,
+  mapDispatchToProps,
 )(CreateProjectModal);
