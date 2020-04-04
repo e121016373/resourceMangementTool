@@ -30,14 +30,14 @@ export const CreateProjectModal = ({
         console.log('in then');
         addFeedback({
           type: 'success',
-          data: 'Delete project successfully',
+          data: 'Create project successfully',
           show: true,
         });
       })
       .catch(error => {
         addFeedback({
           type: 'error',
-          data: 'Delete Location unsuccessfully',
+          data: 'Create project unsuccessfully',
           show: true,
         });
       });

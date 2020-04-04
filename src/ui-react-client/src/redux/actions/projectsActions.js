@@ -61,7 +61,7 @@ export const loadProjects = () => {
     return axios
       .get(URL, { headers })
       .then(response => {
-        console.log('the response of loadProject is ', response);
+        //console.log('the response of loadProject is ', response);
         response = response.data.map(item => {
           return {
             Name: item.project,
@@ -88,7 +88,7 @@ export const createProject = project => {
     return axios
       .post(baseURL, { headers }, { data: project })
       .then(response => {
-        console.log('createProJECT RESPOSE is ', response);
+        //console.log('createProJECT RESPOSE is ', response);
         let item = response.data;
         response = {
           Name: item.project,
@@ -125,7 +125,7 @@ export const updateProjectStatus = (projectName, status) => {
     return axios
       .patch(URL, { headers })
       .then(response => {
-        console.log('update project status reposen', response);
+        //console.log('update project status reposen', response);
         dispatch(updateProjectStatusAction(projectName, status));
       })
       .catch(error => {
@@ -193,7 +193,7 @@ export const forecastProject = (projectName, resource, data) => {
     } else {
       url = UerURL;
     }
-    console.log('the URL is', url, 'data is ', JSON.stringify(data));
+    //console.log('the URL is', url, 'data is ', JSON.stringify(data));
 
     const options = {
       method: 'PUT',
@@ -204,7 +204,7 @@ export const forecastProject = (projectName, resource, data) => {
 
     return axios(options)
       .then(response => {
-        console.log('forecast result is ', response);
+        //console.log('forecast result is ', response);
         //loadDetails('Ab vero aut atque laborum.', fromDate, toDate);
       })
       .catch(error => {
@@ -234,7 +234,7 @@ export const loadDetails = (projectName, fromDate, toDate) => {
     return axios
       .get(url, { headers })
       .then(response => {
-        console.log('the load detail', response);
+        //console.log('the load detail', response);
         return dispatch(
           loadDetailAction(
             projectName,
