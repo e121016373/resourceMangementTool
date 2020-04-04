@@ -79,5 +79,6 @@
     <Build Include="dbo\Tables\UserWorksDiscipline.sql" />
     <Build Include="dbo\Tables\ProjectStatus.sql" />
     <Build Include="dbo\Tables\UserHours.sql" />
+    <Build Include="dbo\Tables\Organizations.sql" />
   </ItemGroup>
 </Project>

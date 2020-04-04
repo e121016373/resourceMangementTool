@@ -1,8 +1,11 @@
 CREATE TABLE [dbo].[ProjectStatus](
-	[Id] INT NOT NULL,
+  [Id] INT NOT NULL,
   [FromDate] DATE NOT NULL DEFAULT CONVERT(date, SYSUTCDATETIME()), 
   [ToDate] DATE NOT NULL DEFAULT CONVERT(date, SYSUTCDATETIME()),
   [Status] NVARCHAR(10) CHECK ([Status] IN ('Active', 'Inactive', 'Forecast')),
+  [PM] INT NOT NULL,
+  [DisciplineId] INT NOT NULL,
+  [OrganizationId] INT NOT NULL,
   [Year] [int] NOT NULL,
 	[Jan] [int] NOT NULL,
 	[Feb] [int] NOT NULL,
@@ -17,5 +20,8 @@ CREATE TABLE [dbo].[ProjectStatus](
 	[Nov] [int] NOT NULL,
 	[Dec] [int] NOT NULL
 CONSTRAINT [PK_ProjectsStatus] PRIMARY KEY ([Id], [Year]),
-CONSTRAINT [FK_ProjectsStatus_Projects] FOREIGN KEY ([Id]) REFERENCES [Projects]([Id]) ON DELETE CASCADE
+CONSTRAINT [FK_ProjectsStatus_Projects] FOREIGN KEY ([Id]) REFERENCES [Projects]([Id]),
+CONSTRAINT [FK_ProjectsStatus_DisciplineId] FOREIGN KEY ([DisciplineId]) REFERENCES [Disciplines]([Id]),
+CONSTRAINT [FK_ProjectsStatus_PM] FOREIGN KEY ([PM]) REFERENCES [Users]([Id]),
+CONSTRAINT [FK_ProjectsStatus_OrganizationId] FOREIGN KEY ([OrganizationId]) REFERENCES [Organizations]([Id]) ON DELETE CASCADE
 )
