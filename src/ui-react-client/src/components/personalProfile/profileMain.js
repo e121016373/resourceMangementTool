@@ -9,6 +9,8 @@ import WTable from './my_table';
 import { headers } from '../../config/adalConfig';
 import WButton from './button';
 import AutoComplete from '../autocomplete/autocomplete';
+
+
 const ProfileMain = ({
   personalProfileUser,
   AllDisciplines,
