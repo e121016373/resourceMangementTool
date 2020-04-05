@@ -7,5 +7,6 @@ export default {
   skills: [],
   feedbacks: [],
   search: [],
+  organizations:[],
   // userDisciplines: [],
 };
