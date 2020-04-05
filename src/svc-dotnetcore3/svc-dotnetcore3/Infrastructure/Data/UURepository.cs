@@ -140,21 +140,22 @@ namespace Web.API.Infrastructure.Data
 			return await connection.QueryAsync<UserUtil>(sql, new { Project = project });
 		}
 
-		public async Task<IEnumerable<OrgUtil>> ForecastOrganization(string org)
+		public async Task<IEnumerable<OrgUtil>> ForecastOrganization(string org, int year)
 		{
 			var sql = @"
-                				declare @table table (username nvarchar(max), year int,  month int, hours int);
+                declare @table table (username nvarchar(max), year int,  month int, hours int);
                 insert into @table
                  select U.Username, UP.year, UP.month, coalesce(UP.hours, 0) as hours
                     from Users U
-					INNER JOIN UserHours UP
+					LEFT JOIN UserHours UP
 					on U.Id = UP.UserId
 					and UP.Year = YEAR(GETDATE())
-                    INNER JOIN
+                    LEFT JOIN
                     ProjectStatus PS
                     on PS.Id = UP.ProjectId
                  and PS.Status = 'Active'
-                 where U.OrganizationId = (select Id from Organizations  where Name = @Org);
+                 where U.OrganizationId = (select Id from Organizations where Name = @Org);
+				 select * from @table
 					if ((select year from @table where year  = YEAR(GETDATE())) = null)
 					BEGIN
 							insert into @table
@@ -194,7 +195,7 @@ namespace Web.API.Infrastructure.Data
 						    (year, month, hours)
 					        values(YEAR(GETDATE()), 12, 0);
 				END
-                Select username, year, ISNULL([1]/176.0, 0) as jan, ISNULL([2]/176.0, 0) as feb, ISNULL([3]/176.0, 0) as mar, ISNULL([4]/176.0, 0) as apr,
+                Select username, @Year as year, ISNULL([1]/176.0, 0) as jan, ISNULL([2]/176.0, 0) as feb, ISNULL([3]/176.0, 0) as mar, ISNULL([4]/176.0, 0) as apr,
                 ISNULL([5]/176.0, 0) as may, ISNULL([6]/176.0, 0) as jun, ISNULL([7]/176.0, 0) as jul, ISNULL([8]/176.0, 0) as aug, ISNULL([9]/176.0, 0) as sep,
                 ISNULL([10]/176.0, 0) as oct, ISNULL([11]/176.0, 0) as nov, ISNULL([12]/176.0, 0) as dec
                 FROM
@@ -207,7 +208,7 @@ namespace Web.API.Infrastructure.Data
 
 			using var connection = new SqlConnection(connectionString);
 			connection.Open();
-			return await connection.QueryAsync<OrgUtil>(sql, new { Org = org });
+			return await connection.QueryAsync<OrgUtil>(sql, new { Org = org, Year = year });
 		}
 
 	}

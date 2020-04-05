@@ -39,10 +39,10 @@ namespace Web.API.Controllers
         }
 
         [HttpGet]
-        [Route("/util/org/{org}")]
-        public async Task<ActionResult<IEnumerable<OrgUtil>>> ForecastOrganization([FromRoute]string org)
+        [Route("/util/{org}/{year}")]
+        public async Task<ActionResult<IEnumerable<OrgUtil>>> ForecastOrganization([FromRoute]string org, int year)
         {
-            var response = await uuRepository.ForecastOrganization(org);
+            var response = await uuRepository.ForecastOrganization(org, year);
             var viewModel = mapper.Map<IEnumerable<OrgUtil>>(response);
             return Ok(viewModel);
         }
