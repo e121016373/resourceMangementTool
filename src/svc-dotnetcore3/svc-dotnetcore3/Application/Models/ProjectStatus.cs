@@ -10,5 +10,7 @@ namespace Web.API.Application.Models
         public DateTime ToDate { get; set; }
         public DateTime UpdatedAt { get; set; }
         public string Status { get; set; }
+        public string ProjectManager { get; set; }
+        public string Discipline { get; set; }
     }
 }

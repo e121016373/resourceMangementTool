@@ -38,7 +38,7 @@ namespace Web.API.Infrastructure.Data
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            return await connection.QueryFirstOrDefaultAsync(sql, new { Id = id });
+            return await connection.QueryFirstOrDefaultAsync<Organization>(sql, new { Id = id });
         }
 
         public async Task<Organization> AddAOrg(Organization org)
