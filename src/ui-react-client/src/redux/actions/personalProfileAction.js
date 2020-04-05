@@ -106,10 +106,10 @@ export const loadPersonalProfile = () => {
                           axios
                             .get(URL, { headers })
                             .then(utilResponse => {
-                              console.log(
-                                'the util reponse is ',
-                                utilResponse,
-                              );
+                              // console.log(
+                              //   'the util reponse is ',
+                              //   utilResponse,
+                              // );
                               dispatch(
                                 loadUserProfile(
                                   response.data,
@@ -277,7 +277,7 @@ export const deleteSkill = skill => {
 export const addSkill = skill => {
   return dispatch => {
     let url = `${SVC_ROOT}personal`;
-    //console.log('the skill url is ', url);
+    console.log('the skill is ', skill);
     //console.log({
     //   username: currentUser,
     //   skill: skill,
@@ -395,6 +395,7 @@ export const loadDetails = projectName => {
     return axios
       .get(url, { headers })
       .then(response => {
+        //
         console.log('the load detail', response);
         return dispatch(loadDetailAction(projectName, response.data));
       })

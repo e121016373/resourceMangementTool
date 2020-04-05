@@ -54,14 +54,14 @@ export const loadProjectsMostRecent = () => {
 };
 
 //changed
-export const loadProjects = () => {
+export const loadProjects = organization => {
   return dispatch => {
-    let URL = `${SVC_ROOT}activatedlist`;
-    //console.log('the load Project URL is ', URL);
+    let URL = `${SVC_ROOT}activatedlist/org/${organization}`;
+    console.log('the load Project URL is ', URL);
     return axios
       .get(URL, { headers })
       .then(response => {
-        //console.log('the response of loadProject is ', response);
+        console.log('the response of loadProject is ', response);
         response = response.data.map(item => {
           return {
             Name: item.project,
@@ -87,7 +87,7 @@ export const createProject = project => {
     //console.log('url is ', URL);
     console.log(project);
     return axios
-      .post(baseURL, project )
+      .post(baseURL, project)
       .then(response => {
         console.log('createProJECT RESPOSE is ', response);
         let item = response.data;

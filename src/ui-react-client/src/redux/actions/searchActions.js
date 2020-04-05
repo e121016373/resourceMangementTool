@@ -42,7 +42,7 @@ export const addPeopleToProject = (
     };
     return axios(options)
       .then(response => {
-        console.log('reponse is ', response);
+        //console.log('reponse is ', response);
         dispatch(
           addPeopleToProjectAction(
             people,
@@ -106,7 +106,7 @@ export const addPeopleToProjectAction = (
 };
 export const searchUsers = content => {
   let url = `${SVC_ROOT}search/users`;
-  console.log('the contenet is ', content);
+  //console.log('the contenet is ', content);
   //console.log(JSON.stringify(content));
   //console.log('the contenet is ', content);
   content = {
@@ -139,7 +139,7 @@ export const searchUsers = content => {
             Availability: availability + '%',
           };
         });
-        console.log('the search reposen is ', response);
+        //console.log('the search reposen is ', response);
         dispatch(searchUsersAction(response));
       })
       .catch(error => {

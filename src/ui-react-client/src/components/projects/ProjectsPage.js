@@ -27,10 +27,16 @@ const ProjectsPage = ({
   addFeedback,
   updateProjectStatus,
   forecastProject,
+  currentUserProfile,
 }) => {
+  const [organization, setOrganization] = useState(
+    currentUserProfile.userProfile.organization,
+  );
   useEffect(() => {
+    //setOrganization(currentUserProfile.userProfile.organization);
+    console.log('in projectsPage the organization is ', organization);
     if (!projects.projects) {
-      loadProjects().catch(error => {
+      loadProjects(organization).catch(error => {
         alert('Loading projects failed' + error);
       });
     }
@@ -477,15 +483,15 @@ const ProjectsPage = ({
         </div>
       );
     }
-    if (projects.projects) {
-      if (Object.keys(projects.projects).length === 0) {
-        return (
-          <div>
-            <Loading />
-          </div>
-        );
-      }
-    }
+    // if (projects.projects) {
+    //   //if (Object.keys(projects.projects).length === 0) {
+    //   return (
+    //     <div>
+    //       <Loading />
+    //     </div>
+    //   );
+    //   //}
+    // }
     let ProjectTableHead = [
       'Name',
       'Location',
@@ -554,7 +560,7 @@ const ProjectsPage = ({
                     }}
                     className="header"
                   >
-                    <h3>Projects</h3>
+                    <h3>Projects: {organization}</h3>
                   </div>
                 </div>
                 <table
@@ -748,6 +754,7 @@ const ProjectsPage = ({
 
 const mapStateToProps = state => ({
   projects: state.projects,
+  currentUserProfile: state.currentUserProfile,
 });
 
 const mapDispatchToProps = {

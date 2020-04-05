@@ -14,11 +14,11 @@ export const loadSkillsAllData = skills => {
 
 export const loadSkills = () => {
   return dispatch => {
-    console.log('the URL is ', baseURL);
+    //console.log('the URL is ', baseURL);
     return axios
       .get(baseURL, { headers })
       .then(response => {
-        console.log('the reuslt is ', response);
+        //console.log('the reuslt is ', response);
         dispatch(loadSkillsAllData(response.data));
       })
       .catch(error => {

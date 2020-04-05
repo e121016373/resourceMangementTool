@@ -13,7 +13,7 @@ export const deleteFeedbackAction = index => {
 
 export const addFeedback = feedback => {
   return dispatch => {
-    console.log('action is here');
+    //console.log('action is here');
     return dispatch(addFeedbackAction(feedback));
   };
 };
