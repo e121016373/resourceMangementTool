@@ -126,6 +126,44 @@ namespace Web.API.Infrastructure.Data
                 update Users
                 set Type = 'Project Manager'
                 where Username = @PM;
+
+                declare @pid int;
+			    declare @uid int;
+			    declare @fd datetime;
+			    declare @td datetime;
+			    declare @fm int;
+			    declare @fy int;
+			    declare @tm int;
+			    declare @ty int;
+			    declare @tempm int;
+			    declare @tempy int;
+
+			    
+			    set @uid = (select Id from Users where Username = @PM);
+			
+		    	set @fd = (select DISTINCT FromDate from ProjectStatus where Id = @pid);
+		    	set @td = (select DISTINCT ToDate from ProjectStatus where Id = @pid);
+		    	set @fy = YEAR(@fd);
+			    set @fm = MONTH(@fd);
+			    set @ty = YEAR(@td);
+			    set @tm = MONTH(@td);
+			    set @tempy = @fy;
+			    set @tempm = @fm;
+			
+			    WHILE @tempm <= @tm and @tempy <= @ty
+			    BEGIN
+			    INSERT INTO UserHours
+			    (UserId, ProjectId, Year, Month, Hours)
+			    values (@uid, @pid, @tempy, @tempm, 0);
+			    if @tempm = 12
+			    BEGIN
+				    set @tempm = 1;
+				    set @tempy = @tempy+1;
+			    END
+			    else
+			    	set @tempm = @tempm + 1;
+			    END;
+
             ;";
 
             using var connection = new SqlConnection(connectionString);
