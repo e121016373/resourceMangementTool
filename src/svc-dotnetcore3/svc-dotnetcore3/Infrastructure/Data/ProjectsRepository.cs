@@ -121,6 +121,10 @@ namespace Web.API.Infrastructure.Data
                 0, 0, 0, 0, 0, 0, 0, 0);
 				set @n = @n+1;
 				END
+                
+                update Users
+                set Type = 'Project Manager'
+                where Username = @PM;
             ;";
 
             using var connection = new SqlConnection(connectionString);

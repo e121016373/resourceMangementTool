@@ -55,6 +55,19 @@ namespace Web.API.Infrastructure.Data
             return await connection.QueryFirstOrDefaultAsync<User>(sql, new { Username = username });
         }
 
+        public async Task<IEnumerable<Uname>> GetManagers(string organization)
+        {
+            var sql = @"
+                select
+                   Username, Type from Users where ([Type] = 'Resource Manager' or [Type] = 'Project Manager')
+                    and OrganizationId = (select Id from Organizations where Name = @Organization)
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            return await connection.QueryAsync<Uname>(sql, new { Organization = organization });
+        }
+
         public async Task<User> CreateAUser(User user)
         {
             var sql = @"

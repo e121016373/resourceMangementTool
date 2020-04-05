@@ -10,4 +10,9 @@
         public string Type { get; set; }
         public string Organization { get; set; }
     }
+    public class Uname
+    { 
+        public string Username { get; set; }
+        public string Type { get; set; }
+    }
 }
