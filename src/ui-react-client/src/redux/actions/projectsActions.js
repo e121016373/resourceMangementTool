@@ -96,6 +96,8 @@ export const createProject = project => {
         response = {
           Name: item.project,
           Location: item.location,
+          'Project Manager': item.projectManager,
+          Discipline: item.discipline,
           StartDate: (item.fromDate + '').split('T')[0],
           EndDate: (item.toDate + '').split('T')[0],
           UpdateTime: (item.updatedAt + '').split('T')[0],
@@ -120,6 +122,26 @@ export const updateProject = () => {
         throw error;
       });
   };
+};
+
+export const loadForecastSummary = (organization, year) => {
+  return dispatch => {
+    let URL = `${SVC_ROOT}util/${organization}/${year}`;
+    console.log('load forecast summary is URL is ', URL);
+    return axios
+      .get(URL, { headers })
+      .then(response => {
+        console.log('load ForecastSummary is ', response.data);
+        dispatch(loadForecastSummaryAction(response.data));
+      })
+      .catch(error => {
+        throw error;
+      });
+  };
+};
+
+export const loadForecastSummaryAction = response => {
+  return { type: types.LOAD_FORECAST_SUMMARY, payload: response };
 };
 
 export const updateProjectStatus = (projectName, status) => {

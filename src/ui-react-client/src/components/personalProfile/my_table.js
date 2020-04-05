@@ -148,6 +148,53 @@ const WTable = ({
               <>
                 <tr key={index}>
                   {Object.values(data).map((item, index) => {
+                    if (typeof item === 'number') {
+                      if (item < 0.8) {
+                        return (
+                          <td
+                            style={{
+                              color: 'white',
+                              border: 'solid',
+
+                              backgroundColor: 'green',
+                              opacity: 0.5,
+                            }}
+                            key={index}
+                          >
+                            {item}
+                          </td>
+                        );
+                      } else if (item >= 0.8 && item <= 1.2) {
+                        return (
+                          <td
+                            style={{
+                              color: 'white',
+                              border: 'solid',
+                              marginBottom: '1px',
+                              backgroundColor: '#c3c344',
+                              opacity: 0.5,
+                            }}
+                            key={index}
+                          >
+                            {item}
+                          </td>
+                        );
+                      } else {
+                        return (
+                          <td
+                            style={{
+                              color: 'white',
+                              border: 'solid',
+                              backgroundColor: 'red',
+                              opacity: 0.5,
+                            }}
+                            key={index}
+                          >
+                            {item}
+                          </td>
+                        );
+                      }
+                    }
                     if (
                       typeof item == 'string' &&
                       item.includes('%')

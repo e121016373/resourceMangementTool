@@ -11,11 +11,12 @@ import {
   editProjectUser,
   updateProjectStatus,
   forecastProject,
+  loadForecastSummary,
 } from '../../redux/actions/projectsActions';
 import { addFeedback } from '../../redux/actions/feedbackAction';
 import { connect } from 'react-redux';
 import Loading from '../loading/loading';
-import { SearchModal } from './modal';
+import { SearchModal, ForecastSummaryModal } from './modal';
 import CreateProjectModal from './modal';
 import WButton from '../personalProfile/button';
 const ProjectsPage = ({
@@ -28,6 +29,8 @@ const ProjectsPage = ({
   updateProjectStatus,
   forecastProject,
   currentUserProfile,
+  loadForecastSummary,
+  forecastSummary,
 }) => {
   const [organization, setOrganization] = useState(
     currentUserProfile.userProfile.organization,
@@ -475,6 +478,13 @@ const ProjectsPage = ({
     modal.style.display = 'block';
   };
 
+  const showForecastSummaryModal = () => {
+    let today = new Date();
+    let date = today.getFullYear();
+    loadForecastSummary(organization, date);
+    let modal = document.getElementById('forecastSummaryModal');
+    modal.style.display = 'block';
+  };
   const renderProjectPage = () => {
     if (!projects.projects) {
       return (
@@ -555,6 +565,18 @@ const ProjectsPage = ({
                     onClick={createProjectButton}
                   >
                     Create Project
+                  </div>
+                  <div
+                    style={{
+                      //width: '7vw',
+                      padding: 5,
+                      float: 'right',
+                      marginRight: '10px',
+                    }}
+                    className="btn-infoGreen"
+                    onClick={showForecastSummaryModal}
+                  >
+                    Forecast Summary
                   </div>
                   <div
                     style={{
@@ -749,6 +771,11 @@ const ProjectsPage = ({
         fromDate={fromDate}
         toDate={toDate}
       />
+      <ForecastSummaryModal
+        datas={forecastSummary}
+        changeYear={loadForecastSummary}
+        organization={organization}
+      />
       {renderProjectPage()}
     </div>
   );
@@ -757,6 +784,7 @@ const ProjectsPage = ({
 const mapStateToProps = state => ({
   projects: state.projects,
   currentUserProfile: state.currentUserProfile,
+  forecastSummary: state.projects.forecastSummary,
 });
 
 const mapDispatchToProps = {
@@ -769,6 +797,7 @@ const mapDispatchToProps = {
   editProjectUser: editProjectUser,
   updateProjectStatus: updateProjectStatus,
   forecastProject: forecastProject,
+  loadForecastSummary: loadForecastSummary,
 };
 
 export default connect(
