@@ -66,6 +66,8 @@ export const loadProjects = organization => {
           return {
             Name: item.project,
             Location: item.location,
+            'Project Manager': item.projectManager,
+            Discipline: item.discipline,
             StartDate: (item.fromDate + '').split('T')[0],
             EndDate: (item.toDate + '').split('T')[0],
             UpdateTime: (item.updatedAt + '').split('T')[0],

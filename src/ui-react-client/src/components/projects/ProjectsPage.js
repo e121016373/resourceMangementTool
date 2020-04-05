@@ -495,6 +495,8 @@ const ProjectsPage = ({
     let ProjectTableHead = [
       'Name',
       'Location',
+      'Project Manager',
+      'Discipline',
       'Start Date',
       'End Date',
       'Update Time',
