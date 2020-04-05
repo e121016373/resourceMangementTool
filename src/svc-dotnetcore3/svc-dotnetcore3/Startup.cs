@@ -52,6 +52,7 @@ namespace Web.API
 
             services.AddScoped<ILocationsRepository>(sp => new LocationsRepository(connectionString));
             services.AddScoped<IProjectsRepository>(sp => new ProjectsRepository(connectionString));
+            services.AddScoped<IOrgRepository>(sp => new OrgRepository(connectionString));
             services.AddScoped<IUsersRepository>(sp => new UsersRepository(connectionString));
             services.AddScoped<ISkillsRepository>(sp => new SkillsRepository(connectionString));
             services.AddScoped<IAdminRepository>(sp => new AdminRepository(connectionString));

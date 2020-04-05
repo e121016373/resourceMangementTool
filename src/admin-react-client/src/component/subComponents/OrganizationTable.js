@@ -1,44 +1,42 @@
 import {BootstrapTable, TableHeaderColumn} from "react-bootstrap-table";
 import "../../css/admin.css"
 import "bootstrap/dist/css/bootstrap.min.css";
-import {deleteADiscipline, loadDisciplines} from "../../redux/actions/disciplinesActions"
 import {connect, useDispatch} from 'react-redux';
 import React, {useEffect, useState} from 'react';
-import Button from "react-bootstrap/Button";
-import ButtonToolbar from "react-bootstrap/ButtonToolbar";
-import DisciplineModal from "./DisciplineModal";
+import Button from 'react-bootstrap/Button';
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import {addFeedback} from "../../redux/actions/feedbackAction";
+import OrganizationModal from "./OrganizationModal";
+import {createAOrganization, deleteAOrganization, loadOrganizations} from "../../redux/actions/organizationActions";
 
 
-
-
-
-const DisciplineTable = ({
-                             disciplines,
-                             loadDisciplines,
-                         }) => {
+const OrganizationTable = ({
+                       organizations,
+                       loadOrganizations,
+                   }) => {
     useEffect(() => {
-        if (disciplines.length === 0) {
-            loadDisciplines().catch(error => {
-                alert('Loading disciplines failed' + error);
+        if (organizations.length === 0) {
+            loadOrganizations().catch(error => {
+                alert('Loading users failed' + error);
             });
         }
-    }, [disciplines, loadDisciplines]);
+
+
+    }, [organizations,loadOrganizations]);
 
     const [modalShow, setModalShow] = useState(false);
-    const [disToBeDel, setDisName] = useState ({
-        name:'',
+    const [orgToBeDel, setOrgName] = useState ({
+        id:'',
     });
     const dispatch = useDispatch();
 
 
     function onRowSelect(row, isSelected, e) {
-            const val = row.name;
-            setDisName(prevState => {
-                return {...prevState, name: val}
-            });
 
-
+        const val = Number(row.id);
+        setOrgName(orgToBeDel => {
+            return {...orgToBeDel, id:val}
+        });
     }
 
     function onSelectAll(isSelected, rows) {
@@ -47,20 +45,19 @@ const DisciplineTable = ({
 
     function handleDelete(e) {
         e.preventDefault();
-
-        if(disToBeDel.name) {
-            dispatch(deleteADiscipline(disToBeDel))
+        if(orgToBeDel.id) {
+            dispatch(deleteAOrganization(orgToBeDel))
                 .then(() => {
                     dispatch(addFeedback({
                         type: 'success',
-                        data: disToBeDel.name + ' removed successfully',
+                        data: 'Organization removed successfully',
                         show: true,
                     }));
                 })
                 .catch(error => {
                     dispatch(addFeedback({
-                        type: 'success',
-                        data: disToBeDel.name + ' removed unsuccessfully',
+                        type: 'error',
+                        data: 'Organization removed unsuccessfully',
                         show: true,
                     }));
                 });
@@ -80,21 +77,21 @@ const DisciplineTable = ({
         <div>
             <ButtonToolbar>
                 <Button variant="primary" onClick={() => setModalShow(true)}>
-                    Add Discipline
+                    Add Organization
                 </Button>
+                <div className="divider"/>
+                <Button variant="danger" onClick={handleDelete}>Remove Organization</Button>
 
-                <DisciplineModal
+                <OrganizationModal
                     show={modalShow}
                     onHide={() => setModalShow(false)}
                 />
-                <div className="divider"/>
-                <Button variant="danger" onClick={handleDelete}>Remove Discipline</Button>
             </ButtonToolbar>
 
-            <BootstrapTable data={ disciplines } search={true} selectRow = {selectRowProp} pagination>
+            <BootstrapTable data={ organizations } search ={true} selectRow={ selectRowProp} pagination>
                 <TableHeaderColumn width="150" dataField='id' isKey>Id</TableHeaderColumn>
-                <TableHeaderColumn width="150" dataField='name'> Discipline Name</TableHeaderColumn>
-                <TableHeaderColumn width="150" dataField='numberOfPeople'> Number of People</TableHeaderColumn>
+                <TableHeaderColumn width="150" dataField='name'>Name</TableHeaderColumn>
+                <TableHeaderColumn width="150" dataField='TODO'>Number of People</TableHeaderColumn>
             </BootstrapTable>
         </div>
     );
@@ -102,15 +99,20 @@ const DisciplineTable = ({
 
 const mapStateToProps = state => {
     return {
-        disciplines: state.disciplines,
+        organizations: state.organizations
     };
 };
 
 const mapDispatchToProps = {
-    loadDisciplines,
+    loadOrganizations,
+    createAOrganization,
+    deleteAOrganization,
 };
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(DisciplineTable);
+)(OrganizationTable);
+
+
+

@@ -5,6 +5,8 @@ import locations from './locationsReducer';
 import skills from './skillsReducer';
 import disciplines from './disciplinesReducer';
 import feedbacks from './feedbackReducer';
+import admin from './adminReducer';
+import organizations from './organizationReducer';
 
 const rootReducer = combineReducers({
   users: users,
@@ -13,6 +15,8 @@ const rootReducer = combineReducers({
   skills: skills,
   disciplines: disciplines,
   feedbacks: feedbacks,
+  admin: admin,
+  organizations: organizations,
 });
 
 export default rootReducer;

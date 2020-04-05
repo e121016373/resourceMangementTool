@@ -4,5 +4,7 @@ export default {
   locations: [],
   skills: [],
   disciplines:[],
-  feedbacks:[],
+  feedbacks: [],
+  organizations: [],
+  admin: {},
 };

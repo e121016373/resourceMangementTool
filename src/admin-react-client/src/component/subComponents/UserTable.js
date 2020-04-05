@@ -55,6 +55,7 @@ const UserTable = ({
 
     function handleDelete(e) {
         e.preventDefault();
+
         if(userToBeDel.username) {
             dispatch(deleteAUser(userToBeDel))
                 .then(() => {
@@ -75,7 +76,7 @@ const UserTable = ({
     }
 
     const selectRowProp = {
-        mode: 'checkbox',
+        mode: 'radio',
         clickToSelect: true,
         onSelect: onRowSelect,
         onSelectAll: onSelectAll
@@ -97,9 +98,10 @@ const UserTable = ({
                     onHide={() => setModalShow(false)}
                 />
             </ButtonToolbar>
-            <feedbackMsg/>
-            <BootstrapTable data={ users } search ={true} pagination = {true} selectRow={ selectRowProp} striped hover condensed>
-                <TableHeaderColumn width="150" dataField='id' isKey>Id</TableHeaderColumn>
+
+            <BootstrapTable data={ users } search ={true} selectRow={ selectRowProp} pagination>
+                <TableHeaderColumn width="150" dataField='id' isKey hidden>Id</TableHeaderColumn>
+                <TableHeaderColumn width="150" dataField='organization'>Organization</TableHeaderColumn>
                 <TableHeaderColumn width="150" dataField='firstName'>First Name</TableHeaderColumn>
                 <TableHeaderColumn width="150" dataField='lastName'>Last Name</TableHeaderColumn>
                 <TableHeaderColumn width="150" dataField='username'>User Name</TableHeaderColumn>
@@ -131,7 +133,7 @@ const mapDispatchToProps = {
     loadUsers,
     loadLocations,
     createAUser,
-    addFeedback: addFeedback,
+    addFeedback,
     deleteAUser,
 };
 

@@ -6,20 +6,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import "../../css/admin.css";
 import {createSkill} from "../../redux/actions/skillsAction";
 import {addFeedback} from "../../redux/actions/feedbackAction";
+import AutoComplete from "./AutoComplete";
 
 
 function SkillModal(props) {
 
     const [skill, setSkill] = useState({
-        disciplineId: '',
         name: '',
+        disciplineName: '',
     });
 
     const initialState = {
-        disciplineId: '',
         name: '',
+        disciplineName: '',
     };
-
+    const disciplines = useSelector(state => state.disciplines);
     const [submitted, setSubmitted] = useState(false);
     const [created, setCreated] = useState(false);
     const [createdWrong, setCreatedWrong] = useState(false);
@@ -27,16 +28,16 @@ function SkillModal(props) {
 
     function handleChange(e) {
         let {name, value} = e.target;
-        if(name === "disciplineId"){
-            value = Number(value);
-        }
+
         setSkill(skill => ({...skill, [name]: value}));
     }
     function handleSubmit(e) {
         e.preventDefault();
 
+        let disciplineName = document.getElementById("disciplineName");
+        console.log(disciplines);
         setSubmitted(true);
-        if(skill.disciplineId && skill.name) {
+        if(skill.disciplineName && skill.name) {
             dispatch(createSkill(skill))
                 .then(() => {
                     dispatch(addFeedback({
@@ -85,16 +86,20 @@ function SkillModal(props) {
                 <form name="form" onSubmit={handleSubmit}>
                     <div className={'form-group' + (submitted && !skill.name ? ' has-error' : '')}>
                         <label>Skill Name</label>
-                        <input type="text" name="name" defaultvalue={skill.name} onChange={handleChange} className={'form-control'} />
+                        <input type="text" name="name" value={skill.name} onChange={handleChange} className={'form-control'} />
                         {submitted && !skill.name &&
                         <div className="help-block">Skill Name is required</div>
                         }
                     </div>
-                    <div className={'form-group' + (submitted && skill.disciplineId ? ' has-error' : '')}>
-                        <label>Discipline ID</label>
-                        <input type="text" name="disciplineId" defaultvalue={skill.disciplineId} onChange={handleChange} className={'form-control'} />
-                        {submitted && !skill.disciplineId &&
-                        <div className="help-block">Discipline ID is required</div>
+                    <div className={'form-group' + (submitted && skill.disciplineName ? ' has-error' : '')}>
+                        <label>Discipline Name</label>
+                        <AutoComplete
+                            dataType={disciplines}
+                            id={'disciplinesName'}
+                            placeHolder={"discipline"}
+                        />
+                        {submitted && !skill.disciplineName &&
+                        <div className="help-block">Discipline Name is required</div>
                         }
                     </div>
                 </form>

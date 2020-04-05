@@ -1,46 +1,74 @@
 import '../../scss/modal.scss';
 import React, { useState, useEffect } from 'react';
-import { SVC_ROOT } from '../../config/config';
-import axios from 'axios';
-import { headers } from '../../config/adalConfig';
-import { authContext } from '../../config/adalConfig';
 import Search from '../search/search';
-export const CreateProjectModal = ({
+import { connect, useDispatch } from 'react-redux';
+import { loadUsers } from '../../redux/actions/usersActions';
+import { loadLocations } from '../../redux/actions/locationsActions';
+import AutoComplete from '../autocomplete/autocomplete';
+
+const CreateProjectModal = ({
+  loadLocations,
+  locations,
   createProject,
   addFeedback,
 }) => {
+  useEffect(() => {
+    if (Object.keys(locations).length === 0) {
+      loadLocations().catch(error => {
+        alert('Loading disciplines failed' + error);
+      });
+    }
+  }, [locations, loadLocations]);
+
   const close = () => {
     let modal = document.getElementById('createProjectModal');
     modal.style.display = 'none';
   };
-  const submit = () => {
-    let number = document.getElementById('Number').value;
-    let title = document.getElementById('Title').value;
-    let location = document.getElementById('Location').value;
-    let fromDate = document.getElementById('FromDate').value;
-    let toDate = document.getElementById('ToDate').value;
-    createProject({
-      number: number,
-      title: title,
-      location: location,
-      fromDate: fromDate,
-      toDate: toDate,
-    })
-      .then(() => {
-        console.log('in then');
-        addFeedback({
-          type: 'success',
-          data: 'Delete project successfully',
-          show: true,
+
+  const [project, setProject] = useState({
+    Number: '',
+    Title: '',
+    Location: '',
+    FromDate: '',
+    ToDate: '',
+  });
+
+  const [submitted, setSubmitted] = useState(false);
+  const [created, setCreated] = useState(false);
+  const [createdWrong, setCreatedWrong] = useState(false);
+
+  function handleChange(e) {
+    let { name, value } = e.target;
+    setProject(skill => ({ ...skill, [name]: value }));
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    setSubmitted(true);
+    if (
+      project.Number &&
+      project.Title &&
+      project.Location &&
+      project.FromDate &&
+      project.ToDate
+    ) {
+      createProject(project)
+        .then(() => {
+          addFeedback({
+            type: 'success',
+            data: '  :project is created successfully',
+            show: true,
+          });
+        })
+        .catch(error => {
+          addFeedback({
+            type: 'error',
+            data: '  :project is created unsuccessfully',
+            show: true,
+          });
         });
-      })
-      .catch(error => {
-        addFeedback({
-          type: 'error',
-          data: 'Delete Location unsuccessfully',
-          show: true,
-        });
-      });
+    }
 
     // console.log(firstName, '  ', lastName);
   };
@@ -51,57 +79,120 @@ export const CreateProjectModal = ({
           <span className="close" onClick={close}>
             &times;
           </span>
-          <h5>Create Project</h5>
+          <div>
+            <h5>Create Project</h5>
+          </div>
+          {submitted && created && (
+            <div className="created-block">
+              Project is successfully created.
+            </div>
+          )}
+          {submitted && createdWrong && (
+            <div className="help-block">
+              Project is unsuccessfully created. Check your inputs.
+            </div>
+          )}
         </div>
         <div className="content-add">
-          <div className="input-content">
-            <div>
-              <div className="input-name">Number</div>
+          <form name="form" onSubmit={handleSubmit}>
+            <div
+              className={
+                'input-content' +
+                (submitted && !project.Number ? ' has-error' : '')
+              }
+            >
+              <label className="input-name">Number</label>
+              <input
+                type="text"
+                name="Number"
+                value={project.Number}
+                onChange={handleChange}
+                placeholder="eg. 2020-VA3D-03"
+              />
+              {submitted && !project.Number && (
+                <div className="help-block">Number is required</div>
+              )}
             </div>
-            <input
-              id="Number"
-              //style={{ width: 80 }}
-            ></input>
-          </div>
-          <div className="input-content">
-            <div>
-              <div className="input-name">Title</div>
+            <div
+              className={
+                'input-content' +
+                (submitted && !project.Title ? ' has-error' : '')
+              }
+            >
+              <label className="input-name">Project Title</label>
+              <input
+                type="text"
+                name="Title"
+                value={project.Title}
+                onChange={handleChange}
+              />
+              {submitted && !project.Title && (
+                <div className="help-block">
+                  Project Title is required
+                </div>
+              )}
             </div>
-            <input
-              id="Title"
-              //style={{ width: 80 }}
-            ></input>
-          </div>
-          <div className="input-content">
-            <div>
-              <div className="input-name">Location</div>
+            <div
+              className={
+                'input-content' +
+                (submitted && !project.Location ? ' has-error' : '')
+              }
+            >
+              <label className="input-name">Location</label>
+              <input
+                type="text"
+                name="Location"
+                value={project.Location}
+                onChange={handleChange}
+              />
+              {submitted && !project.Location && (
+                <div className="help-block">Location is required</div>
+              )}
             </div>
-            <input
-              id="Location"
-              //style={{ width: 80 }}
-            ></input>
-          </div>
-          <div className="input-content">
-            <div>
-              <div className="input-name">FromDate</div>
+            <div
+              className={
+                'input-content' +
+                (submitted && !project.FromDate ? ' has-error' : '')
+              }
+            >
+              <label className="input-name">Start Date</label>
+              <input
+                placeholder="YYYY-MM-DD"
+                type="text"
+                name="FromDate"
+                value={project.FromDate}
+                onChange={handleChange}
+              />
+              {submitted && !project.FromDate && (
+                <div className="help-block">
+                  Start Date is required
+                </div>
+              )}
             </div>
-            <input
-              id="FromDate"
-              //style={{ width: 80 }}
-            ></input>
-          </div>
-          <div className="input-content">
-            <div>
-              <div className="input-name">ToDate</div>
+            <div
+              className={
+                'input-content' +
+                (submitted && !project.ToDate ? ' has-error' : '')
+              }
+            >
+              <label className="input-name">Finish Date</label>
+              <input
+                placeholder="YYYY-MM-DD"
+                type="location"
+                name="ToDate"
+                value={project.ToDate}
+                onChange={handleChange}
+              />
+              {submitted && !project.ToDate && (
+                <div className="help-block">
+                  Finish Date is required
+                </div>
+              )}
             </div>
-            <input
-              id="ToDate"
-              //style={{ width: 80 }}
-            ></input>
-          </div>
+          </form>
         </div>
         <div>
-          <button onClick={submit}>submit</button>
+          <button onClick={handleSubmit}>submit</button>
         </div>
       </div>
     </div>
@@ -151,3 +242,19 @@ export const SearchModal = ({ projectName, fromDate, toDate }) => {
     </div>
   );
 };
+
+const mapStateToProps = state => {
+  return {
+    locations: state.locations,
+  };
+};
+
+const mapDispatchToProps = {
+  loadUsers,
+  loadLocations,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(CreateProjectModal);

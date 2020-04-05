@@ -18,22 +18,22 @@ export const createLocationData = location => {
 };
 
 export const deleteLocationData = location => {
-  return {
-    type: types.DELETE_LOCATION,
-    location: location,
-  };
+    return {
+        type: types.DELETE_LOCATION,
+        location: location,
+    };
 };
 
 export const loadLocations = () => {
   return dispatch => {
     return axios
-        .get(baseURL, { headers })
-        .then(response => {
-          dispatch(loadLocationsAllData(response.data));
-        })
-        .catch(error => {
-          throw error;
-        });
+      .get(baseURL, { headers })
+      .then(response => {
+        dispatch(loadLocationsAllData(response.data));
+      })
+      .catch(error => {
+        throw error;
+      });
   };
 };
 
@@ -53,16 +53,16 @@ export const createLocation = location => {
 };
 
 export const deleteALocation = location => {
-  return dispatch => {
-    let locName = location.code;
-    return axios
-        .delete(`${baseURL}${locName}`, { headers })
-        .then(response => {
-          dispatch(deleteLocationData(response.data));
+    return dispatch => {
+        let locName = location.code;
+        return axios
+            .delete(`${baseURL}${locName}`, { headers })
+            .then(response => {
+                dispatch(deleteLocationData(response.data));
 
-        })
-        .catch(error => {
-          throw error;
-        });
-  };
+            })
+            .catch(error => {
+                throw error;
+            });
+    };
 };

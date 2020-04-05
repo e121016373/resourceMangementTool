@@ -15,7 +15,8 @@ import {
 import { addFeedback } from '../../redux/actions/feedbackAction';
 import { connect } from 'react-redux';
 import Loading from '../loading/loading';
-import { CreateProjectModal, SearchModal } from './modal';
+import { SearchModal } from './modal';
+import CreateProjectModal from './modal';
 import WButton from '../personalProfile/button';
 const ProjectsPage = ({
   loadProjects,
@@ -37,7 +38,7 @@ const ProjectsPage = ({
 
   const showDetail = (projectName, fromDate, toDate) => {
     setIsRenderDetail(true);
-    console.log('in showDetail', projectName, fromDate, toDate);
+    // console.log('in showDetail', projectName, fromDate, toDate);
     loadDetails(projectName, fromDate, toDate)
       .then(() => {
         return setIsRenderDetail(false);
@@ -48,13 +49,17 @@ const ProjectsPage = ({
   };
   const [isRenderDetail, setIsRenderDetail] = useState(false);
   const [projectName, setProjectName] = useState('');
-  const [fromDate, setFromDate] = useState('');
-  const [toDate, setToDate] = useState('');
-  const [detailTableHead, setDetailTableHead] = useState([]);
+  // const [fromDate, setFromDate] = useState('');
+  // const [toDate, setToDate] = useState('');
+  const [
+    currentDetailTableHead,
+    setCurrentDetailTableHead,
+  ] = useState('');
+  let detailTableHead = [];
   const [year, setYear] = useState(0);
   const changeYear = () => {
     let tempYear = document.getElementById('select-year').value;
-    console.log(tempYear);
+    // console.log(tempYear);
     setYear(tempYear - firstYear);
   };
   const changeProjectStatus = projectName => {
@@ -82,6 +87,7 @@ const ProjectsPage = ({
       });
   };
   let firstYear, secondYear;
+  let fromDate, toDate;
   const deleteProjectButton = projectName => {
     console.log('delete project name is ', projectName);
     deleteProject(projectName)
@@ -102,6 +108,8 @@ const ProjectsPage = ({
       });
   };
   const renderSecondYear = () => {
+    if (secondYear && year == 1)
+      return <option selected>{secondYear}</option>;
     if (secondYear) return <option>{secondYear}</option>;
   };
   const edit = resource => {
@@ -115,16 +123,17 @@ const ProjectsPage = ({
     });
   };
   const submit = resource => {
-    console.log('the resource is ', resource);
+    //console.log('the resource is ', resource);
     setIsRenderDetail(true);
     let datas = document.querySelectorAll(`.${resource}`);
-    let year = document.getElementById('select-year').value;
-    let data = { year: parseInt(year) };
-    let parsedMonth = [...detailTableHead];
+    let selectYear = document.getElementById('select-year').value;
+    let data = { year: parseInt(selectYear) };
+    //console.log('in submit', year);
+    let parsedMonth = [...currentDetailTableHead[year]];
     parsedMonth.pop();
     parsedMonth.pop();
     parsedMonth = parsedMonth.slice(1);
-    console.log('in submit', parsedMonth);
+    //console.log('in submit', parsedMonth);
     for (let a = 0; a < parsedMonth.length; a++) {
       //console.log(datas[a].placeholder, datas[a].value);
       data[parsedMonth[a]] =
@@ -132,19 +141,8 @@ const ProjectsPage = ({
           ? parseInt(datas[a].placeholder)
           : parseInt(datas[a].value);
     }
-    console.log('the data is', data);
+    //console.log('the data is', data);
     forecastProject(projectName, resource, data).then(() => {
-      // for (let a = 0; a < datas.length; a++) {
-      //   //datas.forEach(data => {
-      //   datas[a].style.border = 'none';
-      //   datas[a].disabled = true;
-      //   if (!datas[a].value === '') {
-      //     datas[a].placeholder = datas[a].value;
-      //     datas[a].value = '';
-      //   }
-      //   //});
-      // }
-      //'Ab vero aut atque laborum.'
       showDetail(projectName, fromDate, toDate);
     });
   };
@@ -161,7 +159,9 @@ const ProjectsPage = ({
   };
 
   const renderDetail = year => {
+    //console.log('the year is ', year);
     if (isRenderDetail) {
+      //console.log('loading');
       return (
         <div style={{ height: '60%' }}>
           <div style={{ height: '100%' }} className="loading">
@@ -172,21 +172,55 @@ const ProjectsPage = ({
           </div>
         </div>
       );
-    }
-    if (projects.details) {
-      let details = projects.details;
+    } else if (projects.details) {
+      let project = projects;
+      //console.log('the detail is ', project.details);
+      let today = new Date();
+      let date =
+        today.getFullYear() +
+        '-' +
+        (today.getMonth() + 1) +
+        '-' +
+        today.getDate();
+      //console.log(date);
+      today = new Date(date);
+
+      let details = project.details;
+      //console.log('details is ', details);
       let detailTable = details.map(detail => {
+        //console.log('details is ', detail);
+
+        let data = [];
         let resource = detail.resource;
         let DetailTableHead = details[0].projectName;
-        if (
-          !(
-            fromDate === details[0].fromDate &&
-            toDate === details[0].toDate
-          )
-        ) {
-          setFromDate(details[0].fromDate);
-          setToDate(details[0].toDate);
+        // if (
+        //   !(
+        fromDate = details[0].fromDate;
+        toDate = details[0].toDate;
+        //   )
+        // ) {
+        let tempFromDate = new Date(fromDate);
+        let tempToDate = new Date(toDate);
+
+        if (today < tempFromDate) {
+        } else if (tempFromDate < today && today < tempToDate) {
+          fromDate = date;
+        } else if (tempToDate < today) {
+          firstYear = undefined;
+          secondYear = undefined;
+          data.push([resource]);
+          detailTableHead = [
+            ['Resource', 'Edit', 'Submit'],
+            ['Resource', 'Edit', 'Submit'],
+          ];
+          if (!(projectName === detail.projectName)) {
+            //console.log(projectName, detail.projectName);
+            setProjectName(detail.projectName);
+          }
+
+          return data;
         }
+
         let fromDateYear = fromDate.split('-')[0];
         let toDateYear = toDate.split('-')[0];
         //console.log(fromDateYear, toDateYear, toDate);
@@ -217,7 +251,8 @@ const ProjectsPage = ({
         );
         //parse the second year here,buggy
         let toMonth = parseInt(toDate.split('-')[1]) - 1;
-        let secondYearEntries = Object.entries(years[0]);
+        //console.log('toMonth is ', toMonth);
+        let secondYearEntries = Object.entries(years[1]);
         let trimedSecondYearEntries = secondYearEntries.slice(
           0,
           toMonth + 1,
@@ -225,30 +260,52 @@ const ProjectsPage = ({
         let secondYearObject = Object.fromEntries(
           trimedSecondYearEntries,
         );
+        let firstYearHead = Object.keys(firstYearObject);
+        firstYearHead = ['Resource'].concat(firstYearHead);
+        firstYearHead.push('Edit');
+        firstYearHead.push('Submit');
 
-        //choose year to display
+        let secondYearHead = Object.keys(secondYearObject);
+        //console.log(secondYearObject);
+        secondYearHead = ['Resource'].concat(secondYearHead);
+        secondYearHead.push('Edit');
+        secondYearHead.push('Submit');
+        let yearHeads = [];
+        yearHeads.push(firstYearHead);
+        yearHeads.push(secondYearHead);
+        //setDetailTableHead([...yearHeads]);
+        detailTableHead = yearHeads;
+
         if (!(projectName === detail.projectName)) {
-          let tempHead = Object.keys(firstYearObject);
-          tempHead = ['Resource'].concat(tempHead);
-          tempHead.push('Edit');
-          tempHead.push('Submit');
-          setDetailTableHead(tempHead);
+          //console.log(projectName, detail.projectName);
+          //console.log('current', currentDetailTableHead);
+
+          setCurrentDetailTableHead(yearHeads);
+          //console.log('current', currentDetailTableHead);
         }
 
-        let data = [];
         firstYearObject = Object.values(firstYearObject);
         firstYearObject = [resource].concat(firstYearObject);
         secondYearObject = Object.values(secondYearObject);
         secondYearObject = [resource].concat(secondYearObject);
         data.push(firstYearObject);
         data.push(secondYearObject);
+        //console.log('data is ', data);
         return data;
       });
-      console.log(detailTableHead);
-      console.log('detailTable', detailTable);
+      //console.log(detailTableHead);
+      //console.log('line 278 detailTable', detailTable);
       detailTable = detailTable.map(item => {
         return item[year];
       });
+      let tableHead = [];
+      if (year === 1) {
+        tableHead = detailTableHead[1];
+      } else {
+        tableHead = detailTableHead[0];
+        //console.log('line 287 detailtable head is', detailTableHead);
+      }
+      //console.log('line 289 tablehead is ', tableHead);
       return (
         <div
           className="card"
@@ -321,7 +378,7 @@ const ProjectsPage = ({
               }}
             >
               <tr>
-                {detailTableHead.map((name, index) => {
+                {tableHead.map((name, index) => {
                   return (
                     <th key={index} scope="col">
                       <div>{name}</div>
@@ -361,17 +418,19 @@ const ProjectsPage = ({
                           );
                         })}
                         <td>
-                          <WButton
-                            buttonNameOne={'Edit'}
-                            buttonNameTwo={'Cancel'}
-                            id={Object.values(data)[0]}
-                            onClickButtonOne={() =>
-                              edit(Object.values(data)[0])
-                            }
-                            onClickButtonTwo={() =>
-                              cancel(Object.values(data))
-                            }
-                          />
+                          <div style={{ width: '60px' }}>
+                            <WButton
+                              buttonNameOne={'Edit'}
+                              buttonNameTwo={'Cancel'}
+                              id={Object.values(data)[0]}
+                              onClickButtonOne={() =>
+                                edit(Object.values(data)[0])
+                              }
+                              onClickButtonTwo={() =>
+                                cancel(Object.values(data))
+                              }
+                            />
+                          </div>
                         </td>
                         <td>
                           <div

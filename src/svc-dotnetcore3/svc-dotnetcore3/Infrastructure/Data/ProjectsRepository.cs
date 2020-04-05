@@ -111,10 +111,13 @@ namespace Web.API.Infrastructure.Data
 				WHILE @n <= YEAR(@ToDate)
 				BEGIN
 				insert into ProjectStatus
-                (Id, FromDate, ToDate, Status, Year, Jan, Feb, Mar, Apr, May,
+                (Id, FromDate, ToDate, Status, PM, DisciplineId, OrganizationId, Year, Jan, Feb, Mar, Apr, May,
                 Jun, Jul, Aug, Sep, Oct, Nov, Dec)
                 values(@pid,
-                @FromDate, @ToDate, 'Active', @n, 0, 0, 0, 0,
+                @FromDate, @ToDate, 'Active', (select Id from Users where Username = @PM),
+                (select Id from Disciplines where Name = @Discipline),
+                (select Id from Organizations where Name = @Organization),
+                @n, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0);
 				set @n = @n+1;
 				END
@@ -128,7 +131,10 @@ namespace Web.API.Infrastructure.Data
                 project.Title,
                 project.Location,
                 project.FromDate,
-                project.ToDate
+                project.ToDate,
+                PM = project.ProjectManager,
+                Discipline = project.Discipline,
+                Organization = project.Organization
             });
             return await GetActivatedProjectsWhere(project.Title);
         }
@@ -212,10 +218,18 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<ProjectStatus>> CheckAProject(string project)
         {
             var sql = @"
-                select P.Title as Project, PS.FromDate, PS.ToDate, PS.Status
+                select DISTINCT P.Title as Project, L.Name as Location,
+                PS.FromDate, PS.ToDate, P.UpdatedAt, PS.Status, U.Username as ProjectManager,
+                D.Name as Discipline
                 from ProjectStatus PS
                 INNER JOIN Projects P
                 on P.Id = PS.Id
+                INNER JOIN Locations L
+                on P.LocationId = L.Id
+                INNER JOIN Users U
+                on U.Id = PS.PM
+                INNER JOIN Disciplines D
+                on D.Id = PS.DisciplineId
                 where PS.Id = (select Id from Projects where Title = @Title) 
             ;";
 
@@ -226,23 +240,31 @@ namespace Web.API.Infrastructure.Data
                 Title = project
             });
         }
-        public async Task<IEnumerable<ProjectStatus>> GetActivatedProjects()
+        public async Task<IEnumerable<ProjectStatus>> GetActivatedProjects(string org)
         {
             var sql = @"
                 select DISTINCT P.Title as Project, L.Name as Location,
-                PS.FromDate, PS.ToDate, P.UpdatedAt, PS.Status
+                PS.FromDate, PS.ToDate, P.UpdatedAt, PS.Status, U.Username as ProjectManager,
+                D.Name as Discipline
                 from ProjectStatus PS
                 INNER JOIN Projects P
                 on P.Id = PS.Id
                 INNER JOIN Locations L
                 on P.LocationId = L.Id
+                INNER JOIN Users U
+                on U.Id = PS.PM
+                INNER JOIN Disciplines D
+                on D.Id = PS.DisciplineId
+
+                where PS.OrganizationId = (select Id from Organizations where Name = @Org)
             ;";
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
             return await connection.QueryAsync<ProjectStatus>(sql, new
             {
-            });
+                Org = org
+            }) ;
         }
 
         public async Task<IEnumerable<Project>> GetDeactivatedProjects()
@@ -266,13 +288,18 @@ namespace Web.API.Infrastructure.Data
         public async Task<ProjectStatus> GetActivatedProjectsWhere(string project)
         {
             var sql = @"
-                select TOP 1 P.Title as Project, L.Name as Location,
-                PS.FromDate, PS.ToDate, P.UpdatedAt, PS.Status
+                 select DISTINCT P.Title as Project, L.Name as Location,
+                PS.FromDate, PS.ToDate, P.UpdatedAt, PS.Status, U.Username as ProjectManager,
+                D.Name as Discipline
                 from ProjectStatus PS
                 INNER JOIN Projects P
                 on P.Id = PS.Id
                 INNER JOIN Locations L
                 on P.LocationId = L.Id
+                INNER JOIN Users U
+                on U.Id = PS.PM
+                INNER JOIN Disciplines D
+                on D.Id = PS.DisciplineId
                 where P.Title = @Project;
             ;";
 

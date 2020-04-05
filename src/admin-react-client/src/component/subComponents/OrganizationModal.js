@@ -4,41 +4,42 @@ import Button from "react-bootstrap/Button";
 import {useState, useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import "../../css/admin.css";
-import {createLocation} from "../../redux/actions/locationsActions";
+import {createSkill} from "../../redux/actions/skillsAction";
 import {addFeedback} from "../../redux/actions/feedbackAction";
+import AutoComplete from "./AutoComplete";
+import {createAOrganization} from "../../redux/actions/organizationActions";
 
 
+function OrganizationModal(props) {
 
-function LocationModal(props) {
-    const [location, setLocation] = useState({
-        code: '',
+    const [organization, setOrganization] = useState({
         name: '',
     });
 
     const initialState = {
-        code: '',
         name: '',
     };
-
+    //const disciplines = useSelector(state => state.disciplines);
     const [submitted, setSubmitted] = useState(false);
     const [created, setCreated] = useState(false);
     const [createdWrong, setCreatedWrong] = useState(false);
     const dispatch = useDispatch();
 
     function handleChange(e) {
-        const {name, value} = e.target;
-        setLocation(location => ({...location, [name]: value}));
+        let {name, value} = e.target;
+
+        setOrganization(organization => ({...organization, [name]: value}));
     }
     function handleSubmit(e) {
         e.preventDefault();
 
         setSubmitted(true);
-        if(location.code && location.name) {
-            dispatch(createLocation(location))
+        if(organization.name) {
+            dispatch(createAOrganization(organization))
                 .then(() => {
                     dispatch(addFeedback({
                         type: 'success',
-                        data: '  :'+ location.name + ' created successfully',
+                        data: '  :'+ organization.name + ' created successfully',
                         show: true,
                     }));
                     closing();
@@ -57,7 +58,7 @@ function LocationModal(props) {
     function setInitialState() {
         setSubmitted(false);
         setCreatedWrong(false);
-        setLocation({...initialState});
+        setOrganization({...initialState});
     }
 
     return (
@@ -69,29 +70,20 @@ function LocationModal(props) {
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Create New Skill
-                    {submitted && created &&
-                    <div className="created-block">Location is successfully created.</div>
-                    }
+                    Create New Organization
+
                     {submitted && createdWrong &&
-                    <div className="help-block">Location is unsuccessfully created. Check your Location code.</div>
+                    <div className="help-block">Organization is unsuccessfully created. Check your name.</div>
                     }
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <form name="form" onSubmit={handleSubmit}>
-                    <div className={'form-group' + (submitted && !location.name ? ' has-error' : '')}>
-                        <label>Location Name</label>
-                        <input type="text" name="name" value={location.name} onChange={handleChange} className={'form-control'} />
-                        {submitted && !location.name &&
-                        <div className="help-block">Location Name is required</div>
-                        }
-                    </div>
-                    <div className={'form-group' + (submitted && location.code ? ' has-error' : '')}>
-                        <label>Location Code</label>
-                        <input type="text" name="code" value={location.code} onChange={handleChange} className={'form-control'} />
-                        {submitted && !location.code &&
-                        <div className="help-block">Location Code is required</div>
+                    <div className={'form-group' + (submitted && !organization.name ? ' has-error' : '')}>
+                        <label>Organization Name</label>
+                        <input type="text" name="name" value={organization.name} onChange={handleChange} className={'form-control'} />
+                        {submitted && !organization.name &&
+                        <div className="help-block">Organization Name is required</div>
                         }
                     </div>
                 </form>
@@ -104,11 +96,11 @@ function LocationModal(props) {
                 Close
             </Button>
                 <Button variant="primary" onClick={handleSubmit}>
-                    Create Location
+                    Create
                 </Button>
             </Modal.Footer>
         </Modal>
     );
 }
 
-export default LocationModal;
+export default OrganizationModal;
