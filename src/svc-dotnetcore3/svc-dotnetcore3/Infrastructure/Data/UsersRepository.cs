@@ -21,11 +21,13 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 select
-                    U.Id, U.FirstName, U.LastName, U.Username, L.Name as Location, U.Type, U.Organization
+                    U.Id, U.FirstName, U.LastName, U.Username, L.Name as Location, U.Type, O.Name as Organization
                 from
                     Users U
                 INNER JOIN Locations L
                     on L.Id = U.LocationId
+                INNER JOIN Organizations O
+                    on O.Id = U.OrganizationId
             ;";
 
             using var connection = new SqlConnection(connectionString);
@@ -37,11 +39,13 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 select
-                    U.Id, U.FirstName, U.LastName, U.Username, L.Name as Location, U.Type, U.Organization
+                    U.Id, U.FirstName, U.LastName, U.Username, L.Name as Location, U.Type, O.Name as Organization
                 from
                     Users U
                 INNER JOIN Locations L
                     on L.Id = U.LocationId
+                INNER JOIN Organizations O
+                    on O.Id = U.OrganizationId
                 where 
                     Username = @Username
             ;";
@@ -55,10 +59,11 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 insert into Users 
-                    (FirstName, LastName, Username, LocationId, Type, Organization)
+                    (FirstName, LastName, Username, LocationId, Type, OrganizationId)
                 values 
                     (@FirstName, @LastName, @Username, 
-                    (select Id from Locations where Name = @Location), @Type, @Organization);
+                    (select Id from Locations where Name = @Location), @Type,
+                    (select Id from Organizations where Name = @Organization));
                 select cast(scope_identity() as int);
             ;";
 
@@ -97,7 +102,7 @@ namespace Web.API.Infrastructure.Data
                 update Users
                 set LocationID = (select Id from Locations where Name = @Location),
                     Type = @Type,
-                    Organization = @Organization
+                    Organization = (select Id from Organizations where Name = @Organization)
                 where Username = @Username;
             ";
             using var connection = new SqlConnection(connectionString);
