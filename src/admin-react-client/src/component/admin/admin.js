@@ -6,6 +6,7 @@ import DisciplineTable from '../subComponents/DisciplineTable';
 import '../../css/admin.css';
 import Sidebar from "../subComponents/Sidebar";
 import ShowFeedbackMsg from "../subComponents/feedbackMsg";
+import OrganizationTable from "../subComponents/OrganizationTable";
 
 export default class Admin extends React.Component{
 
@@ -28,8 +29,10 @@ export default class Admin extends React.Component{
       table = <div className = "dataTable"> <LocationTable/> </div>
     } else if(this.state.current_table === "skill") {
       table = <div className = "dataTable"> <SkillTable/> </div>
-    } else {
+    } else if(this.state.current_table === "discipline") {
       table = <div className = "dataTable"> <DisciplineTable/> </div>
+    } else {
+      table = <div className = "dataTable"> <OrganizationTable/> </div>
     }
 
     return (

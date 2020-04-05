@@ -89,8 +89,8 @@ const SkillTable = ({
                 <Button variant="danger" onClick={handleDelete}>Remove Skill</Button>
             </ButtonToolbar>
             <BootstrapTable data={ skills } search = {true} selectRow={ selectRowProp} pagination>
-                <TableHeaderColumn width="150" dataField='id' isKey>Id</TableHeaderColumn>
-                <TableHeaderColumn width="150" dataField='disciplineId'> Discipline Id</TableHeaderColumn>
+                <TableHeaderColumn width="150" dataField='id' isKey hidden>Id</TableHeaderColumn>
+                <TableHeaderColumn width="150" dataField='disciplineName'> Discipline Name</TableHeaderColumn>
                 <TableHeaderColumn width="150" dataField='name'> Skill Name</TableHeaderColumn>
                 <TableHeaderColumn width="150" dataField='numberOfPeople'> Number of People</TableHeaderColumn>
             </BootstrapTable>

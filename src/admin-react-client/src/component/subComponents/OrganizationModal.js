@@ -7,20 +7,19 @@ import "../../css/admin.css";
 import {createSkill} from "../../redux/actions/skillsAction";
 import {addFeedback} from "../../redux/actions/feedbackAction";
 import AutoComplete from "./AutoComplete";
+import {createAOrganization} from "../../redux/actions/organizationActions";
 
 
-function SkillModal(props) {
+function OrganizationModal(props) {
 
-    const [skill, setSkill] = useState({
+    const [organization, setOrganization] = useState({
         name: '',
-        disciplineName: '',
     });
 
     const initialState = {
         name: '',
-        disciplineName: '',
     };
-    const disciplines = useSelector(state => state.disciplines);
+    //const disciplines = useSelector(state => state.disciplines);
     const [submitted, setSubmitted] = useState(false);
     const [created, setCreated] = useState(false);
     const [createdWrong, setCreatedWrong] = useState(false);
@@ -29,20 +28,18 @@ function SkillModal(props) {
     function handleChange(e) {
         let {name, value} = e.target;
 
-        setSkill(skill => ({...skill, [name]: value}));
+        setOrganization(organization => ({...organization, [name]: value}));
     }
     function handleSubmit(e) {
         e.preventDefault();
 
-        let disciplineName = document.getElementById("disciplineName");
-        console.log(disciplines);
         setSubmitted(true);
-        if(skill.disciplineName && skill.name) {
-            dispatch(createSkill(skill))
+        if(organization.name) {
+            dispatch(createAOrganization(organization))
                 .then(() => {
                     dispatch(addFeedback({
                         type: 'success',
-                        data: '  :'+ skill.name + ' created successfully',
+                        data: '  :'+ organization.name + ' created successfully',
                         show: true,
                     }));
                     closing();
@@ -61,7 +58,7 @@ function SkillModal(props) {
     function setInitialState() {
         setSubmitted(false);
         setCreatedWrong(false);
-        setSkill({...initialState});
+        setOrganization({...initialState});
     }
 
     return (
@@ -73,33 +70,20 @@ function SkillModal(props) {
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Create New Skill
-                    {submitted && created &&
-                    <div className="created-block">Skill is successfully created.</div>
-                    }
+                    Create New Organization
+
                     {submitted && createdWrong &&
-                    <div className="help-block">Skill is unsuccessfully created. Check your skill name.</div>
+                    <div className="help-block">Organization is unsuccessfully created. Check your name.</div>
                     }
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <form name="form" onSubmit={handleSubmit}>
-                    <div className={'form-group' + (submitted && !skill.name ? ' has-error' : '')}>
-                        <label>Skill Name</label>
-                        <input type="text" name="name" value={skill.name} onChange={handleChange} className={'form-control'} />
-                        {submitted && !skill.name &&
-                        <div className="help-block">Skill Name is required</div>
-                        }
-                    </div>
-                    <div className={'form-group' + (submitted && skill.disciplineName ? ' has-error' : '')}>
-                        <label>Discipline Name</label>
-                        <AutoComplete
-                            dataType={disciplines}
-                            id={'disciplinesName'}
-                            placeHolder={"discipline"}
-                        />
-                        {submitted && !skill.disciplineName &&
-                        <div className="help-block">Discipline Name is required</div>
+                    <div className={'form-group' + (submitted && !organization.name ? ' has-error' : '')}>
+                        <label>Organization Name</label>
+                        <input type="text" name="name" value={organization.name} onChange={handleChange} className={'form-control'} />
+                        {submitted && !organization.name &&
+                        <div className="help-block">Organization Name is required</div>
                         }
                     </div>
                 </form>
@@ -112,11 +96,11 @@ function SkillModal(props) {
                 Close
             </Button>
                 <Button variant="primary" onClick={handleSubmit}>
-                    Create SKill
+                    Create
                 </Button>
             </Modal.Footer>
         </Modal>
     );
 }
 
-export default SkillModal;
+export default OrganizationModal;
