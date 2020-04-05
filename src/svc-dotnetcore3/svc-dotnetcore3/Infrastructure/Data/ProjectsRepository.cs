@@ -114,7 +114,8 @@ namespace Web.API.Infrastructure.Data
                 (Id, FromDate, ToDate, Status, PM, DisciplineId, OrganizationId, Year, Jan, Feb, Mar, Apr, May,
                 Jun, Jul, Aug, Sep, Oct, Nov, Dec)
                 values(@pid,
-                @FromDate, @ToDate, 'Active', (select Id from Users where Username = @PM),
+                @FromDate, @ToDate, 'Active', (select Id from Users where Username = @PM and 
+                (Type = 'Project Manager' or Type = 'Resource Manager')),
                 (select Id from Disciplines where Name = @Discipline),
                 (select Id from Organizations where Name = @Organization),
                 @n, 0, 0, 0, 0,
