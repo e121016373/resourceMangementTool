@@ -91,7 +91,7 @@ const OrganizationTable = ({
             <BootstrapTable data={ organizations } search ={true} selectRow={ selectRowProp} pagination>
                 <TableHeaderColumn width="150" dataField='id' isKey>Id</TableHeaderColumn>
                 <TableHeaderColumn width="150" dataField='name'>Name</TableHeaderColumn>
-                <TableHeaderColumn width="150" dataField='TODO'>Number of People</TableHeaderColumn>
+                <TableHeaderColumn width="150" dataField='num'>Number of People</TableHeaderColumn>
             </BootstrapTable>
         </div>
     );

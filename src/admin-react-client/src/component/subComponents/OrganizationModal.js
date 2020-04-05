@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import "../../css/admin.css";
 import {createSkill} from "../../redux/actions/skillsAction";
 import {addFeedback} from "../../redux/actions/feedbackAction";
-import AutoComplete from "./AutoComplete";
 import {createAOrganization} from "../../redux/actions/organizationActions";
 
 

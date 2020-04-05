@@ -2,11 +2,14 @@ import Modal from 'react-bootstrap/Modal';
 import React from "react";
 import Button from "react-bootstrap/Button";
 import {useState, useEffect} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import {connect, useDispatch, useSelector} from 'react-redux';
 import "../../css/admin.css";
 import {createSkill} from "../../redux/actions/skillsAction";
 import {addFeedback} from "../../redux/actions/feedbackAction";
-import AutoComplete from "./AutoComplete";
+import {loadDisciplines} from "../../redux/actions/disciplinesActions";
+import Select from 'react-select';
+
+
 
 
 function SkillModal(props) {
@@ -21,7 +24,32 @@ function SkillModal(props) {
         disciplineName: '',
     };
     const disciplines = useSelector(state => state.disciplines);
+
+    useEffect(() => {
+        if (disciplines.length === 0) {
+            dispatch(loadDisciplines())
+                .catch(error => {
+                alert('Loading users failed' + error);
+            });
+        }
+
+
+    });
+
+    function convertToOption(){
+        let disName = disciplines.map(a => a.name);
+        let disOption = [];
+
+        for( const name of disName) {
+            disOption.push({value:name, label:name});
+        }
+        return disOption;
+    }
+
+    const disOption = convertToOption();
+
     const [submitted, setSubmitted] = useState(false);
+
     const [created, setCreated] = useState(false);
     const [createdWrong, setCreatedWrong] = useState(false);
     const dispatch = useDispatch();
@@ -30,6 +58,11 @@ function SkillModal(props) {
         let {name, value} = e.target;
 
         setSkill(skill => ({...skill, [name]: value}));
+    }
+
+    function handleSelected(optionSelected){
+        let name = optionSelected.value;
+        setSkill(skill => ({...skill, disciplineName:name}));
     }
     function handleSubmit(e) {
         e.preventDefault();
@@ -93,10 +126,11 @@ function SkillModal(props) {
                     </div>
                     <div className={'form-group' + (submitted && skill.disciplineName ? ' has-error' : '')}>
                         <label>Discipline Name</label>
-                        <AutoComplete
-                            dataType={disciplines}
-                            id={'disciplinesName'}
-                            placeHolder={"discipline"}
+                        <Select
+                            name="disciplineName"
+                            defaultValue={"Disciplines"}
+                            onChange={handleSelected}
+                            options={disOption}
                         />
                         {submitted && !skill.disciplineName &&
                         <div className="help-block">Discipline Name is required</div>
@@ -119,4 +153,6 @@ function SkillModal(props) {
     );
 }
 
+
 export default SkillModal;
+
