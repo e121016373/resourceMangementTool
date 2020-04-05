@@ -8,7 +8,7 @@ using Web.API.Application.Repository;
 
 namespace Web.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class UDController : ControllerBase
     {
         private readonly IUDRepository udRepository;

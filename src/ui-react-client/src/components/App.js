@@ -40,7 +40,10 @@ const App = ({ personalProfileUser, loadPersonalProfile }) => {
     : '';
 
   const renderPrivateRoute = () => {
-    if (userType === 'Resource Manager') {
+    if (
+      userType === 'Resource Manager' ||
+      userType === 'Project Manager'
+    ) {
       return <Route path="/projects" component={ProjectsPage} />;
     }
   };

@@ -291,7 +291,6 @@ export const SearchModal = ({ projectName, fromDate, toDate }) => {
         paddingLeft: '40px',
         paddingBottom: '40px',
         paddingRight: '40px',
-        paddingTop: '40px',
       }}
       id="searchModal"
       className="modal"
@@ -379,7 +378,7 @@ export const ForecastSummaryModal = ({
               marginTop: '20px',
             }}
           >
-            <div className="table">
+            <div style={{ overflowX: 'none' }} className="table">
               <div>
                 <div style={{ float: 'right' }}>
                   <select
