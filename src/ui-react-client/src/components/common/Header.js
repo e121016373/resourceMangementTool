@@ -70,18 +70,18 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
         .getElementById('bar')
         .getBoundingClientRect().x;
     }
-    console.log('the originalBarPosition is ', originalBarPosition);
+    //console.log('the originalBarPosition is ', originalBarPosition);
     let difference =
       e.target.getBoundingClientRect().x - originalBarPosition - 4;
-    console.log('the difference is ', difference);
-    console.log(
-      'current position is ',
-      e.target.getBoundingClientRect().x,
-    );
+    // console.log('the difference is ', difference);
+    // console.log(
+    //   'current position is ',
+    //   e.target.getBoundingClientRect().x,
+    // );
     bar.style.transform = 'translate(' + difference + 'px)';
     bar.style.width =
       e.target.getBoundingClientRect().width + 8 + 'px';
-    console.log('the width  ', bar.style.width);
+    //console.log('the width  ', bar.style.width);
   };
   return (
     <div>
