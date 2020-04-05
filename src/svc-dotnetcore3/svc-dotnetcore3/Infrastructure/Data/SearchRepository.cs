@@ -116,31 +116,57 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<Project>> GetAllProjects(Search search)
         {
             var sql = @"
-                SELECT DISTINCT
-                    P.Id, P.Number, P.Title, L.Name AS 'Location'
+                SELECT DISTINCT 
+                    P.Id, P.Number, P.Title, L.Name, P.CreatedAt, P.UpdatedAt, 
+                    PS.FromDate, PS.ToDate, PS.Status, 
+                    (SELECT CONCAT(U.FirstName, ' ', U.LastName)) AS 'PM', 
+                    D.Name, O.Name
                 FROM 
-                    Projects P,
-                    Locations L
-                WHERE 
-                    P.LocationId = L.Id";
+                    Projects P
+                    LEFT JOIN Locations L ON P.LocationId = L.Id
+                    LEFT JOIN ProjectStatus PS ON P.Id = PS.Id
+                    LEFT JOIN Disciplines D ON D.Id = PS.DisciplineId
+                    LEFT JOIN Organizations O ON O.Id = PS.OrganizationId
+                    LEFT JOIN Users U ON U.Id = PS.PM
+                WHERE    ";
 
             if (search.ProjectNumber != null) {
-                sql += " AND P.Number = @ProjectNumber";                
-            }
-            if (search.ProjectTitle != null) {
-                sql += " AND P.Title = @ProjectTitle";
+                sql += " RTRIM(LTRIM(P.Number)) = @ProjectNumber AND";                
             }
             if (search.Location != null) {
-                sql += " AND L.Name = @Location";
+                sql += " RTRIM(LTRIM(L.Name)) = @Location AND";
             }
+            if (search.ProjectStatus != null) {
+                sql += " RTRIM(LTRIM(PS.Status)) = @ProjectStatus AND";
+            }
+            if (search.PMFirstName != null) {
+                sql += " RTRIM(LTRIM(U.FirstName)) = @PMFirstName AND";
+            }
+            if (search.PMLastName != null) {
+                sql += " RTRIM(LTRIM(U.LastName)) = @PMLastName AND";
+            }
+            if (search.Discipline != null) {
+                sql += " RTRIM(LTRIM(D.Name)) = @Discipline AND";
+            }
+            if (search.Organization != null) {
+                sql += " RTRIM(LTRIM(O.Name)) = @Organization AND";
+            }
+
+            // remove the last AND
+            sql = sql.Substring(0, sql.Length-3);
+
             sql += ";";            
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
             return await connection.QueryAsync<Project>(sql, new {
                 search.ProjectNumber,
-                search.ProjectTitle,
-                search.Location
+                search.Location,
+                search.ProjectStatus,
+                search.PMFirstName,
+                search.PMLastName,
+                search.Discipline,
+                search.Organization
             });
         }
     }
