@@ -18,15 +18,18 @@ namespace Web.API.Infrastructure.Data
         }
 
 
-        public async Task<IEnumerable<Organization>> GetAllOrgs()
+        public async Task<IEnumerable<Organizations>> GetAllOrgs()
         {
             var sql = @"
-                select * from Organizations
+                select Id, Name, 
+                (Select Count (Distinct U.Id) from Users U Where U.OrganizationId = O.Id)
+                as Num
+                from Organizations O
             ;";
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            return await connection.QueryAsync<Organization>(sql);
+            return await connection.QueryAsync<Organizations>(sql);
         }
 
         public async Task<Organization> GetAOrg(int id)

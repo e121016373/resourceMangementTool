@@ -7,7 +7,7 @@ namespace Web.API.Application.Repository
     public interface IOrgRepository
     {
         // GET
-        Task<IEnumerable<Organization>> GetAllOrgs();
+        Task<IEnumerable<Organizations>> GetAllOrgs();
         Task<Organization> GetAOrg(int id);
 
         // POST

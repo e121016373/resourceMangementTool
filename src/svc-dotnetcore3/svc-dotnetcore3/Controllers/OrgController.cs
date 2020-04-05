@@ -22,10 +22,10 @@ namespace Web.API.Controllers
         
         [HttpGet]
         [Route("/org")]
-        public async Task<ActionResult<IEnumerable<Organization>>> GetAllOrgs()
+        public async Task<ActionResult<IEnumerable<Organizations>>> GetAllOrgs()
         {
             var response = await orgRepository.GetAllOrgs();
-            var viewModel = mapper.Map<IEnumerable<Organization>>(response);
+            var viewModel = mapper.Map<IEnumerable<Organizations>>(response);
             return Ok(viewModel);
         }
         [HttpGet]
