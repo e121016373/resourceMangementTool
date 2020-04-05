@@ -275,7 +275,6 @@ export const SearchModal = ({ projectName, fromDate, toDate }) => {
         paddingLeft: '40px',
         paddingBottom: '40px',
         paddingRight: '40px',
-        paddingTop: '40px',
       }}
       id="searchModal"
       className="modal"
