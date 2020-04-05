@@ -218,10 +218,18 @@ namespace Web.API.Infrastructure.Data
         public async Task<IEnumerable<ProjectStatus>> CheckAProject(string project)
         {
             var sql = @"
-                select P.Title as Project, PS.FromDate, PS.ToDate, PS.Status
+                select DISTINCT P.Title as Project, L.Name as Location,
+                PS.FromDate, PS.ToDate, P.UpdatedAt, PS.Status, U.Username as ProjectManager,
+                D.Name as Discipline
                 from ProjectStatus PS
                 INNER JOIN Projects P
                 on P.Id = PS.Id
+                INNER JOIN Locations L
+                on P.LocationId = L.Id
+                INNER JOIN Users U
+                on U.Id = PS.PM
+                INNER JOIN Disciplines D
+                on D.Id = PS.DisciplineId
                 where PS.Id = (select Id from Projects where Title = @Title) 
             ;";
 
@@ -280,13 +288,18 @@ namespace Web.API.Infrastructure.Data
         public async Task<ProjectStatus> GetActivatedProjectsWhere(string project)
         {
             var sql = @"
-                select TOP 1 P.Title as Project, L.Name as Location,
-                PS.FromDate, PS.ToDate, P.UpdatedAt, PS.Status
+                 select DISTINCT P.Title as Project, L.Name as Location,
+                PS.FromDate, PS.ToDate, P.UpdatedAt, PS.Status, U.Username as ProjectManager,
+                D.Name as Discipline
                 from ProjectStatus PS
                 INNER JOIN Projects P
                 on P.Id = PS.Id
                 INNER JOIN Locations L
                 on P.LocationId = L.Id
+                INNER JOIN Users U
+                on U.Id = PS.PM
+                INNER JOIN Disciplines D
+                on D.Id = PS.DisciplineId
                 where P.Title = @Project;
             ;";
 

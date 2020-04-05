@@ -32,53 +32,72 @@ namespace Web.API.Infrastructure.Data
                 int year = search.FromDate.Year;
                 int month = search.FromDate.Month;     
                 sql += ", (SELECT CONVERT(FLOAT, 1-SUM(UH.Hours/176.0/" + (month_diff + 1) + "))";
-                sql += @" FROM UserHours UH
-                        WHERE UH.UserId = U.Id";
-                sql += " AND ((UH.Year = " + year + "AND UH.Month =" + month + ")";
+                sql += @" 
+                    FROM UserHours UH
+                    WHERE UH.UserId = U.Id";
+                sql += " \nAND ((UH.Year = " + year + "AND UH.Month =" + month + ")";
                 month++;
                 for (int i = 0; i < month_diff; i++) {
                     if (month >= 13) {
                         year += 1;
                         month = 1;
                     }
-                    sql += " OR (UH.Year = " + year + " AND UH.Month = " + month + ")";
+                    sql += " \nOR (UH.Year = " + year + " AND UH.Month = " + month + ")";
                     month++;
                 }
-                sql += @") 
+                sql += @"
+                        ) 
                     GROUP BY UH.UserId) AS 'Availability'";
             }
 
-            sql += @" FROM 
+            sql += @"
+                    FROM 
                         Users U
-                        INNER JOIN UserWorksDiscipline UWD ON U.Id = UWD.UserId
-                        INNER JOIN UserHasSkills UHS ON U.Id = UHS.UserId
-                        INNER JOIN Locations L ON U.LocationId = L.Id
-                        INNER JOIN Disciplines D ON UWD.DisciplineId = D.Id
-                        INNER JOIN Skills S ON UHS.SkillId = S.Id 
-                    WHERE 
-                        S.DisciplineId = D.Id";
+                        LEFT JOIN UserWorksDiscipline UWD ON U.Id = UWD.UserId";
+
+            if (search.Skill != null) {
+                sql += " LEFT JOIN UserHasSkills UHS ON U.Id = UHS.UserId";
+            } else {
+                sql += @"
+                    LEFT JOIN (
+                        SELECT UHS.UserId, MIN(UHS.SkillId) AS 'SkillId'
+                        FROM UserHasSkills UHS
+                        GROUP BY UHS.UserId
+                        ) UHS ON UHS.UserId = U.Id
+            ";
+            }
+
+            sql += @"
+                LEFT JOIN Locations L ON U.LocationId = L.Id
+                LEFT JOIN Disciplines D ON UWD.DisciplineId = D.Id
+                LEFT JOIN Skills S ON UHS.SkillId = S.Id AND S.DisciplineId = D.Id
+            WHERE    ";
 
             if ((search.Discipline != null) && search.Discipline.Trim() != "") {
-                sql += " AND RTRIM(LTRIM(D.Name)) = LTRIM(@Discipline)";
+                sql += " RTRIM(LTRIM(D.Name)) = LTRIM(@Discipline) AND";
             }
-            if (search.Skill != null) {
-                sql += " AND RTRIM(LTRIM(S.Name)) = LTRIM(@Skill)";
+            if (search.Skill != null && search.Skill.Trim() != "") {
+                sql += " RTRIM(LTRIM(S.Name)) = LTRIM(@Skill) AND";
             }
-            if (search.Location != null) {
-                sql += " AND RTRIM(LTRIM(L.Name)) = LTRIM(@Location)";
+            if (search.Location != null && search.Location.Trim() != "") {
+                sql += " RTRIM(LTRIM(L.Name)) = LTRIM(@Location) AND";
             }
             if (search.YOE != null) {
-                sql += " AND RTRIM(LTRIM(UWD.Year)) = LTRIM(@YOE)";
+                sql += " RTRIM(LTRIM(UWD.Year)) = LTRIM(@YOE) AND";
             }
+
+            // remove the last AND
+            sql = sql.Substring(0, sql.Length-3);
             
             sql += " ) AS SearchUser";
             if (search.FromDate != null && search.ToDate != null) {
-                // if (search.Availability.GetType() == typeof(int)
                 sql += " WHERE SearchUser.Availability >= @Availability/100.0";
             }
            
             sql += ";";
             
+            // for debug
+            // Console.WriteLine(sql);
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
