@@ -30,7 +30,10 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
 
   const renderProject = () => {
     console.log('the user type is ', userType);
-    if (userType === 'Resource Manager') {
+    if (
+      userType === 'Resource Manager' ||
+      userType === 'Project Manager'
+    ) {
       return (
         <li>
           <div>
