@@ -76,10 +76,10 @@ namespace Web.API.Infrastructure.Data
             if ((search.Discipline != null) && search.Discipline.Trim() != "") {
                 sql += " RTRIM(LTRIM(D.Name)) = LTRIM(@Discipline) AND";
             }
-            if (search.Skill != null) {
+            if (search.Skill != null && search.Skill.Trim() != "") {
                 sql += " RTRIM(LTRIM(S.Name)) = LTRIM(@Skill) AND";
             }
-            if (search.Location != null) {
+            if (search.Location != null && search.Location.Trim() != "") {
                 sql += " RTRIM(LTRIM(L.Name)) = LTRIM(@Location) AND";
             }
             if (search.YOE != null) {
