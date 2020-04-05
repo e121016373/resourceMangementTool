@@ -154,7 +154,7 @@ namespace Web.API.Infrastructure.Data
                     ProjectStatus PS
                     on PS.Id = UP.ProjectId
                  and PS.Status = 'Active'
-                 where U.Organization = @Org;
+                 where U.OrganizationId = (select Id from Organizations  where Name = @Org);
 					if ((select year from @table where year  = YEAR(GETDATE())) = null)
 					BEGIN
 							insert into @table
