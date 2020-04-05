@@ -195,9 +195,13 @@ namespace Web.API.Infrastructure.Data
 						    (year, month, hours)
 					        values(YEAR(GETDATE()), 12, 0);
 				END
-                Select username, @Year as year, ISNULL([1]/176.0, 0) as jan, ISNULL([2]/176.0, 0) as feb, ISNULL([3]/176.0, 0) as mar, ISNULL([4]/176.0, 0) as apr,
-                ISNULL([5]/176.0, 0) as may, ISNULL([6]/176.0, 0) as jun, ISNULL([7]/176.0, 0) as jul, ISNULL([8]/176.0, 0) as aug, ISNULL([9]/176.0, 0) as sep,
-                ISNULL([10]/176.0, 0) as oct, ISNULL([11]/176.0, 0) as nov, ISNULL([12]/176.0, 0) as dec
+                Select username, @year as year, ROUND(ISNULL([1]/176.0, 0), 1) as jan, ROUND(ISNULL([2]/176.0, 0),1)
+				as feb, ROUND(ISNULL([3]/176.0, 0),1) as mar, ROUND(ISNULL([4]/176.0, 0),1) as apr,
+                ROUND(ISNULL([5]/176.0, 0),1) as may, ROUND(ISNULL([6]/176.0, 0),1) as jun, 
+				ROUND(ISNULL([7]/176.0, 0),1) as jul, ROUND(ISNULL([8]/176.0, 0),1) as aug, ROUND(ISNULL([9]/176.0, 0),1)
+				as sep,
+                ROUND(ISNULL([10]/176.0, 0),1) as oct, ROUND(ISNULL([11]/176.0, 0),1) as nov,
+				ROUND(ISNULL([12]/176.0, 0),1) as dec
                 FROM
                 (select username, year, month, coalesce(hours, 0) as hours from @table) AS SourceTable
                 PIVOT (
