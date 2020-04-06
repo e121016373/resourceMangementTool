@@ -109,15 +109,15 @@ export const searchUsers = content => {
   //console.log('the contenet is ', content);
   //console.log(JSON.stringify(content));
   //console.log('the contenet is ', content);
-  content = {
-    discipline: 'Environmental Management',
-    yoe: '3-5 years',
-    //skill: 'aprons',
-    //location: 'kitchener',
-    fromDate: '2020-04-01',
-    toDate: '2021-04-01',
-    //availability: 40,
-  };
+  // content = {
+  //   discipline: 'Environmental Management',
+  //   yoe: '3-5 years',
+  //   //skill: 'aprons',
+  //   //location: 'kitchener',
+  //   fromDate: '2020-04-01',
+  //   toDate: '2021-04-01',
+  //   //availability: 40,
+  // };
   return dispatch => {
     const options = {
       method: 'POST',
