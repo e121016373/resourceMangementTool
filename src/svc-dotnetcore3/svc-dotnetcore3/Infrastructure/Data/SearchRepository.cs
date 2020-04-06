@@ -54,19 +54,19 @@ namespace Web.API.Infrastructure.Data
                         SELECT UHS.UserId, MIN(UHS.SkillId) AS 'SkillId'
                         FROM UserHasSkills UHS
                         GROUP BY UHS.UserId
-                        ) UHS ON UHS.UserId = U.Id";
+                    ) UHS ON UHS.UserId = U.Id";
             } else {
                 sql += @"
                     LEFT JOIN (
-                        SELECT UWD.UserId, MIN(UWD.DisciplineId) AS 'DisciplineId', UWD.Year
+                        SELECT UWD.UserId, MIN(UWD.DisciplineId) AS 'DisciplineId', MIN(UWD.Year) AS 'Year'
                         FROM UserWorksDiscipline UWD
-                        GROUP BY UWD.UserId, UWD.Year
-                        ) UWD ON UWD.UserId = U.Id
+                        GROUP BY UWD.UserId
+                    ) UWD ON UWD.UserId = U.Id
                     LEFT JOIN (
                         SELECT UHS.UserId, MIN(UHS.SkillId) AS 'SkillId'
                         FROM UserHasSkills UHS
                         GROUP BY UHS.UserId
-                        ) UHS ON UHS.UserId = U.Id";
+                    ) UHS ON UHS.UserId = U.Id";
             }
 
             sql += @"
