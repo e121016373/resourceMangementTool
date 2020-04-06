@@ -8,6 +8,7 @@ import skillsReducer from './skillsReducer';
 import feedbackReducer from './feedbackReducer';
 import searchReducer from './searchReducer';
 import organizations from './organizationReducer';
+import managers from './managerReducer';
 
 
 const rootReducer = combineReducers({
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   feedbacks: feedbackReducer,
   search: searchReducer,
   organizations:organizations,
+  managers:managers,
 });
 
 export default rootReducer;

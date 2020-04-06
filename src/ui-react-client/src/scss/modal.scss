@@ -74,7 +74,7 @@
           margin-top: 5px;
         }
         input {
-          //height: 30px;
+          height: 35px;
           margin: 10px;
           margin-top: 0px;
           margin-bottom: 0px;
@@ -112,3 +112,46 @@
   background-color: #5bef99;
   opacity: 0.6;
 }
+
+
+
+.css-2b097c-container {
+  margin: 10px;
+  margin-top: 0px;
+  margin-bottom: 5px;
+  max-height: 41px;
+  font-size: 17px;
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 1px;
+  &:focus {
+    border-width: 2px;
+    border-color: #9aa6db;
+    outline-color: #9aa6db;
+  }
+  .css-yk16xz-control {
+    max-height: 25px;
+  }
+
+    .css-g1d714-ValueContainer{
+      max-height:25px;
+    }
+
+    .css-1hb7zxy-IndicatorContainer{
+      max-height:25px;
+    }
+
+}
+
+
+.css-1uccc91-singleValue{
+  margin-top:8px;
+}
+
+.css-1pahdxg-control{
+  mex-height:25px;
+}
+
+
+
+

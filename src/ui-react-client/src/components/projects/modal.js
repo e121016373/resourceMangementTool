@@ -4,11 +4,13 @@ import Search from '../search/search';
 import { connect, useDispatch } from 'react-redux';
 import { loadUsers } from '../../redux/actions/usersActions';
 import { loadLocations } from '../../redux/actions/locationsActions';
-import AutoComplete from '../autocomplete/autocomplete';
-import WTable from '../personalProfile/my_table';
-import { loadForecastSummary } from '../../redux/actions/projectsActions';
 import {loadDisciplines} from "../../redux/actions/disciplinesActions";
 import {loadOrganizations} from "../../redux/actions/organizationActions";
+import {loadManagers} from "../../redux/actions/managerActions";
+import Select from 'react-select';
+import AsyncSelect from 'react-select/async';
+
+
 const CreateProjectModal = ({
     loadLocations,
     locations,
@@ -18,7 +20,17 @@ const CreateProjectModal = ({
     organizations,
     loadDisciplines,
     disciplines,
+    managers,
+    loadManagers,
 }) => {
+
+  const locOp = convertToOption(locations);
+  const disOp = convertToOption(disciplines);
+  const orOp = convertToOption(organizations);
+  const [convertTrigger, setConvertTrigger] = useState(false);
+  const [orTrigger, setOrTrigger] =useState(false);
+  const [orgName, setOrgName] =useState("");
+
   useEffect(() => {
     if (Object.keys(locations).length === 0) {
       loadLocations().catch(error => {
@@ -35,7 +47,16 @@ const CreateProjectModal = ({
         alert('Loading disciplines failed' + error);
       });
     }
-  }, [locations, loadLocations,disciplines,loadDisciplines,organizations,loadOrganizations]);
+    if (orTrigger && orgName) {
+      loadManagers(orgName)
+          .catch(error => {
+        alert('Loading disciplines failed' + error);
+      });
+      setOrTrigger(false);
+      setConvertTrigger(true);
+    }
+
+  }, [locations, loadLocations,disciplines,loadDisciplines,organizations,loadOrganizations,managers, loadManagers, orgName, orTrigger, convertTrigger]);
 
   const close = () => {
     let modal = document.getElementById('createProjectModal');
@@ -48,7 +69,7 @@ const CreateProjectModal = ({
     Location: '',
     FromDate: '',
     ToDate: '',
-    'Project Manager': '',
+    ProjectManager: '',
     Discipline: '',
     Organization: '',
   });
@@ -57,9 +78,54 @@ const CreateProjectModal = ({
   const [created, setCreated] = useState(false);
   const [createdWrong, setCreatedWrong] = useState(false);
 
+  function convertToOption(dataType){
+    let disName = dataType.map(a => a.name);
+    let disOption = [];
+
+    for( const name of disName) {
+      if(dataType === locations)
+        disOption.push({value:"Location", label:name});
+      else if(dataType=== disciplines){
+        disOption.push({value:"Discipline", label:name});
+    }else {
+        disOption.push({value:"Organization", label:name});
+      }
+    }
+    return disOption;
+  }
+
+  const [manOp, setManOp] = useState([]);
+  useEffect(() => {
+      setManOp(manOp => convertManOp(managers));
+  }, [managers]);
+
+  function convertManOp(manager) {
+    let manName = manager.map( ({username,fullName }) => ({username, fullName }));
+    let manOp = [];
+    for(const name of manName) {
+      manOp.push({value:name.username, label:name.fullName});
+    }
+    return manOp;
+  }
+
   function handleChange(e) {
     let { name, value } = e.target;
     setProject(skill => ({ ...skill, [name]: value }));
+  }
+
+  function handleSelected(optionSelected){
+    if(optionSelected.value === "Organization" ) {
+      setOrTrigger(true);
+      setOrgName(optionSelected.label);
+    }
+
+    const {value, label} = optionSelected;
+    setProject(project => ({...project,[value]:label }));
+  }
+
+  function handleSelectedMan(optionSelected){
+    const value = optionSelected.value;
+    setProject(project => ({...project,['ProjectManager']:value}));
   }
 
   const handleSubmit = e => {
@@ -73,6 +139,7 @@ const CreateProjectModal = ({
       project.FromDate &&
       project.ToDate
     ) {
+      console.log(project);
       createProject(project)
         .then(() => {
           addFeedback({
@@ -90,7 +157,6 @@ const CreateProjectModal = ({
         });
     }
 
-    // console.log(firstName, '  ', lastName);
   };
   return (
     <div id="createProjectModal" className="modal">
@@ -159,11 +225,11 @@ const CreateProjectModal = ({
               }
             >
               <label className="input-name">Location</label>
-              <input
-                type="text"
-                name="Location"
-                value={project.Location}
-                onChange={handleChange}
+              <Select
+                  name="location"
+                  defaultValue={"location"}
+                  onChange={handleSelected}
+                  options={locOp}
               />
               {submitted && !project.Location && (
                 <div className="help-block">Location is required</div>
@@ -210,21 +276,43 @@ const CreateProjectModal = ({
               )}
             </div>
             <div
+                className={
+                  'input-content' +
+                  (submitted && !project.Organization
+                      ? ' has-error'
+                      : '')
+                }
+            >
+              <label className="input-name">Organization</label>
+              <Select
+                  name="organization"
+                  defaultValue={"organization"}
+                  onChange={handleSelected}
+                  options={orOp}
+              />
+              {submitted && !project.Organization && (
+                  <div className="help-block">
+                    Organization is required
+                  </div>
+              )}
+            </div>
+            <div
               className={
                 'input-content' +
-                (submitted && !project['Project Manager']
+                (submitted && !project.ProjectManager
                   ? ' has-error'
                   : '')
               }
             >
               <label className="input-name">Project Manager</label>
-              <input
-                type="text"
-                name="Title"
-                value={project['Project Manager']}
-                onChange={handleChange}
+              <Select
+                  name="manager"
+                  cacheOptions
+                  defaultValue={"manager"}
+                  onChange={handleSelectedMan}
+                  options = {manOp}
               />
-              {submitted && !project['Project Manager'] && (
+              {submitted && !project.ProjectManager && (
                 <div className="help-block">
                   Project Manager is required
                 </div>
@@ -237,36 +325,15 @@ const CreateProjectModal = ({
               }
             >
               <label className="input-name">Discipline</label>
-              <input
-                type="text"
-                name="Title"
-                value={project.Discipline}
-                onChange={handleChange}
+              <Select
+                  name="location"
+                  defaultValue={"location"}
+                  onChange={handleSelected}
+                  options={disOp}
               />
               {submitted && !project.Discipline && (
                 <div className="help-block">
                   Discipline is required
-                </div>
-              )}
-            </div>
-            <div
-              className={
-                'input-content' +
-                (submitted && !project.Organization
-                  ? ' has-error'
-                  : '')
-              }
-            >
-              <label className="input-name">Organization</label>
-              <input
-                type="text"
-                name="Title"
-                value={project.Organization}
-                onChange={handleChange}
-              />
-              {submitted && !project.Organization && (
-                <div className="help-block">
-                  Organization is required
                 </div>
               )}
             </div>
@@ -511,14 +578,16 @@ const mapStateToProps = state => {
     locations: state.locations,
     disciplines: state.disciplines,
     organizations: state.organizations,
+    managers: state.managers,
   };
 };
 
 const mapDispatchToProps = {
-  loadUsers,
   loadLocations,
   loadDisciplines,
   loadOrganizations,
+  loadManagers,
+
 };
 
 export default connect(

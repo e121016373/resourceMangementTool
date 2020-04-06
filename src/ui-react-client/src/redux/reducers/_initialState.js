@@ -8,5 +8,6 @@ export default {
   feedbacks: [],
   search: [],
   organizations:[],
+  managers:[],
   // userDisciplines: [],
 };

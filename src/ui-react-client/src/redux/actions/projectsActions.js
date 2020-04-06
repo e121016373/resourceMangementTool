@@ -83,13 +83,9 @@ export const loadProjects = organization => {
 };
 
 export const createProject = project => {
-  //console.log(project);
   return dispatch => {
-    let URL = `${SVC_ROOT}projects`;
-    //console.log('url is ', URL);
-    console.log(project);
     return axios
-      .post(baseURL, project)
+      .post(baseURL, project,{ headers })
       .then(response => {
         console.log('createProJECT RESPOSE is ', response);
         let item = response.data;
