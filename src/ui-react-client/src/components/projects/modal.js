@@ -7,19 +7,35 @@ import { loadLocations } from '../../redux/actions/locationsActions';
 import AutoComplete from '../autocomplete/autocomplete';
 import WTable from '../personalProfile/my_table';
 import { loadForecastSummary } from '../../redux/actions/projectsActions';
+import {loadDisciplines} from "../../redux/actions/disciplinesActions";
+import {loadOrganizations} from "../../redux/actions/organizationActions";
 const CreateProjectModal = ({
-  loadLocations,
-  locations,
-  createProject,
-  addFeedback,
+    loadLocations,
+    locations,
+    createProject,
+    addFeedback,
+    loadOrganizations,
+    organizations,
+    loadDisciplines,
+    disciplines,
 }) => {
   useEffect(() => {
     if (Object.keys(locations).length === 0) {
       loadLocations().catch(error => {
+        alert('Loading locations failed' + error);
+      });
+    }
+    if (Object.keys(organizations).length === 0) {
+      loadOrganizations().catch(error => {
+        alert('Loading org failed' + error);
+      });
+    }
+    if (Object.keys(disciplines).length === 0) {
+      loadDisciplines().catch(error => {
         alert('Loading disciplines failed' + error);
       });
     }
-  }, [locations, loadLocations]);
+  }, [locations, loadLocations,disciplines,loadDisciplines,organizations,loadOrganizations]);
 
   const close = () => {
     let modal = document.getElementById('createProjectModal');
@@ -493,12 +509,16 @@ export const ForecastSummaryModal = ({
 const mapStateToProps = state => {
   return {
     locations: state.locations,
+    disciplines: state.disciplines,
+    organizations: state.organizations,
   };
 };
 
 const mapDispatchToProps = {
   loadUsers,
   loadLocations,
+  loadDisciplines,
+  loadOrganizations,
 };
 
 export default connect(

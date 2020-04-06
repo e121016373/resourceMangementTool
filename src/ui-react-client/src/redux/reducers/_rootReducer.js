@@ -7,6 +7,9 @@ import disciplinesReducer from './disciplinesReducer';
 import skillsReducer from './skillsReducer';
 import feedbackReducer from './feedbackReducer';
 import searchReducer from './searchReducer';
+import organizations from './organizationReducer';
+
+
 const rootReducer = combineReducers({
   users: users,
   projects: projects,
@@ -16,6 +19,7 @@ const rootReducer = combineReducers({
   skills: skillsReducer,
   feedbacks: feedbackReducer,
   search: searchReducer,
+  organizations:organizations,
 });
 
 export default rootReducer;
