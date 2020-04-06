@@ -115,7 +115,7 @@ namespace Web.API.Infrastructure.Data
                 update Users
                 set LocationID = (select Id from Locations where Name = @Location),
                     Type = @Type,
-                    Organization = (select Id from Organizations where Name = @Organization)
+                    OrganizationId = (select Id from Organizations where Name = @Organization)
                 where Username = @Username;
             ";
             using var connection = new SqlConnection(connectionString);
