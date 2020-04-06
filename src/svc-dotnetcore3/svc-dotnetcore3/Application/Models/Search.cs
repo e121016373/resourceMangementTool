@@ -15,14 +15,15 @@ namespace Web.API.Application.Models
 
         // project search
         public string ProjectNumber { get; set; }
-        public string ProjectTitle { get; set; }
+        public string ProjectStatus { get; set; }
+        public string PMFirstName { get; set; }
+        public string PMLastName { get; set; }
+        public string Organization { get; set; }
     }
 
     public class UserInSearch
     {
         public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
         public string Username { get; set; }
         public string Location { get; set; }
         public string Type { get; set; }
