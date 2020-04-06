@@ -40,6 +40,9 @@ namespace Web.API.Infrastructure.Data
                 FROM 
                     Users U";
 
+            // return all skills and disciplines if skill is searched
+            // return all disciplines if disicipline is searched
+            // otherwise return only 1 discipline and 1 skill
             if (search.Skill != null) {
                 sql += @" 
                     LEFT JOIN UserWorksDiscipline UWD ON U.Id = UWD.UserId
@@ -90,7 +93,7 @@ namespace Web.API.Infrastructure.Data
             }
 
             // remove the last AND
-            sql = sql.Substring(0, sql.Length-3);
+            // sql = sql.Substring(0, sql.Length-3);
 
             sql += @"
 
@@ -135,7 +138,7 @@ namespace Web.API.Infrastructure.Data
             sql += ";";
             
             // for debug
-            Console.WriteLine(sql);
+            // Console.WriteLine(sql);
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
