@@ -214,7 +214,7 @@ export const editLocation = profile => {
     let url = `${SVC_ROOT}users`;
     console.log('the profiel sending is ', profile);
     return axios
-      .patch(url, { header: headers }, { data: profile })
+      .patch(url, { headers: headers }, { data: profile })
       .then(response => {
         dispatch(editLocationAction(response));
       })
@@ -230,7 +230,7 @@ export const deleteDiscipline = discipline => {
     let url = `${SVC_ROOT}${currentUser}/disciplines/${discipline.discipline}`;
     //console.log('the delete url is ', url);
     return axios
-      .delete(url, { header: headers })
+      .delete(url, { headers: headers })
       .then(response => {
         //console.log('deleteDiscipline response', response);
         dispatch(deleteDisciplineAction(discipline));
@@ -263,7 +263,7 @@ export const deleteSkill = skill => {
     let url = `${SVC_ROOT}${currentUser}/${currentDiscipline.discipline}/${skill.skill}`;
     //console.log('the skill url is ', url);
     return axios
-      .delete(url, { header: headers })
+      .delete(url, { headers: headers })
       .then(response => {
         //console.log('the delete skill response', response);
         return dispatch(deleteSkillAction(skill));
@@ -294,7 +294,7 @@ export const addSkill = skill => {
           discipline: currentDiscipline.discipline,
           yoe: currentDiscipline.yoe,
         },
-        { header: headers },
+        { headers: headers },
       )
       .then(response => {
         //console.log('add skill response', response);
@@ -323,7 +323,7 @@ export const addDiscipline = (discipline, yoe) => {
       .post(
         url,
         { discipline: discipline, yoe: yoe },
-        { header: headers },
+        { headers: headers },
       )
       .then(response => {
         //console.log('the add discipline response', response);
