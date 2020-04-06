@@ -20,6 +20,7 @@ namespace Web.API.Infrastructure.Data
         //return a list of user based on discipline, skill, location, year, availability in a given date range
         public async Task<IEnumerable<UserInSearch>> GetAllUsers(Search search)
         {
+            // find candidates and insert them into @searchUser table
             var sql = @"
                 DECLARE @searchUser TABLE (
                     Id INT, 
@@ -72,29 +73,35 @@ namespace Web.API.Infrastructure.Data
             sql += @"
                     LEFT JOIN Locations L ON U.LocationId = L.Id
                     LEFT JOIN Disciplines D ON UWD.DisciplineId = D.Id
-                    LEFT JOIN Skills S ON S.Id = UHS.SkillId AND S.DisciplineId = D.Id
+                    LEFT JOIN Skills S ON S.Id = UHS.SkillId AND S.DisciplineId = D.Id";
+
+            if (search.Discipline != null || search.Skill != null || search.Location != null || search.YOE != null) {
+                //keep 3 spaces here for the substring below
+                sql += @"
                 WHERE    ";
 
-            if ((search.Discipline != null) && search.Discipline.Trim() != "") {
+                if ((search.Discipline != null) && search.Discipline.Trim() != "") {
                 sql += @" 
                     RTRIM(LTRIM(D.Name)) = LTRIM(@Discipline) AND";
-            }
-            if (search.Skill != null && search.Skill.Trim() != "") {
-                sql += @" 
-                    RTRIM(LTRIM(S.Name)) = LTRIM(@Skill) AND";
-            }
-            if (search.Location != null && search.Location.Trim() != "") {
-                sql += @" 
-                    RTRIM(LTRIM(L.Name)) = LTRIM(@Location) AND";
-            }
-            if (search.YOE != null) {
-                sql += @" 
-                    RTRIM(LTRIM(UWD.Year)) = LTRIM(@YOE) AND";
+                }
+                if (search.Skill != null && search.Skill.Trim() != "") {
+                    sql += @" 
+                        RTRIM(LTRIM(S.Name)) = LTRIM(@Skill) AND";
+                }
+                if (search.Location != null && search.Location.Trim() != "") {
+                    sql += @" 
+                        RTRIM(LTRIM(L.Name)) = LTRIM(@Location) AND";
+                }
+                if (search.YOE != null) {
+                    sql += @" 
+                        RTRIM(LTRIM(UWD.Year)) = LTRIM(@YOE) AND";
+                }
+
+                // remove the last AND
+                sql = sql.Substring(0, sql.Length-3);
             }
 
-            // remove the last AND
-            sql = sql.Substring(0, sql.Length-3);
-
+            // compute availability
             sql += @"
 
                 SELECT *
