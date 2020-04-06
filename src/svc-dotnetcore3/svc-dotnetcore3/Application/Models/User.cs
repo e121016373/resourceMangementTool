@@ -13,6 +13,7 @@
     public class Uname
     { 
         public string Username { get; set; }
+        public string FullName { get; set; }
         public string Type { get; set; }
     }
 }

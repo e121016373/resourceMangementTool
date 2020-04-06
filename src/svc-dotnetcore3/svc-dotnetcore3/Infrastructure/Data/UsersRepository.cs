@@ -59,7 +59,7 @@ namespace Web.API.Infrastructure.Data
         {
             var sql = @"
                 select
-                   Username, Type from Users where ([Type] = 'Resource Manager' or [Type] = 'Project Manager')
+                   Username, FirstName + ' '+ LastName as FullName, Type from Users where ([Type] = 'Resource Manager' or [Type] = 'Project Manager')
                     and OrganizationId = (select Id from Organizations where Name = @Organization)
             ;";
 
