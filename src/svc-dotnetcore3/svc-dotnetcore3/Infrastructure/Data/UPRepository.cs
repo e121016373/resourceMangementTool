@@ -66,6 +66,7 @@ namespace Web.API.Infrastructure.Data
         public async Task<UserProject> CreateProject(string username, string project)
         {
             var sql = @"
+            
             declare @pid int;
 			declare @uid int;
 			declare @fd datetime;
@@ -80,7 +81,8 @@ namespace Web.API.Infrastructure.Data
 			set @pid = (select Id from Projects where 
 			Title = @Project);
 			set @uid = (select Id from Users where Username = @Username);
-			
+            if (select OrganizationId from Users where Username = @Username) = (select OrganizationId from ProjectStatus where Id = @pid)
+			BEGIN
 			set @fd = (select DISTINCT FromDate from ProjectStatus where Id = @pid);
 			set @td = (select DISTINCT ToDate from ProjectStatus where Id = @pid);
 			set @fy = YEAR(@fd);
@@ -107,6 +109,9 @@ namespace Web.API.Infrastructure.Data
             update Projects
             set UpdatedAt = SYSUTCDATETIME()
             where Id = @pid
+            END
+            ELSE
+            THROW 52000, 'Cannot Add User From A Different Organization', 1;
             ;";
 
             using var connection = new SqlConnection(connectionString);

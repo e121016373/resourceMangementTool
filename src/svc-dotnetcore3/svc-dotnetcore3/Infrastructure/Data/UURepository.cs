@@ -149,53 +149,52 @@ namespace Web.API.Infrastructure.Data
                     from Users U
 					LEFT JOIN UserHours UP
 					on U.Id = UP.UserId
-					and UP.Year = YEAR(GETDATE())
+					and UP.Year = @Year
                     LEFT JOIN
                     ProjectStatus PS
                     on PS.Id = UP.ProjectId
                  and PS.Status = 'Active'
                  where U.OrganizationId = (select Id from Organizations where Name = @Org);
-				 select * from @table
-					if ((select year from @table where year  = YEAR(GETDATE())) = null)
+					if ((select year from @table where year  = @Year) = null)
 					BEGIN
 							insert into @table
 						    (year, month, hours)
-					        values(YEAR(GETDATE()), 1, 0)
+					        values(@Year, 1, 0)
 							insert into @table
 						    (year, month, hours)
-					        values(YEAR(GETDATE()), 2, 0)
+					        values(@Year, 2, 0)
 							insert into @table
 						    (year, month, hours)
-					        values(YEAR(GETDATE()), 3, 0)
+					        values(@Year, 3, 0)
 							insert into @table
 						    (year, month, hours)
-					        values(YEAR(GETDATE()), 4, 0)
+					        values(@Year, 4, 0)
 							insert into @table
 						    (year, month, hours)
-					        values(YEAR(GETDATE()), 5, 0)
+					        values(@Year, 5, 0)
 							insert into @table
 						    (year, month, hours)
-					        values(YEAR(GETDATE()), 6, 0)
+					        values(@Year, 6, 0)
 							insert into @table
 						    (year, month, hours)
-					        values(YEAR(GETDATE()), 7, 0)
+					        values(@Year, 7, 0)
 							insert into @table
 						    (year, month, hours)
-					        values(YEAR(GETDATE()), 8, 0)
+					        values(@Year, 8, 0)
 							insert into @table
 						    (year, month, hours)
-					        values(YEAR(GETDATE()), 9, 0)
+					        values(@Year, 9, 0)
 							insert into @table
 						    (year, month, hours)
-					        values(YEAR(GETDATE()), 10, 0)
+					        values(@Year, 10, 0)
 							insert into @table
 						    (year, month, hours)
-					        values(YEAR(GETDATE()), 11, 0)
+					        values(@Year, 11, 0)
 							insert into @table
 						    (year, month, hours)
-					        values(YEAR(GETDATE()), 12, 0);
+					        values(@Year, 12, 0);
 				END
-                Select username, @year as year, ROUND(ISNULL([1]/176.0, 0), 1) as jan, ROUND(ISNULL([2]/176.0, 0),1)
+                Select username, @Year as year, ROUND(ISNULL([1]/176.0, 0), 1) as jan, ROUND(ISNULL([2]/176.0, 0),1)
 				as feb, ROUND(ISNULL([3]/176.0, 0),1) as mar, ROUND(ISNULL([4]/176.0, 0),1) as apr,
                 ROUND(ISNULL([5]/176.0, 0),1) as may, ROUND(ISNULL([6]/176.0, 0),1) as jun, 
 				ROUND(ISNULL([7]/176.0, 0),1) as jul, ROUND(ISNULL([8]/176.0, 0),1) as aug, ROUND(ISNULL([9]/176.0, 0),1)
