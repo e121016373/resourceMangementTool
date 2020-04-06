@@ -127,7 +127,7 @@ namespace Web.API.Infrastructure.Data
                 set Type = 'Project Manager'
                 where Username = @PM;
 
-                declare @pid int;
+                
 			    declare @uid int;
 			    declare @fd datetime;
 			    declare @td datetime;
