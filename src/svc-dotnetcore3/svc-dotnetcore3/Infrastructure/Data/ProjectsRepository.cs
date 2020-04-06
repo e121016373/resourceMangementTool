@@ -97,6 +97,8 @@ namespace Web.API.Infrastructure.Data
         public async Task<ProjectStatus> CreateAProject(ProjectCreate project)
         {
             var sql = @"
+                if (select Id from Organizations where Name = @Organization) = (select OrganizationId from User where Username = @PM)
+                BEGIN
                 declare @n int;
 				set @n = YEAR(@FromDate);
 				declare @pid int;
@@ -163,6 +165,9 @@ namespace Web.API.Infrastructure.Data
 			    else
 			    	set @tempm = @tempm + 1;
 			    END;
+                END
+                ELSE
+                THROW 52000, 'Cannot Add User from Different Organization', 1;
 
             ;";
 
