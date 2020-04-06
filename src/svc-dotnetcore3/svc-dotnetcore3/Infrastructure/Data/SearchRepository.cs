@@ -110,6 +110,9 @@ namespace Web.API.Infrastructure.Data
 
             if (search.FromDate != null && search.ToDate != null) {
                 int month_diff = ((search.ToDate.Year - search.FromDate.Year) * 12) + search.ToDate.Month - search.FromDate.Month;
+                if (month_diff < 0) {
+                    throw new ArgumentException(nameof(search.FromDate) + " is greater than " + nameof(search.ToDate));
+                }
                 int year = search.FromDate.Year;
                 int month = search.FromDate.Month;     
                 sql += @", ISNULL((
@@ -138,6 +141,7 @@ namespace Web.API.Infrastructure.Data
                 ) AS SearchUser";
             
             if (search.FromDate != null && search.ToDate != null) {
+                // TODO frontend needs to prevent string or other input for availability
                 sql += @" 
                 WHERE SearchUser.Availability >= @Availability/100.0";
             }
