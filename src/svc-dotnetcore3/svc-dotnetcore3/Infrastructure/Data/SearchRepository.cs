@@ -93,7 +93,7 @@ namespace Web.API.Infrastructure.Data
             }
 
             // remove the last AND
-            // sql = sql.Substring(0, sql.Length-3);
+            sql = sql.Substring(0, sql.Length-3);
 
             sql += @"
 
