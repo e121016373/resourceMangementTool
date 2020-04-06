@@ -48,8 +48,9 @@ namespace Web.API.Infrastructure.Data
                 values
                    ((select Id from Users where Username = @Username),
                     (select Id from Disciplines where Name = @Discipline),
-                    RTRIM(LTRIM(@Year)))
- ;
+                    RTRIM(LTRIM(@Year)));
+                ELSE
+				THROW 51000, 'Cannot Add More Than 5 Disciplines.', 1;
             ;";
 
             using var connection = new SqlConnection(connectionString);
