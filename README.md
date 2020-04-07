@@ -135,7 +135,6 @@ You'll need the following applications installed on your machine before getting 
 4. Add an .env file to the root admin-react-client and paste in the following (fill in the application and directory id from your app in azure, fill in the production service url before pushing to production)
 
    ```txt
-   PORT = 3001
    REACT_APP_SVC_ROOT = <Your production service URL>
 
    REACT_APP_CLIENT_ID = <Application (Client) Id>
@@ -145,7 +144,6 @@ You'll need the following applications installed on your machine before getting 
 5. Make a copy of the .env file and rename it to .env.development, paste in the following (fill in the application and directory id from your app in azure)
 
    ```txt
-   PORT = 3001
    REACT_APP_SVC_ROOT = https://localhost:5001/
 
    REACT_APP_CLIENT_ID = <Application (Client) Id>
@@ -169,14 +167,15 @@ You'll need the following applications installed on your machine before getting 
    npm start
    ```
 3. Will be prompted with a microsoft login / permissions page, enter the necessary login credentials (if you're already logged in then it will take you directly to the main page of the application)
-4. Run the admin front end, navigate to localhost:3001 if browser does not open page up on its own
+4. Ctrl+C when done with the application.
+5. Run the admin front end, navigate to localhost:3000 if browser does not open page up on its own
 
    ```bash
    npm start
    ```   
-5. Login with Username: "turtle", and password: "319".
+6. Login with Username: "turtle", and password: "319".
 
-- note: the projects and users endpoints may take longer to load
+- Note: The projects and users endpoints may take longer to load. The admin and the main client both run at PORT = 3000 on local systems, so that we don't have to configure the backend system everytime.
 
 ### Tests
 
@@ -188,3 +187,33 @@ You'll need the following applications installed on your machine before getting 
 #### Clients
 
 1. Type npm test to run all tests
+
+#### Dockerfile For Publishing
+1.  In the Solution Explorer, right click on Web.API and then Add->Docker Support...
+2.  Azure App Services only support DotNetCore 3.1 for Linux, so select Linux Container.
+3.  A Dockerfile should be created inside the svc-dotnetcore3 folder containing
+    ```txt
+   #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+    FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
+    WORKDIR /app
+    EXPOSE 80
+    EXPOSE 443
+
+    FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
+    WORKDIR /src
+    COPY ["svc-dotnetcore3/Web.API.csproj", "svc-dotnetcore3/"]
+    RUN dotnet restore "svc-dotnetcore3/Web.API.csproj"
+    COPY . .
+    WORKDIR "/src/svc-dotnetcore3"
+    RUN dotnet build "Web.API.csproj" -c Debug -o /app/build
+
+    FROM build AS publish
+    RUN dotnet publish "Web.API.csproj" -c Debug -o /app/publish
+    
+    FROM base AS final
+    WORKDIR /app
+    COPY --from=publish /app/publish .
+    ENTRYPOINT ["dotnet", "Web.API.dll"]
+   ```
+   4. Make sure to change .env.development and .env in the client folders accordingly.
