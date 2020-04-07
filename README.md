@@ -193,8 +193,6 @@ You'll need the following applications installed on your machine before getting 
 2.  Azure App Services only support DotNetCore 3.1 for Linux, so select Linux Container.
 3.  A Dockerfile should be created inside the svc-dotnetcore3 folder containing
     ```txt
-   #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
     FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
     WORKDIR /app
     EXPOSE 80
