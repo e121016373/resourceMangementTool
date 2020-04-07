@@ -143,6 +143,7 @@ export const loadForecastSummaryAction = response => {
 export const updateProjectStatus = (projectName, status) => {
   return dispatch => {
     let URL = `${SVC_ROOT}projectstatus/status/${projectName}/${status}`;
+    //console.log('the url is ', URL);
     return axios
       .patch(URL, { headers })
       .then(response => {

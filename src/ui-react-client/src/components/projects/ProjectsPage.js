@@ -16,7 +16,11 @@ import {
 import { addFeedback } from '../../redux/actions/feedbackAction';
 import { connect } from 'react-redux';
 import Loading from '../loading/loading';
-import { SearchModal, ForecastSummaryModal } from './modal';
+import {
+  SearchModal,
+  ForecastSummaryModal,
+  UsersInfoModal,
+} from './modal';
 import CreateProjectModal from './modal';
 import WButton from '../personalProfile/button';
 const ProjectsPage = ({
@@ -71,15 +75,16 @@ const ProjectsPage = ({
     // console.log(tempYear);
     setYear(tempYear - firstYear);
   };
-  const changeProjectStatus = projectName => {
-    let tempProjectStatus = document.getElementById('projectStatus')
-      .value;
+  const changeProjectStatus = (projectName, item) => {
+    //console.log('the item is ', item.target.value);
+    // let tempProjectStatus = document.getElementById('projectStatus')
+    //   .value;
     // console.log(
     //   'the project name is ',
     //   projectName,
     //   tempProjectStatus,
     // );
-    updateProjectStatus(projectName, tempProjectStatus)
+    updateProjectStatus(projectName, item.target.value)
       .then(() => {
         addFeedback({
           type: 'success',
@@ -485,6 +490,10 @@ const ProjectsPage = ({
     let modal = document.getElementById('forecastSummaryModal');
     modal.style.display = 'block';
   };
+  const showUsersInfoModal = () => {
+    let modal = document.getElementById('userInfoModal');
+    modal.style.display = 'block';
+  };
   const renderProjectPage = () => {
     if (!projects.projects) {
       return (
@@ -580,6 +589,18 @@ const ProjectsPage = ({
                   </div>
                   <div
                     style={{
+                      //width: '7vw',
+                      padding: 5,
+                      float: 'right',
+                      marginRight: '10px',
+                    }}
+                    className="btn-infoGreen"
+                    onClick={showUsersInfoModal}
+                  >
+                    Users info
+                  </div>
+                  <div
+                    style={{
                       margin: '0',
                     }}
                     className="header"
@@ -626,11 +647,12 @@ const ProjectsPage = ({
                                           <select
                                             style={{ height: '30px' }}
                                             id="projectStatus"
-                                            onChange={() =>
+                                            onChange={e =>
                                               changeProjectStatus(
                                                 Object.values(
                                                   data,
                                                 )[0],
+                                                e,
                                               )
                                             }
                                           >
@@ -655,11 +677,12 @@ const ProjectsPage = ({
                                           <select
                                             style={{ height: '30px' }}
                                             id="projectStatus"
-                                            onChange={() =>
+                                            onChange={e =>
                                               changeProjectStatus(
                                                 Object.values(
                                                   data,
                                                 )[0],
+                                                e,
                                               )
                                             }
                                           >
@@ -684,11 +707,12 @@ const ProjectsPage = ({
                                           <select
                                             style={{ height: '30px' }}
                                             id="projectStatus"
-                                            onChange={() =>
+                                            onChange={e =>
                                               changeProjectStatus(
                                                 Object.values(
                                                   data,
                                                 )[0],
+                                                e,
                                               )
                                             }
                                           >
@@ -778,6 +802,7 @@ const ProjectsPage = ({
         changeYear={loadForecastSummary}
         organization={organization}
       />
+      <UsersInfoModal></UsersInfoModal>
       {renderProjectPage()}
     </div>
   );

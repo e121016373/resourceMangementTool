@@ -613,6 +613,55 @@ export const ForecastSummaryModal = ({
   );
 };
 
+export const UsersInfoModal = ({
+  projectName,
+  fromDate,
+  toDate,
+  organization,
+}) => {
+  const close = () => {
+    let modal = document.getElementById('userInfoModal');
+    modal.style.display = 'none';
+  };
+  return (
+    <div
+      style={{
+        //padding: '20px',
+        paddingLeft: '40px',
+        paddingBottom: '40px',
+        paddingRight: '40px',
+      }}
+      id="userInfoModal"
+      className="modal"
+    >
+      <div style={{ width: '100%' }} className="modal-content">
+        <div className="header">
+          <span className="close" onClick={close}>
+            &times;
+          </span>
+          <h5>Search User</h5>
+        </div>
+        <div>
+          <div
+            style={{
+              width: '100%',
+              overflow: 'hidden',
+              height: '80vh',
+              textAlign: 'center',
+            }}
+          >
+            <Search
+              projectName={projectName}
+              fromDate={fromDate}
+              toDate={toDate}
+              organization={organization}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 const mapStateToProps = state => {
   return {
     locations: state.locations,
