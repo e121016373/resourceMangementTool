@@ -59,9 +59,9 @@ namespace Web.API.Infrastructure.Data
             } else {
                 sql += @"
                     LEFT JOIN (
-                        SELECT UWD.UserId, MIN(UWD.DisciplineId) AS 'DisciplineId', MIN(UWD.Year) AS 'Year'
+                        SELECT UWD.UserId, MIN(UWD.DisciplineId) AS 'DisciplineId', UWD.Year
                         FROM UserWorksDiscipline UWD
-                        GROUP BY UWD.UserId
+                        GROUP BY UWD.UserId, UWD.Year
                     ) UWD ON UWD.UserId = U.Id
                     LEFT JOIN (
                         SELECT UHS.UserId, MIN(UHS.SkillId) AS 'SkillId'
