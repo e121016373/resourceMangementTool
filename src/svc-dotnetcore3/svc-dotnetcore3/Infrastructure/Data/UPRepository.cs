@@ -81,7 +81,7 @@ namespace Web.API.Infrastructure.Data
 			set @pid = (select Id from Projects where 
 			Title = @Project);
 			set @uid = (select Id from Users where Username = @Username);
-            if (select OrganizationId from Users where Username = @Username) = (select OrganizationId from ProjectStatus where Id = @pid)
+            if (select OrganizationId from Users where Username = @Username) = (select TOP 1 OrganizationId from ProjectStatus where Id = @pid)
 			BEGIN
 			set @fd = (select DISTINCT FromDate from ProjectStatus where Id = @pid);
 			set @td = (select DISTINCT ToDate from ProjectStatus where Id = @pid);
@@ -104,14 +104,14 @@ namespace Web.API.Infrastructure.Data
 			END
 			else
 				set @tempm = @tempm + 1;
-			END;
+			END
+            END
+            ELSE
+            THROW 52000, 'Cannot Add User From A Different Organization', 1;
             
             update Projects
             set UpdatedAt = SYSUTCDATETIME()
             where Id = @pid
-            END
-            ELSE
-            THROW 52000, 'Cannot Add User From A Different Organization', 1;
             ;";
 
             using var connection = new SqlConnection(connectionString);
