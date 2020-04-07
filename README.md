@@ -12,6 +12,7 @@ You'll need the following applications installed on your machine before getting 
 | [Visual Studio](https://visualstudio.microsoft.com/downloads/)                       | Community Edition or Latest | for service      |
 | [SQL Server Express](https://www.microsoft.com/en-ca/download/details.aspx?id=55994) | 14.0.1000.169               | for database     |
 | [Node.js/NPM](https://www.npmjs.com/get-npm)                                         | Latest LTS Version          | for client       |
+| [Docker](https://docs.docker.com/docker-for-windows/install/)                       | 2.2.0.5 (43884)             | for publishing   |
 
 | Account                                                                     | Usage              |
 | --------------------------------------------------------------------------- | ------------------ |
@@ -63,7 +64,7 @@ You'll need the following applications installed on your machine before getting 
 7. In the 'General' tab under the 'Deployment Behavior' section, 'Uncheck Block incremental deployment if data loss might occur' and click 'OK' to confirm settings
 8. In the Publish Database window, click on 'Save Profile As...', enter the File name as Database.DEV.publish.xml, ensure the file path pointing at the Database project in Visual Studios before hitting 'Save'
 9. In the Publish Database window click 'Publish'
-10. In the Database project open up the seed.sql file (scripts>seed_corrected.sql) and copy the SQL statements
+10. In the Database project open up the seed_corrected.sql file (scripts>seed_corrected.sql) and copy the SQL statements
 11. Navigate to (SMSS) and create a 'New Query' in your database instance
 12. Paste the SQL statments from the seed.sql and execute the statements to populate the database; some duplicated usernames may not copy over, this is fine
 
@@ -188,7 +189,7 @@ You'll need the following applications installed on your machine before getting 
 
 1. Type npm test to run all tests
 
-#### Dockerfile For Publishing
+### Dockerfile For Publishing
 1.  In the Solution Explorer, right click on Web.API and then Add->Docker Support...
 2.  Azure App Services only support DotNetCore 3.1 for Linux, so select Linux Container.
 3.  A Dockerfile should be created inside the svc-dotnetcore3 folder containing
@@ -213,5 +214,9 @@ You'll need the following applications installed on your machine before getting 
     WORKDIR /app
     COPY --from=publish /app/publish .
     ENTRYPOINT ["dotnet", "Web.API.dll"]
-   ```
+    ```
+   
    4. Make sure to change .env.development and .env in the client folders accordingly.
+   
+### Adding Users to the Active Directory for Authentication
+There is a Template File for Adding Bulk Users to the AD in the Docs folder. The file is called "UserCreateTemplate.csv".
