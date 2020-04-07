@@ -120,13 +120,19 @@ namespace Web.API.Infrastructure.Data
         public async Task<Skill> AddASkill(Skill skill)
         {
             var sql = @"
+                declare @did int;
+                set @did  = (select D.Id From Disciplines D
+                            Where D.Name  =  @DisciplineName)
+                IF (Select * from  Skills where Name  = @Name
+                    and DisciplineId =  @did) IS NULL
+                BEGIN
                 INSERT INTO Skills (Name, DisciplineId)
-                VALUES (@Name, 
-                    (SELECT D.Id
-                    FROM Disciplines D
-                    WHERE D.Name = @DisciplineName));
+                VALUES (@Name, @did);
 
                 select cast(scope_identity() as int);
+                END
+                ELSE
+                THROW 54000, 'The Skill Already Exists.', 1;
             ;";
 
             using var connection = new SqlConnection(connectionString);

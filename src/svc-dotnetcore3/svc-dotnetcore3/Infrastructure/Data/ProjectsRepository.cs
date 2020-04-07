@@ -97,6 +97,11 @@ namespace Web.API.Infrastructure.Data
         public async Task<ProjectStatus> CreateAProject(ProjectCreate project)
         {
             var sql = @"
+                if @Number COLLATE Latin1_General_BIN LIKE
+                '[2-9][0-9][0-9][0-9]-[A-Z|0-9][A-Z|0-9][A-Z|0-9][A-Z|0-9]-[0-9][0-9]'
+                BEGIN
+                if (select Id from Organizations where Name = @Organization) = (select OrganizationId from Users where Username = @PM)
+                BEGIN
                 declare @n int;
 				set @n = YEAR(@FromDate);
 				declare @pid int;
@@ -163,6 +168,12 @@ namespace Web.API.Infrastructure.Data
 			    else
 			    	set @tempm = @tempm + 1;
 			    END;
+                END
+                ELSE
+                THROW 52000, 'Cannot Add User from Different Organization', 1;
+                END
+                ELSE
+                THROW 55000, 'Number Is Not In Right Format', 1;
 
             ;";
 

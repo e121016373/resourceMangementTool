@@ -8,7 +8,7 @@ using Web.API.Application.Repository;
 
 namespace Web.API.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class SDController : ControllerBase
     {
         private readonly ISDRepository sdRepository;

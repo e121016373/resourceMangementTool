@@ -98,6 +98,7 @@ const CreateProjectModal = ({
     let disName = dataType.map(a => a.name);
     let disOption = [];
 
+<<<<<<< HEAD
     for (const name of disName) {
       if (dataType === locations)
         disOption.push({ value: 'Location', label: name });
@@ -105,6 +106,15 @@ const CreateProjectModal = ({
         disOption.push({ value: 'Discipline', label: name });
       } else {
         disOption.push({ value: 'Organization', label: name });
+=======
+    for( const name of disName) {
+      if(dataType === locations) {
+        disOption.push({value: name, label: name, type:"Location"});
+      } else if(dataType === organizations){
+        disOption.push({value: name, label: name, type:"Organization"});
+      } else {
+        disOption.push({value: name, label: name, type:"Discipline"});
+>>>>>>> b988bd00db33d2822df6379a81af5a13a75468e0
       }
     }
     return disOption;
@@ -121,8 +131,13 @@ const CreateProjectModal = ({
       fullName,
     }));
     let manOp = [];
+<<<<<<< HEAD
     for (const name of manName) {
       manOp.push({ value: name.username, label: name.fullName });
+=======
+    for(const name of manName) {
+      manOp.push({value:name.fullName, label:name.fullName, userName: name.username});
+>>>>>>> b988bd00db33d2822df6379a81af5a13a75468e0
     }
     return manOp;
   }
@@ -132,12 +147,18 @@ const CreateProjectModal = ({
     setProject(skill => ({ ...skill, [name]: value }));
   }
 
+<<<<<<< HEAD
   function handleSelected(optionSelected) {
     if (optionSelected.value === 'Organization') {
+=======
+  function handleSelected(optionSelected){
+    if(optionSelected.type === "Organization" ) {
+>>>>>>> b988bd00db33d2822df6379a81af5a13a75468e0
       setOrTrigger(true);
       setOrgName(optionSelected.label);
     }
 
+<<<<<<< HEAD
     const { value, label } = optionSelected;
     setProject(project => ({ ...project, [value]: label }));
   }
@@ -148,6 +169,15 @@ const CreateProjectModal = ({
       ...project,
       ['ProjectManager']: value,
     }));
+=======
+    const {value, label, type} = optionSelected;
+    setProject(project => ({...project,[type]:value }));
+  }
+
+  function handleSelectedMan(optionSelected){
+    const value = optionSelected.userName;
+    setProject(project => ({...project,ProjectManager:value}));
+>>>>>>> b988bd00db33d2822df6379a81af5a13a75468e0
   }
 
   const handleSubmit = e => {
