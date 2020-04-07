@@ -63,7 +63,7 @@ You'll need the following applications installed on your machine before getting 
 7. In the 'General' tab under the 'Deployment Behavior' section, 'Uncheck Block incremental deployment if data loss might occur' and click 'OK' to confirm settings
 8. In the Publish Database window, click on 'Save Profile As...', enter the File name as Database.DEV.publish.xml, ensure the file path pointing at the Database project in Visual Studios before hitting 'Save'
 9. In the Publish Database window click 'Publish'
-10. In the Database project open up the seed.sql file (scripts>seed.sql) and copy the SQL statements
+10. In the Database project open up the seed.sql file (scripts>seed_corrected.sql) and copy the SQL statements
 11. Navigate to (SMSS) and create a 'New Query' in your database instance
 12. Paste the SQL statments from the seed.sql and execute the statements to populate the database; some duplicated usernames may not copy over, this is fine
 
@@ -86,7 +86,7 @@ You'll need the following applications installed on your machine before getting 
 4. Visit [https://localhost:5001/users/](https://localhost:5001/users/), [https://localhost:5001/projects/](https://localhost:5001/projects/), [https://localhost:5001/locations/](https://localhost:5001/locations/) you should be getting a 401 unauthorized, this is expected
 5. To ensure the database is connected, navigate to the LocationsController (Web.API>Controllers>LocationControllers) and comment out the [Authorize] attribute, now run the Web.API project again and visit [https://localhost:5001/locations/](https://localhost:5001/locations/), you should be getting the locations data back; the same can be done to test for the other controllers
 
-### Configure the Client
+### Configure the Main Client
 
 1. Navigate to ../cpsc319-2020-winter-blueprint/src/ui-react-client
 2. Run npm install
@@ -121,18 +121,60 @@ You'll need the following applications installed on your machine before getting 
    ```
 
    You should be prompted with a login page, and after logging in you should have access to the application. The Users, Projects, and Locations navigation should be giving a failedError: Network Error if your service isn't running
+   
+### Configure the Admin Client
 
-### Run Full Stack (service and client)
+1. Navigate to ../cpsc319-2020-winter-blueprint/src/admin-react-client
+2. Run npm install
 
-1. Run the service Web.API project in Visual Studio
-2. Run the front end, navigate to localhost:3000 if browser does not open page up on its own
+   ```bash
+   npm install
+   ```
+
+3. Open up ../ui-react-client using a text editor or IDE of your choice
+4. Add an .env file to the root admin-react-client and paste in the following (fill in the application and directory id from your app in azure, fill in the production service url before pushing to production)
+
+   ```txt
+   PORT = 3001
+   REACT_APP_SVC_ROOT = <Your production service URL>
+
+   REACT_APP_CLIENT_ID = <Application (Client) Id>
+   REACT_APP_TENANT_ID = <Directory (Tenant) Id>
+   ```
+
+5. Make a copy of the .env file and rename it to .env.development, paste in the following (fill in the application and directory id from your app in azure)
+
+   ```txt
+   PORT = 3001
+   REACT_APP_SVC_ROOT = https://localhost:5001/
+
+   REACT_APP_CLIENT_ID = <Application (Client) Id>
+   REACT_APP_TENANT_ID = <Directory (Tenant) Id>
+   ```
+
+6. Run npm start to run the client application
 
    ```bash
    npm start
    ```
 
+   You should be prompted with a login page, and after logging in you should have access to the application. The Users, Projects, and Locations navigation should be giving a failedError: Network Error if your service isn't running
+
+### Run Full Stack (service and client)
+
+1. Run the service Web.API project in Visual Studio
+2. Run the main front end, navigate to localhost:3000 if browser does not open page up on its own
+
+   ```bash
+   npm start
+   ```
 3. Will be prompted with a microsoft login / permissions page, enter the necessary login credentials (if you're already logged in then it will take you directly to the main page of the application)
-4. Click on the [http://localhost:3000/users](http://localhost:3000/users), [http://localhost:3000/projects](http://localhost:3000/projects), and [http://localhost:3000/locations](http://localhost:3000/locations) navigation links and you should be getting data back on the pages
+4. Run the admin front end, navigate to localhost:3001 if browser does not open page up on its own
+
+   ```bash
+   npm start
+   ```   
+5. Login with Username: "turtle", and password: "319".
 
 - note: the projects and users endpoints may take longer to load
 
@@ -143,6 +185,6 @@ You'll need the following applications installed on your machine before getting 
 1. Navigate to the 'Test Explorer'
 2. Select test(s) to run
 
-#### Client
+#### Clients
 
 1. Type npm test to run all tests
