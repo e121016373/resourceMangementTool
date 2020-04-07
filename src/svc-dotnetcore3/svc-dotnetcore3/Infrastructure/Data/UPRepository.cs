@@ -273,37 +273,44 @@ namespace Web.API.Infrastructure.Data
         public async Task<UserProject> UpdateProject(string username, string project, int year, Hour hr)
         {
             var sql = @"
-                declare @m int;
+                if @Months LIKE '[A-Z][A-Z][A-Z]' and ISNUMERIC(@Hours) = 1
+				BEGIN
+				declare @m int;
 				set @m = 0;
-                if @Months = 'jan'
-                    set @m = 1;
-                if @Months = 'feb'
+				if @Months = 'jan'
+                   set @m = 1;
+               else if @Months = 'feb'
                     set @m = 2;
-                if @Months = 'mar'
+               else if @Months = 'mar'
                     set @m = 3;
-                if @Months = 'apr'
+               else if @Months = 'apr'
                     set @m = 4;
-                if @Months = 'may'
+               else if @Months = 'may'
                     set @m = 5;
-                if @Months = 'jun'
+               else if @Months = 'jun'
                     set @m = 6;
-                if @Months = 'jul'
+               else if @Months = 'jul'
                     set @m = 7;
-                if @Months = 'aug'
+               else if @Months = 'aug'
                     set @m = 8;
-                if @Months = 'sep'
+               else if @Months = 'sep'
                     set @m = 9;
-                if @Months = 'oct'
+               else if @Months = 'oct'
                     set @m = 10;
-                if @Months = 'nov'
+               else if @Months = 'nov'
                     set @m = 11;
-                if @Months = 'dec'
+               else if @Months = 'dec'
                     set @m = 12;
+			   else
+			THROW 59000, 'INVALID INPUT',  1;
 				update UserHours
                 set Hours = @Hours 
                 where UserId = (select Id from Users where Username = @Username)
                 and ProjectId = (select Id from Projects where Title = @Project)
                 and Year = @Year and Month = @m;
+				END
+				ELSE
+				THROW 59000, 'INVALID INPUT', 1;
 
                 update Projects
                 set UpdatedAt = SYSUTCDATETIME()

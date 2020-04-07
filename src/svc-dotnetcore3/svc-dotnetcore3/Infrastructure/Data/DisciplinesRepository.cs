@@ -72,9 +72,13 @@ namespace Web.API.Infrastructure.Data
             }
 
             var sql = @"
+                if (select * from Disciplines wher Name = @Name) IS NULL
+                BEGIN
                 INSERT INTO Disciplines ([Name])
                 VALUES (@Name);
                 SELECT cast(scope_identity() as int)
+                ELSE
+                THROW 56000, 'The record already exists.', 1;
             ;";
 
             using var connection = new SqlConnection(connectionString);
