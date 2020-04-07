@@ -217,6 +217,7 @@ INSERT [dbo].[Projects] ([Id], [Number], [Title], [LocationId]) VALUES (99, '200
 INSERT [dbo].[Projects] ([Id], [Number], [Title], [LocationId]) VALUES (100, '2010-PKMU-41', 'Ut est harum ducimus minima ut.', 82)
 SET IDENTITY_INSERT [dbo].[Projects] OFF
 
+
 SET IDENTITY_INSERT [dbo].[Disciplines] ON
 Insert into Disciplines (Id,[Name]) values (1,'Services');
 Insert into Disciplines (Id,[Name]) values (2,'Delivery');
@@ -1596,7 +1597,6 @@ Insert into UserWorksDiscipline (UserId, DisciplineId, [Year]) values ( 19 , 19 
 Insert into UserWorksDiscipline (UserId, DisciplineId, [Year]) values ( 19 , 3 , ' 5-10 years ')
 Insert into UserWorksDiscipline (UserId, DisciplineId, [Year]) values ( 19 , 20 , ' 10+ years ')
 
-
 Insert into ProjectStatus (Id, FromDate, ToDate, [Status], [PM],[DisciplineId], [OrganizationId], [Year], Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec) values (1, '2019-01-01', '2020-12-31', 'Active', 4, 1,1, 2019, 400, 300, 1700, 500, 1400, 700, 1100, 200, 1800, 800, 1300, 800)
 Insert into ProjectStatus (Id, FromDate, ToDate, [Status], [PM],[DisciplineId], [OrganizationId], [Year], Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec) values (1, '2019-01-01', '2020-12-31', 'Active', 4,1,1, 2020, 1300, 1700, 1800, 2000, 1900, 1700, 900, 200, 1200, 1800, 1100, 900)
 Insert into ProjectStatus (Id, FromDate, ToDate, [Status], [PM],[DisciplineId], [OrganizationId], [Year], Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec) values (2, '2018-01-01', '2019-12-31', 'Forecast', 4,1,1,2018, 1300, 900, 1200, 400, 1400, 400,
@@ -1834,7 +1834,6 @@ Insert into ProjectStatus (Id, FromDate, ToDate, [Status], [PM],[DisciplineId], 
 Insert into ProjectStatus (Id, FromDate, ToDate, [Status], [PM],[DisciplineId], [OrganizationId], [Year], Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec) values (100, '2020-01-01', '2021-12-31', 'Active', 75,5,9,2020, 700, 1100, 800, 1500, 1700, 1800, 1700, 2000, 1400, 900, 200, 600)
 Insert into ProjectStatus (Id, FromDate, ToDate, [Status], [PM],[DisciplineId], [OrganizationId], [Year], Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec) values (100, '2020-01-01', '2021-12-31', 'Active', 75,5,9,2021, 1700, 1600, 700, 800, 300, 1700,
 2000, 1500, 1600, 1500, 2000, 2000)
-
 
 INSERT INTO Admin (Username, Password) VALUES ('turtle', '319')
 
