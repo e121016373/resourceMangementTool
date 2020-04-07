@@ -143,70 +143,64 @@ namespace Web.API.Infrastructure.Data
 		public async Task<IEnumerable<OrgUtil>> ForecastOrganization(string org, int year)
 		{
 			var sql = @"
-                declare @table table (username nvarchar(max), year int,  month int, hours int);
-                insert into @table
+                declare @table2 table (username nvarchar(max),  jan  float, feb float, mar float, apr float, may float,
+				jun float, jul float, aug float, sep float, oct float, nov float, dec float)
+				declare @uid int;
+				declare  @un nvarchar(max);
+
+				Select Username
+				INTO #TEMP
+				FROM Users
+				Where OrganizationId = (select Id from Organizations where Name = @Org)
+
+				WHILE EXISTS(SELECT * FROM #TEMP)
+				BEGIN
+
+				Select TOP 1 @un = Username From #TEMP
+				declare @table table (username nvarchar(max), year int, month int, hours int);
+				set  @uid = (select Id from Users where Username  = @un);
+				insert into @table
                  select U.Username, UP.year, UP.month, coalesce(UP.hours, 0) as hours
-                    from Users U
-					LEFT JOIN UserHours UP
-					on U.Id = UP.UserId
-					and UP.Year = @Year
-                    LEFT JOIN
+                    from UserHours UP
+                    INNER JOIN
                     ProjectStatus PS
                     on PS.Id = UP.ProjectId
                  and PS.Status = 'Active'
-                 where U.OrganizationId = (select Id from Organizations where Name = @Org);
-					if ((select year from @table where year  = @Year) = null)
+					INNER JOIN Users U
+					on U.Id = UP.UserId
+                 where UP.UserId = @uid and
+				    (UP.Year = @Year);
+					if ((select top 1 username from @table where year  = @Year) is null)
 					BEGIN
+							declare @n int;
+							set @n = 1;
+							WHILE (@n <= 12)
+							BEGIN
 							insert into @table
-						    (year, month, hours)
-					        values(@Year, 1, 0)
-							insert into @table
-						    (year, month, hours)
-					        values(@Year, 2, 0)
-							insert into @table
-						    (year, month, hours)
-					        values(@Year, 3, 0)
-							insert into @table
-						    (year, month, hours)
-					        values(@Year, 4, 0)
-							insert into @table
-						    (year, month, hours)
-					        values(@Year, 5, 0)
-							insert into @table
-						    (year, month, hours)
-					        values(@Year, 6, 0)
-							insert into @table
-						    (year, month, hours)
-					        values(@Year, 7, 0)
-							insert into @table
-						    (year, month, hours)
-					        values(@Year, 8, 0)
-							insert into @table
-						    (year, month, hours)
-					        values(@Year, 9, 0)
-							insert into @table
-						    (year, month, hours)
-					        values(@Year, 10, 0)
-							insert into @table
-						    (year, month, hours)
-					        values(@Year, 11, 0)
-							insert into @table
-						    (year, month, hours)
-					        values(@Year, 12, 0);
+						    (username, year, month, hours)
+							values(@un, @Year, @n, 0);
+							set @n = @n+1;
+							END
+					        
 				END
-                Select username, @Year as year, ROUND(ISNULL([1]/176.0, 0), 1) as jan, ROUND(ISNULL([2]/176.0, 0),1)
+				INSERT INTO @table2
+                Select username, ROUND(ISNULL([1]/176.0, 0), 1) as jan, ROUND(ISNULL([2]/176.0, 0),1)
 				as feb, ROUND(ISNULL([3]/176.0, 0),1) as mar, ROUND(ISNULL([4]/176.0, 0),1) as apr,
-                ROUND(ISNULL([5]/176.0, 0),1) as may, ROUND(ISNULL([6]/176.0, 0),1) as jun, 
-				ROUND(ISNULL([7]/176.0, 0),1) as jul, ROUND(ISNULL([8]/176.0, 0),1) as aug, ROUND(ISNULL([9]/176.0, 0),1)
-				as sep,
-                ROUND(ISNULL([10]/176.0, 0),1) as oct, ROUND(ISNULL([11]/176.0, 0),1) as nov,
-				ROUND(ISNULL([12]/176.0, 0),1) as dec
+                ROUND(ISNULL([5]/176.0, 0),1) as may, ROUND(ISNULL([6]/176.0, 0),1) as jun, ROUND(ISNULL([7]/176.0, 0),1)
+				as jul, ROUND(ISNULL([8]/176.0, 0),1) as aug, ROUND(ISNULL([9]/176.0, 0),1) as sep,
+                ROUND(ISNULL([10]/176.0, 0),1) as oct, ROUND(ISNULL([11]/176.0, 0),1) as nov, ROUND(ISNULL([12]/176.0, 0),1) as dec
                 FROM
-                (select username, year, month, coalesce(hours, 0) as hours from @table) AS SourceTable
+                (select username, month, coalesce(hours, 0) as hours from @table) AS SourceTable
                 PIVOT (
 	            sum(hours)
 	            for month in ([1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12])
-                ) AS PivotTable order by username;
+                ) AS PivotTable;
+				DELETE @table;
+				DELETE #TEMP where Username  = @un
+				END
+
+				DROP table #TEMP
+				SELECT * FROM @table2;
             ;";
 
 			using var connection = new SqlConnection(connectionString);
