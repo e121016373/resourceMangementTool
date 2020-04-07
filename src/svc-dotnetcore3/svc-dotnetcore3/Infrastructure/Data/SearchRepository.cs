@@ -18,7 +18,7 @@ namespace Web.API.Infrastructure.Data
         }
 
         //return a list of user based on discipline, skill, location, year, availability in a given date range
-        public async Task<IEnumerable<UserInSearch>> GetAllUsers(Search search)
+        public async Task<IEnumerable<UserInSearch>> GetAllUsers(Search search, string organization)
         {
             // find candidates and insert them into @searchUser table
             var sql = @"
@@ -29,14 +29,15 @@ namespace Web.API.Infrastructure.Data
                     Type NVARCHAR(50),
                     Discipline NVARCHAR(100),
                     Skill NVARCHAR(100),
-                    YOE NVARCHAR(50)
+                    YOE NVARCHAR(50),
+                    Organization NVARCHAR(50)
                 );
 
                 INSERT INTO @searchUser
                 SELECT DISTINCT
                     U.Id, U.Username,
                     L.Name AS 'Location', U.Type, D.Name AS 'Discipline', S.Name AS 'Skill',
-                    UWD.Year AS 'YOE'
+                    UWD.Year AS 'YOE', O.Name AS 'Organization'
 
                 FROM 
                     Users U";
@@ -73,33 +74,30 @@ namespace Web.API.Infrastructure.Data
             sql += @"
                     LEFT JOIN Locations L ON U.LocationId = L.Id
                     LEFT JOIN Disciplines D ON UWD.DisciplineId = D.Id
-                    LEFT JOIN Skills S ON S.Id = UHS.SkillId AND S.DisciplineId = D.Id";
+                    LEFT JOIN Skills S ON S.Id = UHS.SkillId AND S.DisciplineId = D.Id
+                    LEFT JOIN Organizations O ON O.Id = U.OrganizationId    
+                WHERE 
+                    O.Name = @Organization AND";
 
-            if (search.Discipline != null || search.Skill != null || search.Location != null || search.YOE != null) {
-                //keep 3 spaces here for the substring below
-                sql += @"
-                WHERE    ";
-
-                if ((search.Discipline != null) && search.Discipline.Trim() != "") {
+            if ((search.Discipline != null) && search.Discipline.Trim() != "") {
                 sql += @" 
                     RTRIM(LTRIM(D.Name)) = LTRIM(@Discipline) AND";
-                }
-                if (search.Skill != null && search.Skill.Trim() != "") {
-                    sql += @" 
-                        RTRIM(LTRIM(S.Name)) = LTRIM(@Skill) AND";
-                }
-                if (search.Location != null && search.Location.Trim() != "") {
-                    sql += @" 
-                        RTRIM(LTRIM(L.Name)) = LTRIM(@Location) AND";
-                }
-                if (search.YOE != null) {
-                    sql += @" 
-                        RTRIM(LTRIM(UWD.Year)) = LTRIM(@YOE) AND";
-                }
-
-                // remove the last AND
-                sql = sql.Substring(0, sql.Length-3);
             }
+            if (search.Skill != null && search.Skill.Trim() != "") {
+                sql += @" 
+                    RTRIM(LTRIM(S.Name)) = LTRIM(@Skill) AND";
+            }
+            if (search.Location != null && search.Location.Trim() != "") {
+                sql += @" 
+                    RTRIM(LTRIM(L.Name)) = LTRIM(@Location) AND";
+            }
+            if (search.YOE != null) {
+                sql += @" 
+                    RTRIM(LTRIM(UWD.Year)) = LTRIM(@YOE) AND";
+            }
+
+            // remove the last AND
+            sql = sql.Substring(0, sql.Length-3);
 
             // compute availability
             sql += @"
@@ -160,7 +158,8 @@ namespace Web.API.Infrastructure.Data
                 search.YOE,
                 search.FromDate,
                 search.ToDate,
-                search.Availability
+                search.Availability,
+                Organization = organization
             });
         }
 

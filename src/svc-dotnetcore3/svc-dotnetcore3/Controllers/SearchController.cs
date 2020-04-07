@@ -21,10 +21,10 @@ namespace Web.API.Controllers
         }
 
         [HttpPost]
-        [Route("/search/users")]
-        public async Task<ActionResult<IEnumerable<UserInSearch>>> GetAllUsers([FromBody] Search search)
+        [Route("/search/users/{organization}")]
+        public async Task<ActionResult<IEnumerable<UserInSearch>>> GetAllUsers([FromBody] Search search, [FromRoute] string organization)
         {
-            var response = await searchRepository.GetAllUsers(search);
+            var response = await searchRepository.GetAllUsers(search, organization);
             var viewModel = mapper.Map<IEnumerable<UserInSearch>>(response);
             return Ok(viewModel);
         }
