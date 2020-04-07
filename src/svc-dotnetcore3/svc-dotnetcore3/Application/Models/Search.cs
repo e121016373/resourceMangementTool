@@ -30,6 +30,7 @@ namespace Web.API.Application.Models
         public string Discipline { get; set; }
         public string YOE { get; set; }
         public string Skill { get; set; }
+        public string Organization { get; set; }
         public float Availability { get; set; }
     }
 }

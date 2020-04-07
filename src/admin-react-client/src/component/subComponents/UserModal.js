@@ -59,9 +59,9 @@ function UserModal(props) {
 
         for( const name of disName) {
             if(dataType === locations)
-                disOption.push({value:"location", label:name});
+                disOption.push({value:name, label:name});
             else
-                disOption.push({value:"organization", label:name});
+                disOption.push({value:name, label:name});
         }
         return disOption;
     }
@@ -78,14 +78,20 @@ function UserModal(props) {
         setUser(user => ({...user, [name]: value}));
     }
 
-    function handleSelected(optionSelected){
+    function handleSelectedLoc(optionSelected){
 
         const {value, label} = optionSelected;
-        setUser(user => ({...user,[value]:label }));
+        setUser(user => ({...user,location:label }));
+    }
+
+    function handleSelectedOr(optionSelected){
+
+        const {value, label} = optionSelected;
+        setUser(user => ({...user,organization:label }));
     }
 
     function handleSubmit(e) {
-        //e.preventDefault();
+       // e.preventDefault();
 
         setSubmitted(true);
         if(user.firstName && user.lastName && user.location && user.type && user.username && user.organization) {
@@ -136,7 +142,7 @@ function UserModal(props) {
                         <Select
                             name="organization"
                             defaultValue={"organization"}
-                            onChange={handleSelected}
+                            onChange={handleSelectedOr}
                             options={orOp}
                         />
                         {submitted && !user.organization &&
@@ -169,7 +175,7 @@ function UserModal(props) {
                         <Select
                             name="location"
                             defaultValue={"location"}
-                            onChange={handleSelected}
+                            onChange={handleSelectedLoc}
                             options={locOp}
                         />
                         {submitted && !user.location &&

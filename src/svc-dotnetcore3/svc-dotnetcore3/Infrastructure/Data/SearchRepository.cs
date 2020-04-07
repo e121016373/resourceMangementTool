@@ -18,8 +18,9 @@ namespace Web.API.Infrastructure.Data
         }
 
         //return a list of user based on discipline, skill, location, year, availability in a given date range
-        public async Task<IEnumerable<UserInSearch>> GetAllUsers(Search search)
+        public async Task<IEnumerable<UserInSearch>> GetAllUsers(Search search, string organization)
         {
+            // find candidates and insert them into @searchUser table
             var sql = @"
                 DECLARE @searchUser TABLE (
                     Id INT, 
@@ -28,14 +29,15 @@ namespace Web.API.Infrastructure.Data
                     Type NVARCHAR(50),
                     Discipline NVARCHAR(100),
                     Skill NVARCHAR(100),
-                    YOE NVARCHAR(50)
+                    YOE NVARCHAR(50),
+                    Organization NVARCHAR(50)
                 );
 
                 INSERT INTO @searchUser
                 SELECT DISTINCT
                     U.Id, U.Username,
                     L.Name AS 'Location', U.Type, D.Name AS 'Discipline', S.Name AS 'Skill',
-                    UWD.Year AS 'YOE'
+                    UWD.Year AS 'YOE', O.Name AS 'Organization'
 
                 FROM 
                     Users U";
@@ -54,26 +56,28 @@ namespace Web.API.Infrastructure.Data
                         SELECT UHS.UserId, MIN(UHS.SkillId) AS 'SkillId'
                         FROM UserHasSkills UHS
                         GROUP BY UHS.UserId
-                        ) UHS ON UHS.UserId = U.Id";
+                    ) UHS ON UHS.UserId = U.Id";
             } else {
                 sql += @"
                     LEFT JOIN (
                         SELECT UWD.UserId, MIN(UWD.DisciplineId) AS 'DisciplineId', UWD.Year
                         FROM UserWorksDiscipline UWD
                         GROUP BY UWD.UserId, UWD.Year
-                        ) UWD ON UWD.UserId = U.Id
+                    ) UWD ON UWD.UserId = U.Id
                     LEFT JOIN (
                         SELECT UHS.UserId, MIN(UHS.SkillId) AS 'SkillId'
                         FROM UserHasSkills UHS
                         GROUP BY UHS.UserId
-                        ) UHS ON UHS.UserId = U.Id";
+                    ) UHS ON UHS.UserId = U.Id";
             }
 
             sql += @"
                     LEFT JOIN Locations L ON U.LocationId = L.Id
                     LEFT JOIN Disciplines D ON UWD.DisciplineId = D.Id
                     LEFT JOIN Skills S ON S.Id = UHS.SkillId AND S.DisciplineId = D.Id
-                WHERE    ";
+                    LEFT JOIN Organizations O ON O.Id = U.OrganizationId    
+                WHERE 
+                    O.Name = @Organization AND";
 
             if ((search.Discipline != null) && search.Discipline.Trim() != "") {
                 sql += @" 
@@ -95,6 +99,7 @@ namespace Web.API.Infrastructure.Data
             // remove the last AND
             sql = sql.Substring(0, sql.Length-3);
 
+            // compute availability
             sql += @"
 
                 SELECT *
@@ -103,6 +108,9 @@ namespace Web.API.Infrastructure.Data
 
             if (search.FromDate != null && search.ToDate != null) {
                 int month_diff = ((search.ToDate.Year - search.FromDate.Year) * 12) + search.ToDate.Month - search.FromDate.Month;
+                if (month_diff < 0) {
+                    throw new ArgumentException(nameof(search.FromDate) + " is greater than " + nameof(search.ToDate));
+                }
                 int year = search.FromDate.Year;
                 int month = search.FromDate.Month;     
                 sql += @", ISNULL((
@@ -131,6 +139,7 @@ namespace Web.API.Infrastructure.Data
                 ) AS SearchUser";
             
             if (search.FromDate != null && search.ToDate != null) {
+                // TODO frontend needs to prevent string or other input for availability
                 sql += @" 
                 WHERE SearchUser.Availability >= @Availability/100.0";
             }
@@ -149,7 +158,8 @@ namespace Web.API.Infrastructure.Data
                 search.YOE,
                 search.FromDate,
                 search.ToDate,
-                search.Availability
+                search.Availability,
+                Organization = organization
             });
         }
 

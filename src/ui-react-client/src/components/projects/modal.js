@@ -83,12 +83,12 @@ const CreateProjectModal = ({
     let disOption = [];
 
     for( const name of disName) {
-      if(dataType === locations)
-        disOption.push({value:"Location", label:name});
-      else if(dataType=== disciplines){
-        disOption.push({value:"Discipline", label:name});
-    }else {
-        disOption.push({value:"Organization", label:name});
+      if(dataType === locations) {
+        disOption.push({value: name, label: name, type:"Location"});
+      } else if(dataType === organizations){
+        disOption.push({value: name, label: name, type:"Organization"});
+      } else {
+        disOption.push({value: name, label: name, type:"Discipline"});
       }
     }
     return disOption;
@@ -103,7 +103,7 @@ const CreateProjectModal = ({
     let manName = manager.map( ({username,fullName }) => ({username, fullName }));
     let manOp = [];
     for(const name of manName) {
-      manOp.push({value:name.username, label:name.fullName});
+      manOp.push({value:name.fullName, label:name.fullName, userName: name.username});
     }
     return manOp;
   }
@@ -114,18 +114,18 @@ const CreateProjectModal = ({
   }
 
   function handleSelected(optionSelected){
-    if(optionSelected.value === "Organization" ) {
+    if(optionSelected.type === "Organization" ) {
       setOrTrigger(true);
       setOrgName(optionSelected.label);
     }
 
-    const {value, label} = optionSelected;
-    setProject(project => ({...project,[value]:label }));
+    const {value, label, type} = optionSelected;
+    setProject(project => ({...project,[type]:value }));
   }
 
   function handleSelectedMan(optionSelected){
-    const value = optionSelected.value;
-    setProject(project => ({...project,['ProjectManager']:value}));
+    const value = optionSelected.userName;
+    setProject(project => ({...project,ProjectManager:value}));
   }
 
   const handleSubmit = e => {
