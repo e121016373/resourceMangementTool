@@ -1866,7 +1866,7 @@ INSERT INTO Admin (Username, Password) VALUES ('turtle', '319')
 			set @tempy = @fy;
 			set @tempm = @fm;
 			
-			WHILE @tempm <= @tm or @tempy <= @ty
+			WHILE @tempm <= @tm and @tempy <= @ty
 			BEGIN
 			INSERT INTO UserHours
 			(UserId, ProjectId, Year, Month, Hours)
