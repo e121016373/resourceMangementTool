@@ -4,32 +4,31 @@ import Search from '../search/search';
 import { connect, useDispatch } from 'react-redux';
 import { loadUsers } from '../../redux/actions/usersActions';
 import { loadLocations } from '../../redux/actions/locationsActions';
-import {loadDisciplines} from "../../redux/actions/disciplinesActions";
-import {loadOrganizations} from "../../redux/actions/organizationActions";
-import {loadManagers} from "../../redux/actions/managerActions";
+import { loadDisciplines } from '../../redux/actions/disciplinesActions';
+import { loadOrganizations } from '../../redux/actions/organizationActions';
+import { loadManagers } from '../../redux/actions/managerActions';
 import Select from 'react-select';
 import AsyncSelect from 'react-select/async';
 
-
 const CreateProjectModal = ({
-    loadLocations,
-    locations,
-    createProject,
-    addFeedback,
-    loadOrganizations,
-    organizations,
-    loadDisciplines,
-    disciplines,
-    managers,
-    loadManagers,
+  loadLocations,
+  locations,
+  createProject,
+  addFeedback,
+  loadOrganizations,
+  organizations,
+  loadDisciplines,
+  disciplines,
+  managers,
+  loadManagers,
+  organization,
 }) => {
-
   const locOp = convertToOption(locations);
   const disOp = convertToOption(disciplines);
   const orOp = convertToOption(organizations);
   const [convertTrigger, setConvertTrigger] = useState(false);
-  const [orTrigger, setOrTrigger] =useState(false);
-  const [orgName, setOrgName] =useState("");
+  const [orTrigger, setOrTrigger] = useState(false);
+  const [orgName, setOrgName] = useState('');
 
   useEffect(() => {
     if (Object.keys(locations).length === 0) {
@@ -48,15 +47,32 @@ const CreateProjectModal = ({
       });
     }
     if (orTrigger && orgName) {
-      loadManagers(orgName)
-          .catch(error => {
+      loadManagers(orgName).catch(error => {
         alert('Loading disciplines failed' + error);
       });
       setOrTrigger(false);
       setConvertTrigger(true);
     }
 
-  }, [locations, loadLocations,disciplines,loadDisciplines,organizations,loadOrganizations,managers, loadManagers, orgName, orTrigger, convertTrigger]);
+    //winton edited here
+    if (!managers.length) {
+      loadManagers(organization).catch(error => {
+        alert('Loading disciplines failed' + error);
+      });
+    }
+  }, [
+    locations,
+    loadLocations,
+    disciplines,
+    loadDisciplines,
+    organizations,
+    loadOrganizations,
+    managers,
+    loadManagers,
+    orgName,
+    orTrigger,
+    convertTrigger,
+  ]);
 
   const close = () => {
     let modal = document.getElementById('createProjectModal');
@@ -71,24 +87,24 @@ const CreateProjectModal = ({
     ToDate: '',
     ProjectManager: '',
     Discipline: '',
-    Organization: '',
+    Organization: organization,
   });
 
   const [submitted, setSubmitted] = useState(false);
   const [created, setCreated] = useState(false);
   const [createdWrong, setCreatedWrong] = useState(false);
 
-  function convertToOption(dataType){
+  function convertToOption(dataType) {
     let disName = dataType.map(a => a.name);
     let disOption = [];
 
-    for( const name of disName) {
-      if(dataType === locations)
-        disOption.push({value:"Location", label:name});
-      else if(dataType=== disciplines){
-        disOption.push({value:"Discipline", label:name});
-    }else {
-        disOption.push({value:"Organization", label:name});
+    for (const name of disName) {
+      if (dataType === locations)
+        disOption.push({ value: 'Location', label: name });
+      else if (dataType === disciplines) {
+        disOption.push({ value: 'Discipline', label: name });
+      } else {
+        disOption.push({ value: 'Organization', label: name });
       }
     }
     return disOption;
@@ -96,14 +112,17 @@ const CreateProjectModal = ({
 
   const [manOp, setManOp] = useState([]);
   useEffect(() => {
-      setManOp(manOp => convertManOp(managers));
+    setManOp(manOp => convertManOp(managers));
   }, [managers]);
 
   function convertManOp(manager) {
-    let manName = manager.map( ({username,fullName }) => ({username, fullName }));
+    let manName = manager.map(({ username, fullName }) => ({
+      username,
+      fullName,
+    }));
     let manOp = [];
-    for(const name of manName) {
-      manOp.push({value:name.username, label:name.fullName});
+    for (const name of manName) {
+      manOp.push({ value: name.username, label: name.fullName });
     }
     return manOp;
   }
@@ -113,19 +132,22 @@ const CreateProjectModal = ({
     setProject(skill => ({ ...skill, [name]: value }));
   }
 
-  function handleSelected(optionSelected){
-    if(optionSelected.value === "Organization" ) {
+  function handleSelected(optionSelected) {
+    if (optionSelected.value === 'Organization') {
       setOrTrigger(true);
       setOrgName(optionSelected.label);
     }
 
-    const {value, label} = optionSelected;
-    setProject(project => ({...project,[value]:label }));
+    const { value, label } = optionSelected;
+    setProject(project => ({ ...project, [value]: label }));
   }
 
-  function handleSelectedMan(optionSelected){
+  function handleSelectedMan(optionSelected) {
     const value = optionSelected.value;
-    setProject(project => ({...project,['ProjectManager']:value}));
+    setProject(project => ({
+      ...project,
+      ['ProjectManager']: value,
+    }));
   }
 
   const handleSubmit = e => {
@@ -156,7 +178,6 @@ const CreateProjectModal = ({
           });
         });
     }
-
   };
   return (
     <div id="createProjectModal" className="modal">
@@ -226,10 +247,10 @@ const CreateProjectModal = ({
             >
               <label className="input-name">Location</label>
               <Select
-                  name="location"
-                  defaultValue={"location"}
-                  onChange={handleSelected}
-                  options={locOp}
+                name="location"
+                defaultValue={'location'}
+                onChange={handleSelected}
+                options={locOp}
               />
               {submitted && !project.Location && (
                 <div className="help-block">Location is required</div>
@@ -275,7 +296,7 @@ const CreateProjectModal = ({
                 </div>
               )}
             </div>
-            <div
+            {/* <div
                 className={
                   'input-content' +
                   (submitted && !project.Organization
@@ -295,7 +316,7 @@ const CreateProjectModal = ({
                     Organization is required
                   </div>
               )}
-            </div>
+            </div> */}
             <div
               className={
                 'input-content' +
@@ -306,11 +327,11 @@ const CreateProjectModal = ({
             >
               <label className="input-name">Project Manager</label>
               <Select
-                  name="manager"
-                  cacheOptions
-                  defaultValue={"manager"}
-                  onChange={handleSelectedMan}
-                  options = {manOp}
+                name="manager"
+                cacheOptions
+                defaultValue={'manager'}
+                onChange={handleSelectedMan}
+                options={manOp}
               />
               {submitted && !project.ProjectManager && (
                 <div className="help-block">
@@ -326,10 +347,10 @@ const CreateProjectModal = ({
             >
               <label className="input-name">Discipline</label>
               <Select
-                  name="location"
-                  defaultValue={"location"}
-                  onChange={handleSelected}
-                  options={disOp}
+                name="location"
+                defaultValue={'location'}
+                onChange={handleSelected}
+                options={disOp}
               />
               {submitted && !project.Discipline && (
                 <div className="help-block">
@@ -587,7 +608,6 @@ const mapDispatchToProps = {
   loadDisciplines,
   loadOrganizations,
   loadManagers,
-
 };
 
 export default connect(
