@@ -155,7 +155,7 @@ namespace Web.API.Infrastructure.Data
 			    set @tempy = @fy;
 			    set @tempm = @fm;
 			
-			    WHILE @tempm <= @tm and @tempy <= @ty
+			    WHILE @tempm <= @tm or @tempy <= @ty
 			    BEGIN
 			    INSERT INTO UserHours
 			    (UserId, ProjectId, Year, Month, Hours)

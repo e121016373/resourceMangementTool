@@ -92,7 +92,7 @@ namespace Web.API.Infrastructure.Data
 			set @tempy = @fy;
 			set @tempm = @fm;
 			
-			WHILE @tempm <= @tm and @tempy <= @ty
+			WHILE @tempm <= @tm or @tempy <= @ty
 			BEGIN
 			INSERT INTO UserHours
 			(UserId, ProjectId, Year, Month, Hours)
@@ -166,7 +166,7 @@ namespace Web.API.Infrastructure.Data
                     Month = "jan",
                     Hours = (int)uu.Jan
                 };
-                res = await UpdateProject(username, project, uu.Year, hr);
+                await UpdateProject(username, project, uu.Year, hr);
             }
             if (uu.Feb != 0)
             {

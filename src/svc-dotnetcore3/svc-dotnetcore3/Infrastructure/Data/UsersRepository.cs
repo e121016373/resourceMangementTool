@@ -35,6 +35,25 @@ namespace Web.API.Infrastructure.Data
             return await connection.QueryAsync<User>(sql);
         }
 
+        public async Task<IEnumerable<User>> GetAllUsersWhere(string organization)
+        {
+            var sql = @"
+                select
+                    U.Id, U.FirstName, U.LastName, U.Username, L.Name as Location, U.Type, O.Name as Organization
+                from
+                    Users U
+                INNER JOIN Locations L
+                    on L.Id = U.LocationId
+                INNER JOIN Organizations O
+                    on O.Id = U.OrganizationId
+                WHERE OrganizationId = (select Id from Organizations where Name = @Organization)
+            ;";
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            return await connection.QueryAsync<User>(sql);
+        }
+
         public async Task<User> GetAUser(string username)
         {
             var sql = @"
