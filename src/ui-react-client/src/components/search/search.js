@@ -26,6 +26,7 @@ const Search = ({
   fromDate,
   toDate,
   addFeedback,
+  organization,
 }) => {
   // const [parsedDisciplines, setParsedDisciplines] = useState([]);
   useEffect(() => {
@@ -255,7 +256,7 @@ const Search = ({
       return;
     }
     setSearchState('searching');
-    searchUsers(content)
+    searchUsers(content, organization)
       .then(() => {
         //setTimeout(1000);
         setSearchState('doneSearching');

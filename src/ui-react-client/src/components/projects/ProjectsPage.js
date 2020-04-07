@@ -771,6 +771,7 @@ const ProjectsPage = ({
         projectName={projectName}
         fromDate={fromDate}
         toDate={toDate}
+        organization={organization}
       />
       <ForecastSummaryModal
         datas={forecastSummary}

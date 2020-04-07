@@ -380,7 +380,12 @@ const CreateProjectModal = ({
     </div>
   );
 };
-export const SearchModal = ({ projectName, fromDate, toDate }) => {
+export const SearchModal = ({
+  projectName,
+  fromDate,
+  toDate,
+  organization,
+}) => {
   const close = () => {
     let modal = document.getElementById('searchModal');
     modal.style.display = 'none';
@@ -416,6 +421,7 @@ export const SearchModal = ({ projectName, fromDate, toDate }) => {
               projectName={projectName}
               fromDate={fromDate}
               toDate={toDate}
+              organization={organization}
             />
           </div>
         </div>

@@ -104,8 +104,8 @@ export const addPeopleToProjectAction = (
   });
   return { type: types.ADD_PEOPLE_TO_PROJECT, payload: payload };
 };
-export const searchUsers = content => {
-  let url = `${SVC_ROOT}search/users`;
+export const searchUsers = (content, organization) => {
+  let url = `${SVC_ROOT}search/users/${organization}`;
   //console.log('the contenet is ', content);
   //console.log(JSON.stringify(content));
   //console.log('the contenet is ', content);
