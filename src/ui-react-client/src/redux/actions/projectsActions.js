@@ -85,7 +85,7 @@ export const loadProjects = organization => {
 export const createProject = project => {
   return dispatch => {
     return axios
-      .post(baseURL, project,{ headers })
+      .post(baseURL, project, { headers })
       .then(response => {
         console.log('createProJECT RESPOSE is ', response);
         let item = response.data;

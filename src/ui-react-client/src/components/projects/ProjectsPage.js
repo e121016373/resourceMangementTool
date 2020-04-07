@@ -765,6 +765,7 @@ const ProjectsPage = ({
       <CreateProjectModal
         createProject={createProject}
         addFeedback={addFeedback}
+        organization={organization}
       />
       <SearchModal
         projectName={projectName}
