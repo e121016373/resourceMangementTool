@@ -587,7 +587,7 @@ const ProjectsPage = ({
                   >
                     Forecast Summary
                   </div>
-                  <div
+                  {/* <div
                     style={{
                       //width: '7vw',
                       padding: 5,
@@ -598,7 +598,7 @@ const ProjectsPage = ({
                     onClick={showUsersInfoModal}
                   >
                     Users info
-                  </div>
+                  </div> */}
                   <div
                     style={{
                       margin: '0',
