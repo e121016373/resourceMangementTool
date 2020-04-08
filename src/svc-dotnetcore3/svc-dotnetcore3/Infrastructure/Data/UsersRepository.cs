@@ -51,7 +51,7 @@ namespace Web.API.Infrastructure.Data
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();
-            return await connection.QueryAsync<User>(sql);
+            return await connection.QueryAsync<User>(sql, new { Organization = organization});
         }
 
         public async Task<User> GetAUser(string username)

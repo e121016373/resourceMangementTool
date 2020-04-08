@@ -7,6 +7,7 @@ namespace Web.API.Application.Repository
     public interface IUsersRepository
     {
         Task<IEnumerable<User>> GetAllUsers();
+        Task<IEnumerable<User>> GetAllUsersWhere(string organization);
         Task<User> GetAUser(string username);
         Task<IEnumerable<Uname>> GetManagers(string organization);
         Task<User> DeleteAUser(string username);

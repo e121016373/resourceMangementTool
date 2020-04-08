@@ -28,6 +28,15 @@ namespace Web.API.Controllers
             var viewModel = mapper.Map<IEnumerable<User>>(response);
             return Ok(viewModel);
         }
+
+        [HttpGet]
+        [Route("/users/org/{organization}")]
+        public async Task<ActionResult<IEnumerable<User>>> GetAllUsersWhere([FromRoute]string organization)
+        {
+            var response = await usersRepository.GetAllUsersWhere(organization);
+            var viewModel = mapper.Map<IEnumerable<User>>(response);
+            return Ok(viewModel);
+        }
         [HttpGet]
         [Route("/managers/{organization}")]
         public async Task<ActionResult<IEnumerable<Uname>>> GetManagers([FromRoute] string organization)
