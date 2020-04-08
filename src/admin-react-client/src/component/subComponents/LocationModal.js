@@ -69,7 +69,7 @@ function LocationModal(props) {
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Create New Skill
+                    Create New Location
                     {submitted && created &&
                     <div className="created-block">Location is successfully created.</div>
                     }
