@@ -66,7 +66,7 @@ function DisciplineModal(props) {
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Create New Skill
+                    Create New Discipline
 
                     {submitted && createdWrong &&
                     <div className="help-block">Discipline is unsuccessfully created. Check your discipline name.</div>
