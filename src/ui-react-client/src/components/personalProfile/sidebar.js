@@ -231,21 +231,24 @@ export const Sidebar = ({
                 <h6 style={{ color: 'grey', marginBottom: '0px' }}>
                   location:
                 </h6>
-                <div className="con-add">
-                  <input
-                    id="location"
-                    value={text}
-                    placeholder={personalProfileUser.location}
-                    onChange={onTextChanged}
-                    disabled={true}
-                  ></input>
-                  {renderSuggestions()}
-                  {/*<AutoComplete*/}
-                  {/*elements={getLocationNames(locations)}*/}
-                  {/*placeholder={personalProfileUser.location}*/}
-                  {/*id={'editLocation'}*/}
-                  {/*/>*/}
-                </div>
+                {/*<div className="con-add">*/}
+                  {/*<input*/}
+                    {/*id="location"*/}
+                    {/*value={text}*/}
+                    {/*placeholder={personalProfileUser.location}*/}
+                    {/*// onChange={onTextChanged}*/}
+                    {/*disabled={true}*/}
+                  {/*></input>*/}
+                  {/*{renderSuggestions()}*/}
+                {/*</div>*/}
+                  <h6 style={{ color: 'grey', margin: '0px' }}>
+                      <input
+                          id="location"
+                          placeholder={personalProfileUser.location}
+                          disabled={true}
+                      ></input>
+                  </h6>
+
               </div>
               <div>
                 <div className="button">
