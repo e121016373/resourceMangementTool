@@ -18,6 +18,7 @@ namespace Web.API.Infrastructure.Data
         }
 
         //return a list of user based on discipline, skill, location, year, availability in a given date range
+        //return exact match
         public async Task<IEnumerable<UserInSearch>> GetAllUsers(Search search, string organization)
         {
             // find candidates and insert them into @searchUser table
@@ -148,6 +149,184 @@ namespace Web.API.Infrastructure.Data
             
             // for debug
             // Console.WriteLine(sql);
+
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
+            return await connection.QueryAsync<UserInSearch>(sql, new {
+                search.Discipline,
+                search.Skill,
+                search.Location,
+                search.YOE,
+                search.FromDate,
+                search.ToDate,
+                search.Availability,
+                Organization = organization
+            });
+        }
+
+        // Search for stretch goal
+        public async Task<IEnumerable<UserInSearch>> GetAllPriorityUsers(Search search, string organization)
+        {
+            var sql = @"
+                DECLARE @prioritySearch TABLE (
+                    Id INT
+                );
+                DECLARE @priority TABLE (
+                    Id INT,
+                    NumOfMatches INT
+                );
+                DECLARE @searchUser2 TABLE (
+                    Id INT, 
+                    Username NVARCHAR(50),
+                    Location NVARCHAR(100),
+                    Type NVARCHAR(50),
+                    Organization NVARCHAR(50),
+                    NumOfMatches INT
+                );
+                ";
+
+            if (search.Discipline != null && search.Discipline.Trim() != "") {
+                sql += @"
+                INSERT INTO @prioritySearch
+                SELECT DISTINCT UWD.UserId
+                FROM UserWorksDiscipline UWD
+                WHERE UWD.DisciplineId IN (
+                    SELECT D.Id
+                    FROM Disciplines D
+                    WHERE D.Name = @Discipline
+                )
+                ";
+            }
+                
+            if (search.Skill != null && search.Skill.Trim() != "") {
+                sql += @"
+                INSERT INTO @prioritySearch
+                SELECT DISTINCT UHS.UserId
+                FROM UserHasSkills UHS
+                WHERE UHS.SkillId IN (
+                    SELECT S.Id
+                    FROM Skills S
+                    WHERE S.Name = @Skill
+                )
+                ";
+            }
+
+            if (search.YOE != null && search.YOE.Trim() != "") {
+                sql += @"
+                INSERT INTO @prioritySearch
+                SELECT DISTINCT UWD.UserId
+                FROM UserWorksDiscipline UWD
+                WHERE RTRIM(LTRIM(UWD.Year)) = @YOE
+                ";
+            }
+            
+            if (search.Location != null && search.Location.Trim() != "") {
+                sql += @"
+                INSERT INTO @prioritySearch
+                SELECT DISTINCT U.Id
+                FROM Users U 
+                WHERE U.LocationId IN (
+                    SELECT L.Id
+                    FROM Locations L
+                    WHERE L.Name = @Location
+                )
+                ";
+            }
+
+            if (search.FromDate != null && search.ToDate != null) {
+                sql += @"
+                INSERT INTO @prioritySearch
+                SELECT DISTINCT Id
+                FROM (
+                    SELECT *
+                    FROM (
+                        SELECT U.Id";
+                int month_diff = ((search.ToDate.Year - search.FromDate.Year) * 12) + search.ToDate.Month - search.FromDate.Month;
+                if (month_diff < 0) {
+                    throw new ArgumentException(nameof(search.FromDate) + " is greater than " + nameof(search.ToDate));
+                }
+                int year = search.FromDate.Year;
+                int month = search.FromDate.Month;     
+                sql += @", ISNULL((
+                            SELECT CONVERT(FLOAT, 1-SUM(UH.Hours/176.0/" + (month_diff + 1) + "))" + @"
+                            FROM UserHours UH
+                            WHERE
+                                U.Id = UH.UserId
+                                AND ((UH.Year = " + year + " AND UH.Month = " + month + ")";
+                month++;
+                for (int i = 0; i < month_diff; i++) {
+                    if (month >= 13) {
+                        year += 1;
+                        month = 1;
+                    }
+                    sql += @"
+                                    OR (UH.Year = " + year + " AND UH.Month = " + month + ")";
+                    month++;
+                }
+                sql += @"
+                                ) 
+                            GROUP BY UH.UserId), 1) AS 'Availability'
+                        FROM Users U
+                    ) AS temp
+                    WHERE temp.Availability >= @Availability/100.0
+                ) AS temp2";
+            }
+
+            sql += @"
+                INSERT INTO @priority
+                SELECT Id, COUNT(Id) AS 'NumOfMatches'
+                FROM @prioritySearch
+                GROUP BY Id
+                
+                INSERT INTO @searchUser2
+                SELECT DISTINCT
+                    U.Id, U.Username,
+                    L.Name AS 'Location', U.Type, 
+                    O.Name AS 'Organization', PR.NumOfMatches
+                FROM 
+                    @priority PR
+                    INNER JOIN Users U ON U.Id = PR.Id
+                    LEFT JOIN Locations L ON U.LocationId = L.Id
+                    LEFT JOIN Organizations O ON O.Id = U.OrganizationId
+                WHERE 
+                    O.Name = @Organization
+            ";
+                
+            if (search.FromDate != null && search.ToDate != null) {
+                sql += @"
+                SELECT *";
+                int month_diff = ((search.ToDate.Year - search.FromDate.Year) * 12) + search.ToDate.Month - search.FromDate.Month;
+                if (month_diff < 0) {
+                    throw new ArgumentException(nameof(search.FromDate) + " is greater than " + nameof(search.ToDate));
+                }
+                int year = search.FromDate.Year;
+                int month = search.FromDate.Month;     
+                sql += @", ISNULL((
+                    SELECT CONVERT(FLOAT, 1-SUM(UH.Hours/176.0/" + (month_diff + 1) + "))" + @"
+                    FROM UserHours UH
+                    WHERE
+                        U.Id = UH.UserId
+                        AND ((UH.Year = " + year + " AND UH.Month = " + month + ")";
+                month++;
+                for (int i = 0; i < month_diff; i++) {
+                    if (month >= 13) {
+                        year += 1;
+                        month = 1;
+                    }
+                    sql += @"
+                            OR (UH.Year = " + year + " AND UH.Month = " + month + ")";
+                    month++;
+                }
+                sql += @"
+                        ) 
+                    GROUP BY UH.UserId), 1) AS 'Availability'
+                FROM @searchUser2 U
+                ORDER BY NumOfMatches DESC, Availability DESC, Location;
+                ";
+            }
+            
+            // for debug
+            Console.WriteLine(sql);
 
             using var connection = new SqlConnection(connectionString);
             connection.Open();

@@ -7,6 +7,7 @@ namespace Web.API.Application.Repository
     public interface ISearchRepository
     {
         Task<IEnumerable<UserInSearch>> GetAllUsers(Search search, string organization);
+        Task<IEnumerable<UserInSearch>> GetAllPriorityUsers(Search search, string organization);
         Task<IEnumerable<Project>> GetAllProjects(Search search);
     }
 }
