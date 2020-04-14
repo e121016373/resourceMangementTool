@@ -96,8 +96,13 @@ namespace Web.API.Infrastructure.Data
         {
             var discipline = await GetADiscipline(name);
             var sql = @"
-                DELETE FROM Disciplines
-                WHERE Name = @Name
+                If (SELECT Top 1 ISNULL(Count(DISTINCT UWD.UserId),0)
+                    FROM UserWorksDiscipline UWD
+                    WHERE UWD.DisciplineId = (select Id from  Disciplines where Name = @Name)
+                    GROUP BY UWD.DisciplineId)  = 0
+					DELETE FROM Disciplines where Name = @Name
+					ELSE
+					THROW 61000, 'Cannot Delete a Discipline Which Has Users Belonging To It', 1
             ;";
 
             using var connection = new SqlConnection(connectionString);
