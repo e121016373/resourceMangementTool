@@ -81,12 +81,12 @@ namespace Web.API.Infrastructure.Data
                     FROM Disciplines D
                     WHERE D.Id = S.DisciplineId) AS 'DisciplineName',
 
-                    (SELECT Count(DISTINCT UHS.UserId)
+                    ISNULL((SELECT Count(DISTINCT UHS.UserId)
                         FROM UserHasSkills UHS
                         WHERE UHS.SkillId = S.Id
                             AND UHS.DisciplineId = S.DisciplineId
                         GROUP BY UHS.SkillId
-                    ) AS 'NumberOfPeople'
+                    ),0) AS 'NumberOfPeople'
 
                 FROM Skills S
                 WHERE S.Name = @Name
@@ -150,8 +150,17 @@ namespace Web.API.Infrastructure.Data
         {
             var skill = await GetASkill(name);
             var sql = @"
-                DELETE FROM Skills
-                WHERE Name = @Name
+                IF (SELECT TOP 1
+                    ISNULL((SELECT Count(DISTINCT UHS.UserId)
+                        FROM UserHasSkills UHS
+                        WHERE UHS.SkillId = S.Id
+                            AND UHS.DisciplineId = S.DisciplineId
+                        GROUP BY UHS.SkillId
+                    ),0)  FROM Skills S
+                WHERE S.Name = @Name) =  0
+				DELETE FROM Skills where Name = @Name
+				ELSE
+				THROW 60000 , 'Cannot Delete A Skill Which Has Users Belonging To It', 1
             ;";
 
             using var connection = new SqlConnection(connectionString);
