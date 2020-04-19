@@ -20,17 +20,17 @@ namespace Web.API.Controllers
             this.mapper = mapper;
         }
 
-        // [HttpPost]
-        // [Route("/search/users/{organization}")]
-        // public async Task<ActionResult<IEnumerable<UserInSearch>>> GetAllUsers([FromBody] Search search, [FromRoute] string organization)
-        // {
-        //     var response = await searchRepository.GetAllUsers(search, organization);
-        //     var viewModel = mapper.Map<IEnumerable<UserInSearch>>(response);
-        //     return Ok(viewModel);
-        // }
-
         [HttpPost]
         [Route("/search/users/{organization}")]
+        public async Task<ActionResult<IEnumerable<UserInSearch>>> GetAllUsers([FromBody] Search search, [FromRoute] string organization)
+        {
+            var response = await searchRepository.GetAllUsers(search, organization);
+            var viewModel = mapper.Map<IEnumerable<UserInSearch>>(response);
+            return Ok(viewModel);
+        }
+
+        [HttpPost]
+        [Route("/priority_search/users/{organization}")]
         public async Task<ActionResult<IEnumerable<UserInSearch>>> GetAllPriorityUsers([FromBody] Search search, [FromRoute] string organization)
         {
             var response = await searchRepository.GetAllPriorityUsers(search, organization);
