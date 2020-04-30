@@ -71,8 +71,11 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
         .getBoundingClientRect().x;
     }
     //console.log('the originalBarPosition is ', originalBarPosition);
+    // let difference =
+    //   e.target.getBoundingClientRect().x - originalBarPosition - 4;
     let difference =
-      e.target.getBoundingClientRect().x - originalBarPosition - 4;
+      e.target.getBoundingClientRect().x - originalBarPosition +50;
+    // console.log('orginal position is ', originalBarPosition)
     // console.log('the difference is ', difference);
     // console.log(
     //   'current position is ',
@@ -80,19 +83,32 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
     // );
     bar.style.transform = 'translate(' + difference + 'px)';
     bar.style.width =
-      e.target.getBoundingClientRect().width + 8 + 'px';
-    //console.log('the width  ', bar.style.width);
+      e.target.getBoundingClientRect().width + 'px';
+    // console.log('the width  ', bar.style.width);
   };
   return (
     <div>
       <div className="Hnavbar">
         <div>
-          <NavLink to="/">
-            <img src={AEICON}></img>
-          </NavLink>
-        </div>
-        <div>
           <ul>
+            <li >
+              <NavLink
+                className="item"
+                to="/"
+                activeStyle={activeStyle}
+              >
+                {/* <img src={AEICON}></img> */}
+                <div onClick={e => moveBar(e)}>
+                  <i
+                    style={{
+                      display: 'block',
+                    }}
+                    className="fas fa-home fa-lg"
+                  ></i>
+                  Home
+                </div>
+              </NavLink>
+            </li>
             <li style={{ marginLeft: '0px' }}>
               <NavLink
                 className="item"

@@ -13,7 +13,8 @@
     margin: 0px;
     li {
       float: left;
-      margin-left: 40px;
+      margin-left: 0px;
+      margin-right: 40px;
       .item {
         margin: 0px;
         text-decoration: none;
@@ -38,11 +39,11 @@
     height: 4px;
     background-color: white;
     border-radius: 2px;
-    width: 50px;
+    width: 53.6094px;
     z-index: 10;
     position: relative;
-    left: 35px;
-    top: 45px;
+    left: 40px;
+    top: 50px;
     transition: transform 300ms ease-in-out;
     transform: translateX(0px);
   }
