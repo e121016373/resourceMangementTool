@@ -1,6 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
 import WTable from '../personalProfile/my_table';
-import AEicon from '../icons/associated-engineering-logo-png-transparent.png';
 
 import {
   loadProjects,
@@ -178,9 +177,8 @@ const ProjectsPage = ({
       //console.log('loading');
       return (
         <div style={{ height: '60%' }}>
-          <div style={{ height: '100%' }} className="loading">
+          <div style={{ height: '50%' }} className="loading">
             <div>
-              <img src={AEicon}></img>
               <div className="loading-bar"></div>
             </div>
           </div>

@@ -2,7 +2,6 @@ import { NavLink } from 'react-router-dom';
 import UserHeaderMenu from './UserHeaderMenu';
 import '../../scss/admin.scss';
 import '../../scss/header.scss';
-import AEICON from '../icons/associated-engineering-logo-png-transparent.png';
 import { authContext } from '../../config/adalConfig';
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
@@ -70,17 +69,14 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
         .getElementById('bar')
         .getBoundingClientRect().x;
     }
-    //console.log('the originalBarPosition is ', originalBarPosition);
-    // let difference =
-    //   e.target.getBoundingClientRect().x - originalBarPosition - 4;
     let difference =
       e.target.getBoundingClientRect().x - originalBarPosition +50;
     // console.log('orginal position is ', originalBarPosition)
-    // console.log('the difference is ', difference);
     // console.log(
     //   'current position is ',
     //   e.target.getBoundingClientRect().x,
     // );
+    // console.log('the difference is ', difference);
     bar.style.transform = 'translate(' + difference + 'px)';
     bar.style.width =
       e.target.getBoundingClientRect().width + 'px';
@@ -91,13 +87,12 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
       <div className="Hnavbar">
         <div>
           <ul>
-            <li >
+            {/* <li >
               <NavLink
                 className="item"
                 to="/"
                 activeStyle={activeStyle}
               >
-                {/* <img src={AEICON}></img> */}
                 <div onClick={e => moveBar(e)}>
                   <i
                     style={{
@@ -108,7 +103,7 @@ const Header = ({ personalProfileUser, loadPersonalProfile }) => {
                   Home
                 </div>
               </NavLink>
-            </li>
+            </li> */}
             <li style={{ marginLeft: '0px' }}>
               <NavLink
                 className="item"
