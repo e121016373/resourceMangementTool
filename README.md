@@ -1,6 +1,6 @@
 # UBC-2020 Blueprint
 
-This document is a project blueprint for the Associated Engineering Resource Management System project. The purpose of the doucment is to provide the teams with a starting point, and some guidance on the project structure.
+This document is a project blueprint for the Resource Management System project. The purpose of the doucment is to provide the teams with a starting point, and some guidance on the project structure.
 
 ## Prerequisites
 
@@ -17,16 +17,6 @@ You'll need the following applications installed on your machine before getting 
 | Account                                                                     | Usage              |
 | --------------------------------------------------------------------------- | ------------------ |
 | [Microsoft Azure](https://azure.microsoft.com/en-ca/features/azure-portal/) | for authentication |
-
-## Set-up and Configuration Instructions
-
-1. Clone the repo [here](https://dev.azure.com/associated/AE-UBC/_git/cpsc319-2020-winter-blueprint)
-
-2. After the repo is cloned, navigate to the ../cpsc319-2020-winter-blueprint directory
-
-   ```bash
-   cd cpsc319-2020-winter-blueprint
-   ```
 
 ### Authentication
 
