@@ -2,7 +2,9 @@ import * as types from '../actions/actionTypes';
 import initialState from './_initialState';
 
 const executeLoadProjectsData = action => {
-  return action.projects;
+  let projects = {};
+  projects.projects = action.projects;
+  return projects;
 };
 
 const executeLoadProjectsMostRecentData = action => {
@@ -10,7 +12,8 @@ const executeLoadProjectsMostRecentData = action => {
 };
 
 const executeCreateProjectData = (state, action) => {
-  return [...state, { ...action.project }];
+  state.projects.push(action.payload);
+  return { ...state };
 };
 
 const executeUpdateProjectData = (state, action) => {
@@ -20,9 +23,44 @@ const executeUpdateProjectData = (state, action) => {
 };
 
 const executeDeleteProjectData = (state, action) => {
-  return state.filter(project => project.id !== action.project.id);
+  state.projects = state.projects.filter(project => {
+    //console.log(project.Name, action.payload);
+    //console.log(project.Name === action.payload);
+    return project.Name !== action.payload;
+  });
+  //console.log();
+  return { ...state };
 };
 
+const executeLoadDetails = (state, action) => {
+  state.details = action.payload.details;
+
+  return { ...state };
+};
+
+const executeUpdateProjectStatus = (state, action) => {
+  state.projects.map(project => {
+    if (project.Name === action.payload.projectName) {
+      project.Status = action.payload.status;
+    }
+  });
+  return { ...state };
+};
+const executeAddPeopleToProject = (state, action) => {
+  action.payload.map(item => {
+    state.details.splice(1, 0, item);
+  });
+
+  return { ...state };
+};
+const executeForecastProject = (state, action) => {
+  state.details = action.payload;
+  return { ...state };
+};
+const executeLoadForecastSummary = (state, action) => {
+  state.forecastSummary = action.payload;
+  return { ...state };
+};
 export const projectsReducer = (
   state = initialState.projects,
   action,
@@ -38,6 +76,16 @@ export const projectsReducer = (
       return executeUpdateProjectData(state, action);
     case types.DELETE_PROJECT:
       return executeDeleteProjectData(state, action);
+    case types.LOAD_DETAILS:
+      return executeLoadDetails(state, action);
+    case types.UPDATE_PROJECT_STATUS:
+      return executeUpdateProjectStatus(state, action);
+    case types.ADD_PEOPLE_TO_PROJECT:
+      return executeAddPeopleToProject(state, action);
+    case types.FORECAST_PROJECT:
+      return executeForecastProject(state, action);
+    case types.LOAD_FORECAST_SUMMARY:
+      return executeLoadForecastSummary(state, action);
     default:
       return state;
   }

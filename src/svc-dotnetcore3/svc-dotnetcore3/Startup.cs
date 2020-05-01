@@ -52,7 +52,17 @@ namespace Web.API
 
             services.AddScoped<ILocationsRepository>(sp => new LocationsRepository(connectionString));
             services.AddScoped<IProjectsRepository>(sp => new ProjectsRepository(connectionString));
+            services.AddScoped<IOrgRepository>(sp => new OrgRepository(connectionString));
             services.AddScoped<IUsersRepository>(sp => new UsersRepository(connectionString));
+            services.AddScoped<ISkillsRepository>(sp => new SkillsRepository(connectionString));
+            services.AddScoped<IAdminRepository>(sp => new AdminRepository(connectionString));
+            services.AddScoped<IDisciplinesRepository>(sp => new DisciplinesRepository(connectionString));
+            services.AddScoped<ISDRepository>(sp => new SDRepository(connectionString));
+            services.AddScoped<IUDRepository>(sp => new UDRepository(connectionString));
+            services.AddScoped<IUPRepository>(sp => new UPRepository(connectionString));
+            services.AddScoped<IUURepository>(sp => new UURepository(connectionString));
+            services.AddScoped<IPURepository>(sp => new PURepository(connectionString));
+            services.AddScoped<ISearchRepository>(sp => new SearchRepository(connectionString));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }

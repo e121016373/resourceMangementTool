@@ -46,9 +46,9 @@ INSERT [dbo].[Users] ([Id], [FirstName], [LastName], [Username], [LocationId]) V
 INSERT [dbo].[Users] ([Id], [FirstName], [LastName], [Username], [LocationId]) VALUES (26, 'Louvenia', 'Terry', 'terryl', 75)
 INSERT [dbo].[Users] ([Id], [FirstName], [LastName], [Username], [LocationId]) VALUES (27, 'Jamir', 'Feeney', 'feeneyj', 20)
 INSERT [dbo].[Users] ([Id], [FirstName], [LastName], [Username], [LocationId]) VALUES (28, 'Kariane', 'Steuber', 'steuberk', 51)
-INSERT [dbo].[Users] ([Id], [FirstName], [LastName], [Username], [LocationId]) VALUES (29, 'Gwen', 'Torp', 'torpg', 23)
-INSERT [dbo].[Users] ([Id], [FirstName], [LastName], [Username], [LocationId]) VALUES (30, 'Gwen', 'Waters', 'watersg', 75)
-INSERT [dbo].[Users] ([Id], [FirstName], [LastName], [Username], [LocationId]) VALUES (31, 'Luz', 'Balistreri', 'balistreril', 19)
+INSERT [dbo].[Users] ([Id], [FirstName], [LastName], [Username], [LocationId]) VALUES (29, 'Gwen'Gwen', 'Waters', 'watersg', 75)
+INSERT [dbo].[Users] ([Id], [FirstName], [LastName], [Username], [LocationId]) VALUES ', 'Torp', 'torpg', 23)
+INSERT [dbo].[Users] ([Id], [FirstName], [LastName], [Username], [LocationId]) VALUES (30, (31, 'Luz', 'Balistreri', 'balistreril', 19)
 INSERT [dbo].[Users] ([Id], [FirstName], [LastName], [Username], [LocationId]) VALUES (32, 'Cora', 'Fritsch', 'fritschc', 8)
 INSERT [dbo].[Users] ([Id], [FirstName], [LastName], [Username], [LocationId]) VALUES (33, 'Arjun', 'Johns', 'johnsa', 51)
 INSERT [dbo].[Users] ([Id], [FirstName], [LastName], [Username], [LocationId]) VALUES (34, 'Aditya', 'Dickens', 'dickensa', 8)
@@ -11936,6 +11936,7 @@ Insert into Skills (DisciplineId,Id,[Name]) values (204,30,'Site Servicing');
 Insert into Skills (DisciplineId,Id,[Name]) values (204,31,'Snow Storage');
 Insert into Skills (DisciplineId,Id,[Name]) values (204,32,'Storm Sewers');
 Insert into Skills (DisciplineId,Id,[Name]) values (204,33,'Transient Analysis');
+Insert into Skills (DisciplineId,Id,[Name]) values (204,34,'Utilidor');
 Insert into Skills (DisciplineId,Id,[Name]) values (204,34,'Utilidor');
 Insert into Skills (DisciplineId,Id,[Name]) values (204,35,'Utilities');
 Insert into Skills (DisciplineId,Id,[Name]) values (204,36,'Wastewater Forcemain');

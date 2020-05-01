@@ -1,5 +1,13 @@
 export default {
+  currentUserProfile: {},
   users: [],
-  projects: [],
+  projects: {},
   locations: [],
+  disciplines: [],
+  skills: [],
+  feedbacks: [],
+  search: [],
+  organizations:[],
+  managers:[],
+  // userDisciplines: [],
 };
